@@ -94,7 +94,7 @@ export const apiGetFullList = () => {
 }
 
 const storage = new Storage('getTopCoins');
-export const getTopCoins = (qty = 10) => {
+export const getTopCoins = ({qty = 10, page = 1} = {}) => {
 
   if (storage.hasItem() && !storage.hasExpried()) {
     return storage.getAsPromise();
@@ -106,9 +106,41 @@ export const getTopCoins = (qty = 10) => {
   };
 
   // return Promise.resolve();
-  return fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${qty}&page=1&sparkline=false`, requestOptions)
+
+  return fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${qty}&page=${page}&sparkline=true`, requestOptions)
     .then(response => response.json()).then((json) => {
       storage.save(json);
       return json;
     })
 }
+
+
+// let page = 1;
+// let done = false;
+// let results = [];
+// const fetchLoop = () => {
+
+//   var requestOptions = {
+//     method: 'GET',
+//     redirect: 'follow'
+//   };
+//   fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${page}&sparkline=true`, requestOptions)
+//     .then(response => response.json()).then((json) => {
+//       if (Array.isArray(json) && json.length > 0) {
+//         results = [...results, ...json];
+//         page = page +1;
+//       } else {
+//         done = true;
+//       }
+//       return json;
+//     })
+// }
+
+// const loop = setInterval(() => {
+//   if (!done) {
+//     console.log(results)
+//     fetchLoop();
+//   } else {
+//     clearInterval(loop);
+//   }
+// }, 250);
