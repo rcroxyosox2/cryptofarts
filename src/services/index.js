@@ -1,56 +1,4 @@
-import moment from 'moment';
-
-class Storage {
-
-  key = null;
-  expiresInMinutes = 5;
-
-  constructor (key) {
-    this.key = key;
-  }
-  save(json) {
-    return window.localStorage.setItem(this.key, JSON.stringify(
-      {time: new Date().getTime(), data: json}
-    ))
-  }
-  hasExpried() {
-    const time = this.getTime();
-    if (!time) {
-      return true;
-    }
-    const timeCreated = moment(time);
-    const expirationDate = timeCreated.add(this.expiresInMinutes, 'minutes');
-    return moment().isAfter(expirationDate);
-  }
-  hasItem() {
-    return typeof this.getData() === 'object';
-  }
-  getTime() {
-    return this.get()?.time;
-  }
-  get() {
-    const item = window.localStorage.getItem(this.key);
-    if (item) {
-      try {
-        const itemAsJson = JSON.parse(item);
-        return itemAsJson;
-      } catch (e) {
-        return e;
-      }
-    }
-  }
-  getData() {
-    return this.get()?.data;
-  }
-  getAsPromise() {
-    const items = this.getData();
-    if (this.hasItem()) {
-      return Promise.resolve(items);
-    } else {
-      return Promise.reject(items);
-    }
-  }
-}
+import Storage from 'brains/storage';
 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
   var requestOptions = {
@@ -72,7 +20,6 @@ export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
     }));
 }
 
-// holy fuck this is expensive tho
 export const apiGetFullList = () => {
   var requestOptions = {
     method: 'GET',
@@ -114,33 +61,42 @@ export const getTopCoins = ({qty = 10, page = 1} = {}) => {
     })
 }
 
+// holy fuck this is expensive tho
+export const megaInitialLoad = async (expires) => {
 
-// let page = 1;
-// let done = false;
-// let results = [];
-// const fetchLoop = () => {
+  const throttle = 250;
+  let results = [];
 
-//   var requestOptions = {
-//     method: 'GET',
-//     redirect: 'follow'
-//   };
-//   fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${page}&sparkline=true`, requestOptions)
-//     .then(response => response.json()).then((json) => {
-//       if (Array.isArray(json) && json.length > 0) {
-//         results = [...results, ...json];
-//         page = page +1;
-//       } else {
-//         done = true;
-//       }
-//       return json;
-//     })
-// }
+  const fetchLoop = (page) => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    return fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${page}&sparkline=true`, requestOptions)
+      .then(response => response.json())
+  }
 
-// const loop = setInterval(() => {
-//   if (!done) {
-//     console.log(results)
-//     fetchLoop();
-//   } else {
-//     clearInterval(loop);
-//   }
-// }, 250);
+  const heyLookRecursion = (page = 1) => {
+    return fetchLoop(page).then((json) => {
+      if (Array.isArray(json) && json.length > 0) {
+        results = [...results, ...json];
+        let timeOut = setTimeout(() => {
+          heyLookRecursion(page+1).then(() => {
+            clearTimeout(timeOut);
+          }).catch(() => {
+            clearTimeout(timeOut);
+          });
+        }, 50);
+      }
+      return results;
+    }).catch((e) => {
+      console.log("what the fuick?", e);
+      return e;
+    });
+  }
+
+  return heyLookRecursion();
+
+}
+
+

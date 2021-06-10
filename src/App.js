@@ -1,90 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import { useStore } from './store';
 import Router from './Router';
 import useRequest from './hooks/useRequest';
-import useNoises from './hooks/useNoises';
-import { apiGetCoinData } from './services';
-import filter from 'lodash.filter';
+import { megaInitialLoad } from './services';
+import {
+  checkForUpdatesInterval,
+} from 'brains/coins';
 
 import './App.css';
-import coinList from './data/coinList.json';
 
-function App() {
-  const inputRef = React.createRef();
-
-  // fetch single
+const App = () => {
+  const store = useStore();
+  const interval = useRef();
   const {
     makeRequest,
-    loading,
-    response,
-    error,
   } = useRequest({
-    request: apiGetCoinData,
+    request: megaInitialLoad
   });
 
-  const { getPlayNoiseFromNum } = useNoises();
-  const [coin, setCoin] = useState();
-  const [coinText, changeCoinText] = useState('bitcoin');
-
-  const playNoises = (change) => {
-    const playFunc = getPlayNoiseFromNum(change);
-    playFunc && playFunc();
-  }
-
-  const handleSubmit = async (coin) => {
-    if (!loading) {
-      try {
-        const response = await makeRequest({coin});
-        const change = parseFloat(response?.usd_24h_change);
-        playNoises(change);
-      } catch (e) {
-        return null;
-      }
-    }
-  }
-
-  const handleClear = () => {
-    changeCoinText('');
-    inputRef.current.focus();
-  }
-
-  const handleChange = (value) => {
-    changeCoinText(value);
-  }
-
-  const filtered = (coinText) ? filter(coinList, (item) => item.id.startsWith(coinText)).slice(0,10) : [];
+  // const coins = store.coins;
 
   useEffect(() => {
-    coin && handleSubmit(coin);
-  }, [coin]);
+    const callTheCoins = () => {
+      return makeRequest().then((coins) => {
+        store.setCoinsLoading(false);
+        store.setCoinsLoadingQuietly(false);
+        store.setCoinsError(null);
+        store.setCoins(coins);
+        return coins;
+      }).catch(e => {
+        store.setCoinsLoading(false);
+        store.setCoinsLoadingQuietly(false);
+        store.setCoinsError(e);
+        store.setCoins([]);
+        return e;
+      })
+    }
 
-  // if (!homeClicked) {
-  //   return <Home />;
-  //   return (
-  //     <>
-  //       <div>How we doin today?</div>
-  //       <button onClick={handleHomeClick}>Get full</button>
-  //     </>
-  //   );
-  // }
+    store.setCoinsLoading(true);
+    callTheCoins();
 
-/*
-<div className="App">
-          <header className="App-header">
-            {
-              responseTop10?.map((item) => <button key={item.id} onClick={() => setCoin(item.id)}>{item.id} ${item.current_price}</button>)
-            }
-            <input autoCorrect="off" autoCapitalize="off" list="coins" value={coinText} onChange={(e) => handleChange(e.target.value)} ref={inputRef} />
-            {!!coinText &&  <button onClick={handleClear}>clear</button> }
-            <datalist id="coins">
-              {filtered.map((item) => <option value={item.id} key={item.id} />)}
-            </datalist>
-            {!!coinText && <button onClick={() => setCoin(coinText)}>{ (loading) ? 'loading' : 'try it out'}</button> }
-            <img src={logo} className="App-logo" alt="logo" />
-            <div>{error}</div>
-            <div>{response?.usd_24h_change}</div>
-          </header>
-      </div>
-      */
+    if (!interval.current) {
+      interval.current = setInterval(() => {
+        if (!store.coinsLoading && !store.coinsLoadingQuietly) {
+          store.setCoinsLoadingQuietly(true);
+          callTheCoins(false);
+        }
+      }, checkForUpdatesInterval);
+    }
+
+  }, []);
 
   return (<Router />);
 }

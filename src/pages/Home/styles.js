@@ -21,11 +21,11 @@ const upDown = keyframes`
   }
 `;
 
-const pulseAnimation = keyframes`
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); opacity: 1; }
-`;
+// const pulseAnimation = keyframes`
+//   0% { transform: scale(0); opacity: 0; }
+//   50% { transform: scale(1.3); }
+//   100% { transform: scale(1); opacity: 1; }
+// `;
 
 const defaultButtonAnimationState = css`
   opacity: 0;
@@ -37,8 +37,13 @@ const defaultTapHereImageContainerState = css`
   transform: scale(0.5) translateY(100px);
 `;
 
+const defaultRandomImageContainerState = css`
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 500ms ease-in-out 1000ms;
+`;
+
 export const RandomImageContainerStyle = styled.div.attrs({ className: 'RandomImageContainerStyle'})`
-  transition: all 300ms ease-in-out;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -47,12 +52,13 @@ export const RandomImageContainerStyle = styled.div.attrs({ className: 'RandomIm
   align-items: center;
   justify-content: flex-end;
   transform-origin: 50% 100%;
+  ${defaultRandomImageContainerState};
 `;
 
-  export const TapHereImageContainerStyle = styled.div.attrs({ className: 'TapHereImageContainerStyle'})`
-    transition: all 500ms ease-in-out 300ms;
-    ${defaultTapHereImageContainerState}
-  `;
+export const TapHereImageContainerStyle = styled.div.attrs({ className: 'TapHereImageContainerStyle'})`
+  transition: all 500ms ease-in-out 300ms;
+  ${defaultTapHereImageContainerState}
+`;
 
 export const HomeScreenNoMyShitStyle = styled.div.attrs({ className: 'HomeScreenNoMyShitStyle' })`
   display: flex;
@@ -67,17 +73,23 @@ export const HomeScreenNoMyShitStyle = styled.div.attrs({ className: 'HomeScreen
     ${defaultButtonAnimationState}
   }
   &.entering, &.entered {
-    button, ${TapHereImageContainerStyle} {
+    button, ${TapHereImageContainerStyle}, ${RandomImageContainerStyle} {
       transform: scale(1) translateY(0);
       opacity: 1;
     }
   }
   &.exiting, &.exited {
     button {
+      transition: all 200ms ease-in 0ms !important;
       ${defaultButtonAnimationState}
     }
     ${TapHereImageContainerStyle} {
+      transition: all 200ms ease-in 0ms !important;
       ${defaultTapHereImageContainerState}
+    }
+    ${RandomImageContainerStyle} {
+      transition: all 200ms ease-in 0ms !important;
+      ${defaultRandomImageContainerState}
     }
   }
   .randomImg {

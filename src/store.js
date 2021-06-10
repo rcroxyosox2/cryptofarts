@@ -2,37 +2,27 @@ import React, { useContext, useState } from 'react';
 const AppContext = React.createContext();
 
 const Provider = (props) => {
-  const [
-    state,
-    setStateObj,
-  ] = useState({
-    hello: 'world'
-  });
+  const [myShit, setMyShit] = useState({});
+  const [coinsError, setCoinsError] = useState(null);
+  const [coinsLoading, setCoinsLoading] = useState(false);
+  const [coinsLoadingQuietly, setCoinsLoadingQuietly] = useState(false);
+  const [coins, setCoins] = useState(false);
 
-  //My shit
-  const getMyShit = () => {
-    return Array.isArray(state.myShit) ? [...state.myShit] : [];
-  };
-
-  const addToMyShit = (item) => {
-    const myShit = getMyShit();
-    myShit.push(item);
-  }
-
-  //Helpers
-  const helpers = {
-    getMyShit,
-    addToMyShit
+  const value = {
+    myShit,
+    setMyShit,
+    coinsError,
+    setCoinsError,
+    coinsLoading,
+    setCoinsLoading,
+    coins,
+    setCoins,
+    coinsLoadingQuietly,
+    setCoinsLoadingQuietly,
   };
 
   return (
-    <AppContext.Provider value={{
-      state,
-      setState: (obj = {}) => {
-        setStateObj({...state, ...obj});
-      },
-      helpers,
-      }}>
+    <AppContext.Provider value={value}>
       {props?.children}
     </AppContext.Provider>
   )
