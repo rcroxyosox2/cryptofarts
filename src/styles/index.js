@@ -10,6 +10,12 @@ import comicNeueBoldWoff from "./fonts/ComicNeue-Bold.woff";
 
 
 export const AppStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
   @font-face {
     font-family: 'Comic Neue';
     src: url(${comicNeueRegularWoff2}) format('woff2'), url(${comicNeueRegularWoff}) format('woff');

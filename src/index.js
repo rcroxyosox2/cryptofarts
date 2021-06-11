@@ -5,17 +5,18 @@ import './index.css';
 import App from './App';
 import { AppStyle } from './styles';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from './store';
 import mainTheme from './theme/main';
+import store from 'redux/store';
+import { Provider as RProvider } from 'react-redux';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider>
-      <ThemeProvider theme={mainTheme}>
-        <AppStyle />
+    <ThemeProvider theme={mainTheme}>
+      <AppStyle />
+      <RProvider store={store}>
         <App />
-      </ThemeProvider>
-    </Provider>
+      </RProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

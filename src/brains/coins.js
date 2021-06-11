@@ -1,5 +1,6 @@
 import { expiresInMinutes } from './general';
-import { filter, sortBy, reverse } from 'lodash';
+// import { randomResource } from 'utils';
+import { sortBy, reverse } from 'lodash';
 
 // Coins are fetched at this interval
 export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
@@ -32,15 +33,15 @@ export const getItemIsInCoinRange = (num, range) => {
 }
 
 export const getPumpsAndDumpsFromArr = ({coins, qty}) => {
-  if (!coins || !qty) {
+  if (!coins || !qty || coins.length === 0) {
     // console.error('coins and qty are required in getPumpsAndDumpsFromArr');
     return [[],[]];
   }
 
-  const filtered = filter(coins, (coin) => coin[COIN_CHANGE_KEY] != null);
-  const sorted = sortBy(filtered, [COIN_CHANGE_KEY]);
+  const sorted = sortBy(coins, [COIN_CHANGE_KEY]);
   const pumps = reverse(sorted.slice(-qty));
-  const dumps = sorted.slice(0, qty)
+  const dumps = sorted.slice(0, qty);
+  // const pumps = [randomResource(sorted), randomResource(sorted), randomResource(sorted), randomResource(sorted), randomResource(sorted)]
   return [pumps, dumps];
 }
 
@@ -48,8 +49,7 @@ export const getTotalChangeFromCoinsResponse = (coins) => {
   if (!coins) {
     return;
   }
-  const filtered = filter(coins, (coin) => coin[COIN_CHANGE_KEY] != null);
-  return filtered.reduce((a,c) => {
+  return coins.reduce((a,c) => {
     return a + c[COIN_CHANGE_KEY];
-  }, 0) / filtered.length
+  }, 0) / coins.length
 }

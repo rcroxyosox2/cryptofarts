@@ -1,21 +1,30 @@
-import { useState, useEffect } from 'react';
-import CoinStack from 'components/CoinStack';
-import { useStore } from 'store';
+import { useState, useRef, useEffect } from 'react';
+// import { AnimateOnChange, HideUntilLoaded } from 'react-animation'
+import { useSelector } from 'react-redux';
+import CoinStackImageTitleCombo from 'components/CoinStackImageTitleCombo';
 import { getPumpsAndDumpsFromArr } from 'brains/coins';
+import Notif from 'components/Notif';
+import {
+  getRandomPumpImg,
+  getRandomDumpImg,
+} from 'images';
 import * as styles from './styles';
 
-
 const Overview = (props) => {
-  const store = useStore();
-  const coins = (Array.isArray(store.coins)) ? store.coins.slice(0,20) : [];
-  const [pumps, dumps] = getPumpsAndDumpsFromArr({coins, qty: 5});
+  const { coins } = useSelector((state) => state.coins);
+  const [pumps, dumps] = getPumpsAndDumpsFromArr({coins, qty: 15});
+
   return (
     <styles.OverviewStyle>
-      Pumps
-      <CoinStack coins={pumps} />
-
-      Dumps
-      <CoinStack coins={dumps} />
+      <Notif />
+      <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} imgProps={{
+        src: getRandomPumpImg(),
+        title: 'pump'
+      }} />
+      <CoinStackImageTitleCombo title="Da Dumps" coins={dumps} imgProps={{
+        src: getRandomDumpImg(),
+        title: 'dump'
+      }}/>
     </styles.OverviewStyle>
   )
 }

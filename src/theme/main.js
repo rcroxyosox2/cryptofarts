@@ -17,10 +17,26 @@ responsive.largestLargeMonitor = `${(parseInt(responsive.widescreenMonitorBreakp
 
 const colors = {
   white: '#FFFFFF',
+  yellow: '#FFFF00',
+  pink: '#FF00FF',
   red: '#FF0000',
   black: '#000000',
   green:  '#00FF00',
 }
+
+const badCSS = css`
+  background: ${colors.red};
+  color: ${colors.white};
+`;
+
+const goodCSS = css`
+  background: ${colors.green};
+`;
+
+const neutralCSS = css`
+  background: ${colors.black};
+  color: ${colors.white};
+`;
 
 const button = {
   defaults: css`
@@ -37,16 +53,10 @@ const button = {
     }
   `,
   styleType: {
-    good: css`
-      background: ${colors.green};
-    `,
-    bad: css`
-      background: ${colors.red};
-      color: ${colors.white};
-    `,
+    good: goodCSS,
+    bad: badCSS,
     default: css`
-      background: ${colors.black};
-      color: ${colors.white};
+      ${neutralCSS};
       box-shadow: none;
     `,
   },
@@ -61,6 +71,11 @@ const button = {
 }
 
 const mainTheme = {
+  snippets: {
+    badCSS,
+    goodCSS,
+    neutralCSS,
+  },
   button,
   colors,
   responsive,

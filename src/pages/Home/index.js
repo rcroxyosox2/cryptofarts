@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import {
-  getTopCoins,
-  megaInitialLoad,
-} from 'services';
 import { paths } from 'Router';
 import { filter, sortBy } from 'lodash';
-import { useStore } from 'store';
 import useNoises from 'hooks/useNoises';
-import useRequest from 'hooks/useRequest';
 import Button from 'theme/Button';
+import sound from 'sounds/mid-fart2-c.mp3'
 import tapHereImg from 'images/tapHere.png';
 import PageAnimation from 'pages/PageAnimation';
 import {
   getTotalChangeFromCoinsResponse,
 } from 'brains/coins'
-
-import firebase from '../../firebase';
 
 import {
   getRandomBadImgStyle,
@@ -31,17 +25,28 @@ const RandomBadImgStyle = getRandomBadImgStyle();
 const CTA = ({ total, isGood, changePage }) => {
   const { getPlayNoiseFromNum } = useNoises();
   const history = useHistory();
+  const audio = document.createElement('audio');
+  audio.src = sound;
 
   const handleHomeClick = () => {
-    const audioFile = getPlayNoiseFromNum(total);
-    audioFile.play();
+
+
+    // const audioFile = getPlayNoiseFromNum(total);
+    audio.play()
     changePage(() => {
       history.push(paths.overview)
     });
+
   }
   const styleType = isGood() ? 'good' : 'bad';
 
-  return <Button onClick={handleHomeClick} styleType={styleType}>Todayz MarketZ</Button>
+  return (
+    <>
+      <Button onClick={handleHomeClick} styleType={styleType}>
+        Todayz MarketZ
+      </Button>
+    </>
+  )
 }
 
 const HomeScreenNoMyShit = ({ pageAnimationState, isGood, total, changePage }) => {
@@ -64,20 +69,19 @@ const HomeScreenWithMyShit = () => {
 }
 
 const Home = () => {
-  const store = useStore();
+  const { coins, loadStatus, error } = useSelector((state) => state.coins);
   const isGood = () => true; //getTotalChange(response) > 0;
   const total = 0; //getTotalChangeFromArr(response);
-  const coins = store.coins;
   const myShit = [];
 
   console.log(getTotalChangeFromCoinsResponse(coins));
 
-  if (store.coinsLoading) {
+  if (loadStatus === 'loading') {
     return <div>loading..</div>
   }
 
-  if (store.coinsError) {
-    return <div>{store.coinsError}</div>;
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (

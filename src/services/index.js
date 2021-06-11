@@ -62,10 +62,8 @@ export const getTopCoins = ({qty = 10, page = 1} = {}) => {
 }
 
 // holy fuck this is expensive tho
-export const megaInitialLoad = async (expires) => {
+export const megaInitialLoad = async ({onFetchPage} = {}) => {
 
-  const throttle = 250;
-  let results = [];
 
   const fetchLoop = (page) => {
     var requestOptions = {
@@ -76,26 +74,46 @@ export const megaInitialLoad = async (expires) => {
       .then(response => response.json())
   }
 
-  const heyLookRecursion = (page = 1) => {
+
+  let timeOut;
+  let useRes;
+  let useRej;
+  let useResults = [];
+
+  const heyLookRecursion = (page = 1, res = null, rej = null) => {
+    if (res) {
+      useRes = res;
+    }
+
+    if (rej) {
+      useRej = rej;
+    }
+
     return fetchLoop(page).then((json) => {
-      if (Array.isArray(json) && json.length > 0) {
-        results = [...results, ...json];
+      if (page < 3 && Array.isArray(json) && json.length > 0) {
+        useResults = [...useResults, ...json];
         let timeOut = setTimeout(() => {
-          heyLookRecursion(page+1).then(() => {
+          return heyLookRecursion(page+1).then(() => {
             clearTimeout(timeOut);
           }).catch(() => {
             clearTimeout(timeOut);
           });
         }, 50);
+        onFetchPage && onFetchPage(useResults);
       }
-      return results;
+      else {
+        useRes(useResults);
+      }
+      return useResults;
     }).catch((e) => {
+      clearTimeout(timeOut);
       console.log("what the fuick?", e);
+      useRej(e);
       return e;
     });
   }
 
-  return heyLookRecursion();
+  return new Promise((res, rej) => heyLookRecursion(1, res, rej));
 
 }
 

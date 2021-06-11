@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import useSound from 'use-sound';
 import {
   coinPerformanceRanges,
   getItemIsInCoinRange,
@@ -19,6 +20,10 @@ const useNoises = () => {
   const playMedFartSound = new Audio(medFartSound);
   const playMedFart2Sound = new Audio(medFart2Sound);
   const playLrgFartSound = new Audio(lrgFartSound);
+
+  playMedFartSound.addEventListener('canplaythrough', () => {
+    console.log('hel');
+  }, false);
 
   useEffect(() => {
     playRiff.load();
@@ -49,7 +54,8 @@ const useNoises = () => {
       }
     });
 
-    return found;
+
+    return playMedFart2Sound;
   }
 
   return {
