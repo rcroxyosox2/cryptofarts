@@ -69,27 +69,27 @@ const App = () => {
   }
 
   useEffect(async () => {
-    await getThemCoins();
-    interval.current = setInterval(async () => {
-      if (!/loading/.test(loadStatus)) {
-      await getThemCoins(true);
-      }
-    }, checkForUpdatesInterval);
+    // await getThemCoins();
+    // interval.current = setInterval(async () => {
+    //   if (!/loading/.test(loadStatus)) {
+    //   await getThemCoins(true);
+    //   }
+    // }, checkForUpdatesInterval);
 
-    setInterval(() => {
-      dispatch(setNotif({
-        id: 'hello',
-        text: 'fetching...',
-        img: null,
-        type: 'ARTICLE',
-        expires: 5000,
-      }))
-    }, 7000);
+    // setInterval(() => {
+    //   dispatch(setNotif({
+    //     id: 'hello',
+    //     text: 'fetching...',
+    //     img: null,
+    //     type: 'ARTICLE',
+    //     expires: 5000,
+    //   }))
+    // }, 7000);
 
-    // kill that timeout
-    return () => {
-      interval.current && clearInterval(interval.current);
-    }
+    // // kill that timeout
+    // return () => {
+    //   interval.current && clearInterval(interval.current);
+    // }
   }, [])
 
   return (

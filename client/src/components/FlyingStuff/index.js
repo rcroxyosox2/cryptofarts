@@ -16,7 +16,7 @@ const FlyingStuff = ({stuffArr = []} = {}) => {
             const delay = (animTime * index) + 50;
             const upDown = 50;
             return (
-                <styles.ThingStyle delay={delay} upDown={upDown}>
+                <styles.ThingStyle delay={delay} upDown={upDown} key={index}>
                     <div>{thing}</div>
                 </styles.ThingStyle>
             )

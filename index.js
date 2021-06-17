@@ -28,7 +28,7 @@ app.get('/express_backend', async(req, res) => {
     let finalArr = [];
     while(stilGoing) {
       const pageData = await getPage(currentPage);
-      if (pageData.length > 0 && currentPage < 40) {
+      if (pageData.length > 0 && currentPage < 4) {
         finalArr.push(...pageData);
         currentPage++;
       } else {
@@ -43,7 +43,7 @@ app.get('/express_backend', async(req, res) => {
     console.log('comp;letecomp;letecomp;letecomp;letecomp;letecomp;letecomp;letecomp;lete', data.length);
     res.send({hello: data.length});
   } catch(error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).send({
       bad: 'too bad'
     });
