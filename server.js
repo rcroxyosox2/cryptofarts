@@ -7,6 +7,7 @@ const port = process.env.PORT;
 const CoinGeckoClient = new CoinGecko();
 
 // This displays message that the server running and listening to specified port
+// Hello there world
 app.listen(port, () => console.log(`Listening on port ${port}`)); 
 
 // create a GET route
