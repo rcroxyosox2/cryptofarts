@@ -1,8 +1,9 @@
+require('dotenv').config()
 const express = require('express'); 
 const fetch = require("node-fetch");
 const CoinGecko = require('coingecko-api');
 const app = express(); 
-const port = process.env.PORT || 5000; 
+const port = process.env.PORT; 
 const CoinGeckoClient = new CoinGecko();
 
 // This displays message that the server running and listening to specified port
