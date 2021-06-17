@@ -2,8 +2,9 @@ require('dotenv').config()
 const express = require('express'); 
 const fetch = require("node-fetch");
 const CoinGecko = require('coingecko-api');
+const path = require('path')
 const app = express(); 
-const port = process.env.PORT; 
+const port = process.env.PORT || 5000; 
 const CoinGeckoClient = new CoinGecko();
 
 // This displays message that the server running and listening to specified port
@@ -44,9 +45,16 @@ app.get('/express_backend', async(req, res) => {
   } catch(error) {
     console.log(error);
     res.status(500).send({
-      bad: error.message
+      bad: 'too bad'
     });
   }
 
   
 });
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'client/build')))
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})

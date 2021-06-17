@@ -47,7 +47,7 @@ const CTA = ({ priceChange, isGood, changePage }) => {
       if (response.status !== 200) {
         throw Error(body.message) 
       }
-      console.log(body);
+      console.log("yaaaayyyy",body);
     } catch(e) {
       console.error(e);
     }
