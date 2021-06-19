@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
+    "server": "nodemon index.js --ignore client",
     "start": "node index.js",
-    "heroku-postbuild": "cd client && yarn && yarn build"
+    "client": "npm start --prefix client",
+    "heroku-postbuild": "cd client && yarn && yarn build",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -21,11 +23,19 @@
   },
   "homepage": "https://github.com/rcroxyosox2/cryptofarts#readme",
   "dependencies": {
+    "@meanie/mongoose-upsert-many": "^2.1.0",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.10",
     "coingecko-api": "^1.0.10",
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mongoose": "^5.12.14",
     "node-cron": "^3.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "reddit-fetch": "^1.5.1",
+    "scraper": "^0.0.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

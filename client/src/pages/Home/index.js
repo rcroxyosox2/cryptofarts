@@ -41,7 +41,7 @@ const CTA = ({ priceChange, isGood, changePage }) => {
   useEffect(async() => {
 
     try {
-      const response = await fetch('/express_backend');
+      const response = await fetch('/test');
       const body = await response.json();
 
       if (response.status !== 200) {
