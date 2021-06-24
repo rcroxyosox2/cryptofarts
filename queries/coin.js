@@ -10,20 +10,13 @@ const caps = {
 }
 
 const getSickDealCoins = async () => {
-
-  const capSizes = {
-    [caps.TINY]: 0,
-    [caps.SM]: 100_000_000,
-    [caps.MID]: 1_000_000_000,
-    [caps.LRG]: 10_000_000_000,
-  };
-
+  const { Schema, capSizes } = Coin;
   const sort = {"ath_change_percentage": "asc"};
   const requirement = {
     $lt: SICK_DEAL_MINIMUM_PERC,
   };
   
-  const tinyCaps = Coin.find({
+  const tinyCaps = Schema.find({
     "market_cap": {
       $gte: capSizes[caps.TINY], 
       $lt: capSizes[caps.SM]
@@ -31,7 +24,7 @@ const getSickDealCoins = async () => {
     "ath_change_percentage": requirement
   }).sort(sort).limit(50);
 
-  const smallCaps = Coin.find({
+  const smallCaps = Schema.find({
     "market_cap": {
       $gte: capSizes[caps.SM], 
       $lt: capSizes[caps.MID]
@@ -39,7 +32,7 @@ const getSickDealCoins = async () => {
     "ath_change_percentage": requirement
   }).sort(sort).limit(50);
 
-  const midCaps = Coin.find({
+  const midCaps = Schema.find({
     "market_cap": {
       $gte: capSizes[caps.MID], 
       $lt: capSizes[caps.LRG]
@@ -47,7 +40,7 @@ const getSickDealCoins = async () => {
     "ath_change_percentage": requirement
   }).sort(sort).limit(50);
 
-  const lrgCaps = Coin.find({
+  const lrgCaps = Schema.find({
     "market_cap": {
       $gte: capSizes[caps.LRG], 
     },
@@ -71,7 +64,7 @@ const getSickDealCoins = async () => {
 }
 
 const getAvg24hrPriceChangePerc = async () => {
-  const docs = await Coin.aggregate([
+  const docs = await Schema.aggregate([
     { 
       $match: {
         price_change_percentage_24h: {

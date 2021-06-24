@@ -23,19 +23,23 @@
   },
   "homepage": "https://github.com/rcroxyosox2/cryptofarts#readme",
   "dependencies": {
+    "@bugsnag/js": "^7.10.1",
+    "@bugsnag/plugin-react": "^7.10.0",
     "@meanie/mongoose-upsert-many": "^2.1.0",
     "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.10",
     "coingecko-api": "^1.0.10",
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
+    "cryptaddress-validator": "^1.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "mongoose": "^5.12.14",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
-    "reddit-fetch": "^1.5.1",
-    "scraper": "^0.0.9"
+    "scraper": "^0.0.9",
+    "trend": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

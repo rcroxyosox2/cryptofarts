@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const upsertMany = require('@meanie/mongoose-upsert-many');
 const Schema = mongoose.Schema;
-
+const capSizes = {
+  [caps.TINY]: 0,
+  [caps.SM]: 100_000_000,
+  [caps.MID]: 1_000_000_000,
+  [caps.LRG]: 10_000_000_000,
+};
 /* 
 
 ath: 64805
@@ -74,4 +79,8 @@ const coinSchema = new Schema(
 );
 
 coinSchema.plugin(upsertMany);
-module.exports = mongoose.model("Coin", coinSchema, "coins")
+
+module.exports = {
+  Schema: mongoose.model("Coin", coinSchema, "coins"),
+  capSizes,
+}

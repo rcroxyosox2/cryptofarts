@@ -7,7 +7,7 @@ const updateCoins = (pages) => {
   return new Promise(async (res, rej) => {
     try {
       const data = await coinGecko.getPages(pages);
-      await Coin.upsertMany(data);
+      await Coin.Schema.upsertMany(data);
       res();
     } catch (e) {
       rej(e);
