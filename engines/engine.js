@@ -15,7 +15,7 @@ const decisionValues = {
   WEAKNO: -0.15
 };
 
-const engineArrToDecision = (engineArr) => {
+const getDecisionFromEngineArr = (engineArr) => {
   const weights = engineArr.map((v) => v[0]);
   const sum = weights.reduce((previous, current) => current += previous);
   const avg = sum/engineArr.length;
@@ -47,8 +47,8 @@ const engineArrToDecision = (engineArr) => {
 
 }
 
-console.log(engineArrToDecision([[2,true], [2.4,false]]));
+// console.log(getDecisionFromEngineArr([[2,true], [2.4,false]]));
 
 module.exports = {
-  engineArrToDecision,
+  getDecisionFromEngineArr,
 };

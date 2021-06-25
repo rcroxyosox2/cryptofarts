@@ -3,6 +3,7 @@ const connection = `mongodb+srv://rob:${process.env.DB_PW}@cluster0.khyej.mongod
 const request = require('request');
 const mongoose = require('mongoose');
 const updateCoinsTask = require('./crons/updateCoins');
+const updateExchangesTask = require('./crons/updateExchanges');
 mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, autoIndex: false})
 const coinQueries = require('./queries/coin');
 const express = require('express'); 
@@ -18,6 +19,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Start any crons
 updateCoinsTask.start();
+updateExchangesTask.start();
 
 // prep the responses
 app.use(express.json());

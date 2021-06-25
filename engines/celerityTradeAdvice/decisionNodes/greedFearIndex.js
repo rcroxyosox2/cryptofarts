@@ -1,0 +1,12 @@
+const BUY_THRESHOLD = 15; // buy at 15 or lower
+
+// use - const index = await alternative.getSeason();
+const getDecisionNode = (index) => {
+  const bool = index >= BUY_THRESHOLD;
+  const weight = 2;
+  return [weight, bool];
+}
+
+module.exports = {
+  getDecisionNode,
+}

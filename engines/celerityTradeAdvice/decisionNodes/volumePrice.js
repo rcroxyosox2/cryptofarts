@@ -21,20 +21,19 @@ const pricePrediction = {
 };
 
 const getMovementByTrendValue = (trendValue) => {
-
   if (trendValue < movementValues[movement.WEAKDECREASE]) {
     return movement.DECREASE;
   }
 
   if (trendValue < 1 &&  trendValue >= movementValues[movement.WEAKDECREASE]) {
-    return movement.WEAKUP;
+    return movement.WEAKDECREASE;
   }
 
-  if (trendValue > 1 &&  trendValue <= movementValues[movement.WEAKUP]) {
-    return movement.WEAKUP;
+  if (trendValue > 1 &&  trendValue <= movementValues[movement.WEAKINCREASE]) {
+    return movement.WEAKINCREASE;
   }
 
-  if (trendValue > movementValues[movement.WEAKUP]) {
+  if (trendValue > movementValues[movement.WEAKINCREASE]) {
     return movement.INCREASE;
   }
 
@@ -83,8 +82,16 @@ const getPricePredictionByVolumeAndPrice = (priceChartArr, volumeChartArr) => {
 
 }
 
+const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
+const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20]
+
+const getDecisionNode = (priceChartArr, volumeChartArr) => {
+  const prediction = getPricePredictionByVolumeAndPrice(priceChartArr, volumeChartArr);
+  let weight = (prediction === pricePrediction.WEAKINCREASE || prediction === pricePrediction.WEAKDECREASE) ? 3 : 4;
+  let bool = (prediction === pricePrediction.INCREASE || prediction === pricePrediction.WEAKINCREASE);
+  return [weight, bool];
+}
 
 module.exports = {
-  getPricePredictionByVolumeAndPrice,
-  weight: 3,
+  getDecisionNode,
 };
