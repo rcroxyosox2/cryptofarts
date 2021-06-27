@@ -16,7 +16,7 @@ const updateExchanges = () => {
 }
 
 let fetching = false;
-var updateExchangesTask = cron.schedule('0 0 * * *', () => {
+const updateExchangesTask = cron.schedule('0 0 * * *', () => {
   // console.log('updating the coins...');
   !fetching && updateExchanges().then(() => {
     fetching = false;

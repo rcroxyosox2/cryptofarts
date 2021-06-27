@@ -1,16 +1,9 @@
 const Coin = require('../models/Coin');
-
+const { caps, capSizes } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
 
-const caps = {
-  TINY: 'tiny',
-  SM: 'sm',
-  MID: 'mid',
-  LRG: 'lrg',
-}
-
 const getSickDealCoins = async () => {
-  const { Schema, capSizes } = Coin;
+  const { Schema, capSizes, caps } = Coin;
   const sort = {"ath_change_percentage": "asc"};
   const requirement = {
     $lt: SICK_DEAL_MINIMUM_PERC,
@@ -89,7 +82,6 @@ const getAvg24hrPriceChangePerc = async () => {
 }
 
 module.exports = { 
-  caps,
   getSickDealCoins,
   getAvg24hrPriceChangePerc
 };

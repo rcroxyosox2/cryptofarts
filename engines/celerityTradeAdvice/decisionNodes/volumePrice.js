@@ -40,6 +40,7 @@ const getMovementByTrendValue = (trendValue) => {
   return movement.SIDEWAYS;
 }
 
+// > 1.0 increase < 1.0 decrease
 const getTrendValueFromArr = (arr) => {
   return trend(arr, {
     lastPoints: arr.length/4,
@@ -49,7 +50,7 @@ const getTrendValueFromArr = (arr) => {
   });
 }
 
-const getPricePredictionByVolumeAndPrice = (priceChartArr, volumeChartArr) => {
+const getPricePredictionByVolumeAndPrice = ({priceChartArr, volumeChartArr}) => {
 
   /*
   Increasing price accompanied by an increasing Price Volume Trend value, confirms the price trend upward. 
@@ -85,13 +86,14 @@ const getPricePredictionByVolumeAndPrice = (priceChartArr, volumeChartArr) => {
 const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
 const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20]
 
-const getDecisionNode = (priceChartArr, volumeChartArr) => {
-  const prediction = getPricePredictionByVolumeAndPrice(priceChartArr, volumeChartArr);
-  let weight = (prediction === pricePrediction.WEAKINCREASE || prediction === pricePrediction.WEAKDECREASE) ? 3 : 4;
-  let bool = (prediction === pricePrediction.INCREASE || prediction === pricePrediction.WEAKINCREASE);
+const getDecisionNode = ({priceChartArr, volumeChartArr}) => {
+  const prediction = getPricePredictionByVolumeAndPrice({priceChartArr, volumeChartArr});
+  const weight = 4;
+  const bool = (prediction === pricePrediction.INCREASE || prediction === pricePrediction.FLOORING);
   return [weight, bool];
 }
 
 module.exports = {
+  name: 'volumePrice',
   getDecisionNode,
 };

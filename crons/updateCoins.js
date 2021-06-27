@@ -16,7 +16,7 @@ const updateCoins = (pages) => {
 }
   
 let fetching = false;
-var updateCoinsTask = cron.schedule('*/300 * * * *', () => {
+const updateCoinsTask = cron.schedule('*/300 * * * *', () => {
   // console.log('updating the coins...');
   !fetching && updateCoins(40).then(() => {
     fetching = false;

@@ -4,6 +4,7 @@ const request = require('request');
 const mongoose = require('mongoose');
 const updateCoinsTask = require('./crons/updateCoins');
 const updateExchangesTask = require('./crons/updateExchanges');
+const recordCelebAdviceTask = require('./crons/recordCelebAdvice');
 mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, autoIndex: false})
 const coinQueries = require('./queries/coin');
 const express = require('express'); 
@@ -18,8 +19,9 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`)); 
 
 // Start any crons
-updateCoinsTask.start();
-updateExchangesTask.start();
+// updateCoinsTask.start();
+// updateExchangesTask.start();
+recordCelebAdviceTask.start();
 
 // prep the responses
 app.use(express.json());
