@@ -1,4 +1,4 @@
-const blockChainCenter = require('../../../lib/blockChainCenter');
+const blockChainCenter = require('../../../lib/blockchaincenter');
 
 /*
  const bands = {
