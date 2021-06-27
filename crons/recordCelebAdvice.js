@@ -3,8 +3,7 @@ const logger = require('../lib/logDna');
 const { getCelebrityTradeAdviceFromCoinId, logPrediction } = require('../engines/celerityTradeAdvice');
 
 let fetching = false;
-const recordCelebAdviceTask = cron.schedule('*/5 * * * *', () => {
-  logger.info('Attempting to start cron job for celerityTradeAdvice...');
+const recordCelebAdviceTask = cron.schedule('0 12 * * *', () => {
   !fetching && Promise.all([
     getCelebrityTradeAdviceFromCoinId('ethereum'),
     getCelebrityTradeAdviceFromCoinId('helium'),

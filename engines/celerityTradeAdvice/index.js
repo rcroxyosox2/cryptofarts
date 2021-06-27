@@ -1,4 +1,5 @@
 
+require('dotenv').config();
 const engine = require('../engine');
 const logger = require('../../lib/logDna');
 const BugsnagClient = require('../../lib/bugsnag');
@@ -109,7 +110,7 @@ const getCelebrityTradeAdviceFromCoinId = async (coinId) => {
 }
 
 const logPrediction = (predicitonData) => {
-  logger.log('celeb trade advice', {
+  logger.log(`celeb trade advice: ${process.env.REACT_APP_ENV}`, {
     level: 'info', 
     indexMeta: true,
     meta: predicitonData,
