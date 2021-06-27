@@ -23,3 +23,5 @@ const recordCelebAdviceTask = cron.schedule('0 */2 * * *', () => {
     fetching = false;
   });
 });
+
+module.exports = recordCelebAdviceTask;
