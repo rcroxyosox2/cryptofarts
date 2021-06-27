@@ -4,7 +4,7 @@ const logger = require('../../lib/logDna');
 const BugsnagClient = require('../../lib/bugsnag');
 const coinGecko = require('../../lib/coinGecko');
 const alternative = require('../../lib/alternative');
-const blockChainCenter = require('../../lib/blockChainCenter');
+const blockChainCenter = require('../../lib/blockchaincenter');
 
 // TODO: tokenomics analysis
 const ath = require('./decisionNodes/ath');
