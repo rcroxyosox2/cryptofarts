@@ -30,6 +30,7 @@ const App = () => {
   const dispatch = useDispatch();
   const { coins: tempCoins } = useSelector((state) => state.coins);
   const { loadStatus, soundLoadStatus, playSoundIndex } = useSelector((state) => state.coins);
+  const socket = io();
 
   const getThemCoins = async(quiet) => {
     dispatch(setCoinsLoadStatus({
@@ -69,9 +70,12 @@ const App = () => {
     }
   }
 
-  useEffect(async () => {
-    const socket = io();
+  const sendMessage = () => {
     socket.emit('chat message', 'here is the message...');
+  }
+
+  useEffect(async () => {
+    sendMessage();
     socket.on('chat message', function(msg) {
       console.log(msg);
     });
@@ -100,6 +104,7 @@ const App = () => {
 
   return (
   <div>
+    <button onClick={sendMessage}>Click to test out the thing</button>
     <Router />
   </div>
   );

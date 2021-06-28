@@ -86,7 +86,17 @@ const getPricePredictionByVolumeAndPrice = ({priceChartArr, volumeChartArr}) => 
 const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
 const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20]
 
+const name = 'volumePrice';
 const getDecisionNode = ({priceChartArr, volumeChartArr}) => {
+
+  if (
+    (!Array.isArray(priceChartArr) || !priceChartArr.length)
+    || (!Array.isArray(volumeChartArr) || !volumeChartArr.length)
+    ) {
+      console.error(`params not correctly set in decision node: ${name}`);
+      return null;
+    }
+
   const prediction = getPricePredictionByVolumeAndPrice({priceChartArr, volumeChartArr});
   const weight = 4;
   const bool = (prediction === pricePrediction.INCREASE || prediction === pricePrediction.FLOORING);
@@ -94,6 +104,6 @@ const getDecisionNode = ({priceChartArr, volumeChartArr}) => {
 }
 
 module.exports = {
-  name: 'volumePrice',
+  name,
   getDecisionNode,
 };

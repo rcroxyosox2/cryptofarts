@@ -15,8 +15,16 @@ const blockChainCenter = require('../../../lib/blockchaincenter');
 };
 */
 
+const name = 'season';
+
 // use - const index = await alternative.getSeason();
 const getDecisionNode = (season) => {
+
+  if (typeof season != 'string') {
+    console.error(`params not correctly set in decision node: ${name}`);
+    return null;
+  }
+
   let bool = false;
   let weight = 1;
   // if in a strong season
@@ -32,6 +40,6 @@ const getDecisionNode = (season) => {
 }
 
 module.exports = {
-  name: 'season',
+  name,
   getDecisionNode,
 }

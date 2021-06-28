@@ -6,6 +6,7 @@ const BugsnagClient = require('../../lib/bugsnag');
 const coinGecko = require('../../lib/coinGecko');
 const alternative = require('../../lib/alternative');
 const blockChainCenter = require('../../lib/blockchaincenter');
+const coinMarketCal = require('../../lib/coinmarketcal');
 
 // TODO: tokenomics analysis
 const ath = require('./decisionNodes/ath');
@@ -14,6 +15,7 @@ const greedFearIndex = require('./decisionNodes/greedFearIndex')
 const random = require('./decisionNodes/random');
 const volumePrice = require('./decisionNodes/volumePrice');
 const seasonQ = require('./decisionNodes/season');
+const events = require('./decisionNodes/events');
 const { CURRENCY, caps } = require('../../contants');
 
 // needs 
@@ -28,47 +30,76 @@ const getCelebrityTradeAdvice = ({
   volumeChartArr,
   gfIndex,
   season,
+  numEvents,
 }) => {
+  const VERSION = 'beta';
   const engineResultObj = {};
-
   const marketSize = coinGecko.getMarketCapFromCoin(coin);
   const capSize = coinGecko.getCapSizeFromMarketCap(marketSize);
   
+  // all time high 
   const athNode = ath.getDecisionNode({
     capSize,
     athPercentage: coin.market_data.ath_change_percentage[CURRENCY], 
     athDateStr: coin.market_data.ath_date[CURRENCY],
   });
-  engineResultObj[ath.name] = athNode;
+  if (athNode) {
+    engineResultObj[ath.name] = athNode;
+  }
 
+  // community
   const communityNode = community.getDecisionNode({
     capSize,
     communityScore: coin.community_score, 
     publicInterestScore: coin.public_interest_score, 
     sentimentVotesUpPerc: coin.sentiment_votes_up_percentage
   });
-  engineResultObj[community.name] = communityNode;
+  if(communityNode) {
+    engineResultObj[community.name] = communityNode;
+  }
 
+  // greed fear
   const greedFearIndexNode = greedFearIndex.getDecisionNode(gfIndex);
-  engineResultObj[greedFearIndex.name] = greedFearIndexNode;
+  if (greedFearIndexNode) {
+    engineResultObj[greedFearIndex.name] = greedFearIndexNode;
+  }
 
+  // some randomness
   const randomNode = random.getDecisionNode();
-  engineResultObj[random.name] = randomNode;
+  if (randomNode) {
+    engineResultObj[random.name] = randomNode;
+  }
 
-
+  // volume and price relationships
   const volumePriceNode = volumePrice.getDecisionNode({
     priceChartArr,
     volumeChartArr,
   });
-  engineResultObj[volumePrice.name] = volumePriceNode;
+  if (volumePriceNode) {
+    engineResultObj[volumePrice.name] = volumePriceNode;
+  }
 
+  // season
   const seasonNode = seasonQ.getDecisionNode(season);
-  engineResultObj[seasonQ.name] = seasonNode;
+  if (seasonNode) {
+    engineResultObj[seasonQ.name] = seasonNode;
+  }
+
+  // events
+  const eventsNode = events.getDecisionNode({
+    capSize,
+    numEvents,
+  });
+  if (eventsNode) {
+    engineResultObj[events.name] = eventsNode;
+  }
+
   const decision = engine.getDecisionFromEngineArr(Object.values(engineResultObj));
   Object.keys(engineResultObj).forEach((key) => {
     const [weight, bool] = engineResultObj[key];
     engineResultObj[key] = {weight, bool};
   });
+  engineResultObj._v = VERSION;
   engineResultObj.summary = decision;
   return engineResultObj;
 }
@@ -95,7 +126,16 @@ const getCelebrityTradeAdviceFromCoinId = async (coinId) => {
       .then(coinGecko.getValuesOnlyFromMarketChart);
     const gfIndex = await alternative.getGreedFearIndex();
     const season = await blockChainCenter.getSeason();
-    const advice = getCelebrityTradeAdvice({coin, priceChartArr, volumeChartArr, gfIndex, season: season.band});
+    const numEvents = await coinMarketCal.getEvents(coin.name);
+    const advice = getCelebrityTradeAdvice({
+      coin, 
+      priceChartArr, 
+      volumeChartArr, 
+      gfIndex, 
+      season: season.band,
+      numEvents,
+    });
+    
     return {
       coinId,
       timestamp: new Date(),
@@ -119,7 +159,7 @@ const logPrediction = (predicitonData) => {
 
 // (async function() {
 //   try {
-//     const x = await getCelebrityTradeAdviceFromCoinId('ethereum');
+//     const x = await getCelebrityTradeAdviceFromCoinId('safemoon');
 //     console.log(x);
 //   } catch(e) {
 //     console.log(e)
