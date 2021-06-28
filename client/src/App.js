@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { getTotalChangeFromCoinsResponse, filteredCoins } from 'brains/coins';
 // import { useStore } from './store';
+import io from "socket.io-client";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useDispatch, useSelector } from 'react-redux';
 import Router from './Router';
@@ -69,6 +70,11 @@ const App = () => {
   }
 
   useEffect(async () => {
+    const socket = io();
+    socket.emit('chat message', 'here is the message...');
+    socket.on('chat message', function(msg) {
+      console.log(msg);
+    });
     // await getThemCoins();
     // interval.current = setInterval(async () => {
     //   if (!/loading/.test(loadStatus)) {

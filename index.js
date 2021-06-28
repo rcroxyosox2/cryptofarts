@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express'); 
 const cors = require('cors');
+const http = require('http');
 const path = require('path');
 // const connection = `mongodb+srv://rob:${process.env.DB_PW}@cluster0.khyej.mongodb.net/kripdoe?retryWrites=true&w=majority`;
 // mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, autoIndex: false});
@@ -8,6 +9,7 @@ const path = require('path');
 // const mongoose = require('mongoose');
 // const updateCoinsTask = require('./crons/updateCoins');
 // const updateExchangesTask = require('./crons/updateExchanges');
+const { Server } = require("socket.io");
 const recordCelebAdviceTask = require('./crons/recordCelebAdvice');
 // const coinQueries = require('./queries/coin');
 // const fetch = require("node-fetch");
@@ -17,7 +19,23 @@ const app = express();
 const port = process.env.PORT || 5000; 
 
 // This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`)); 
+const server = http.createServer(app);
+const io = new Server(server);
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+});
+server.listen(port, () => {
+  console.log(`listening on *:${port}`);
+});
+
+// start a web socket server
+
 
 // Start any crons
 // updateCoinsTask.start();
