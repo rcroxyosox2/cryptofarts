@@ -1,16 +1,17 @@
 require('dotenv').config();
+require('./db');
 const express = require('express'); 
 const cors = require('cors');
 const http = require('http');
 const path = require('path');
-// const connection = `mongodb+srv://rob:${process.env.DB_PW}@cluster0.khyej.mongodb.net/kripdoe?retryWrites=true&w=majority`;
-// mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, autoIndex: false});
 // const request = require('request');
-// const mongoose = require('mongoose');
 // const updateCoinsTask = require('./crons/updateCoins');
 // const updateExchangesTask = require('./crons/updateExchanges');
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
+
+const updateExchangesTask = require('./crons/updateExchanges');
 const recordCelebAdviceTask = require('./crons/recordCelebAdvice');
+const updateMetasTask = require('./crons/updateMetas');
 // const coinQueries = require('./queries/coin');
 // const fetch = require("node-fetch");
 
@@ -38,9 +39,9 @@ server.listen(port, () => {
 
 
 // Start any crons
-// updateCoinsTask.start();
-// updateExchangesTask.start();
 recordCelebAdviceTask.start();
+updateMetasTask.start();
+updateExchangesTask.start();
 
 // prep the responses
 app.use(express.json());

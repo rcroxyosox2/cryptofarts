@@ -1,5 +1,6 @@
 
 require('dotenv').config();
+const coinQueries = require('../../queries/coin');
 const engine = require('../engine');
 const logger = require('../../lib/logDna');
 const BugsnagClient = require('../../lib/bugsnag');
@@ -32,9 +33,9 @@ const getCelebrityTradeAdvice = ({
   season,
   numEvents,
 }) => {
-  const VERSION = 'beta';
+  const VERSION = 'beta.1';
   const engineResultObj = {};
-  const marketSize = coinGecko.getMarketCapFromCoin(coin);
+  const marketSize = coinQueries.getMarketCapFromCoin(coin);
   const capSize = coinGecko.getCapSizeFromMarketCap(marketSize);
   
   // all time high 
@@ -99,6 +100,7 @@ const getCelebrityTradeAdvice = ({
     const [weight, bool] = engineResultObj[key];
     engineResultObj[key] = {weight, bool};
   });
+  
   engineResultObj._v = VERSION;
   engineResultObj.summary = decision;
   return engineResultObj;

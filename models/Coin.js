@@ -36,43 +36,48 @@ total_volume: 38577283564
 */
 
 const coinSchema = new Schema(
-    {
-        id: {
-            type: String,
-            index: true,
-        },
-        name: String,
-        ath: Number,
-        ath_change_percentage: Number,
-        ath_date: Date,
-        circulating_supply: Number,
-        current_price: Number,
-        fully_diluted_valuation: Number,
-        high_24h: Number,
-        image: String,
-        last_updated: Date,
-        low_24h: Number,
-        market_cap: Number,
-        market_cap_change_24h: Number,
-        market_cap_change_percentage_24h: Number,
-        market_cap_rank: Number,
-        max_supply: Number,
-        price_change_24h: Number,
-        price_change_percentage_24h: Number,
-        symbol: String,
-        total_supply: Number,
-        total_volume: Number,
-        sparkline_in_7d: {
-            price: [Number]
-        }
-    }, { 
-        timestamps: { 
-            createdAt: false, updatedAt: true 
-        },
-        upsertMany: {
-            matchFields: ['id', 'name']
-        },
+  {
+    id: {
+      type: String,
+      index: { unique: true },
+    },
+    name: String,
+    ath: Number,
+    ath_change_percentage: Number,
+    ath_date: Date,
+    circulating_supply: Number,
+    current_price: Number,
+    fully_diluted_valuation: Number,
+    high_24h: Number,
+    image: String,
+    last_updated: Date,
+    low_24h: Number,
+    market_cap: Number,
+    market_cap_change_24h: Number,
+    market_cap_change_percentage_24h: Number,
+    market_cap_rank: Number,
+    max_supply: Number,
+    price_change_24h: Number,
+    price_change_percentage_24h: Number,
+    symbol: String,
+    total_supply: Number,
+    total_volume: Number,
+    market_data: {
+      prices: [[Number, Number]],
+      market_caps: [[Number, Number]],
+      total_volumes: [[Number, Number]],
+    },
+    sparkline_in_7d: {
+        price: [Number]
     }
+  }, { 
+    timestamps: { 
+      createdAt: false, updatedAt: true 
+    },
+    upsertMany: {
+      matchFields: ['id', 'name']
+    },
+  }
 );
 
 coinSchema.plugin(upsertMany);

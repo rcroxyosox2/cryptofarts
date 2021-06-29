@@ -1,5 +1,5 @@
 const Coin = require('../models/Coin');
-const { caps, capSizes } = require('../contants');
+const { caps, capSizes, CURRENCY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
 
 const getSickDealCoins = async () => {
@@ -81,7 +81,12 @@ const getAvg24hrPriceChangePerc = async () => {
   return docs[0].avgChangePerc24hr;
 }
 
+const getMarketCapFromCoin = (coin) => {
+  return coin.market_data.market_cap[CURRENCY];
+}
+
 module.exports = { 
+  getMarketCapFromCoin,
   getSickDealCoins,
   getAvg24hrPriceChangePerc
 };

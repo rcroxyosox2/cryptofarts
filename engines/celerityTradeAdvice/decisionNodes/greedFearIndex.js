@@ -10,7 +10,7 @@ const getDecisionNode = (index) => {
     return null;
   }
 
-  const bool = index >= BUY_THRESHOLD;
+  const bool = index <= BUY_THRESHOLD;
   const weight = 1;
   return [weight, bool];
 }
