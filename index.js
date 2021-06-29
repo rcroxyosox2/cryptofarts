@@ -12,6 +12,7 @@ const { Server } = require('socket.io');
 const updateExchangesTask = require('./crons/updateExchanges');
 const recordCelebAdviceTask = require('./crons/recordCelebAdvice');
 const updateMetasTask = require('./crons/updateMetas');
+const updateCoinMarketDataTask = require('./crons/updateCoinMarketData');
 // const coinQueries = require('./queries/coin');
 // const fetch = require("node-fetch");
 
@@ -42,6 +43,7 @@ server.listen(port, () => {
 recordCelebAdviceTask.start();
 updateMetasTask.start();
 updateExchangesTask.start();
+updateCoinMarketDataTask.start();
 
 // prep the responses
 app.use(express.json());

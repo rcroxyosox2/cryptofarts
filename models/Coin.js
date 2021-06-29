@@ -63,6 +63,7 @@ const coinSchema = new Schema(
     total_supply: Number,
     total_volume: Number,
     market_data: {
+      lastUpdated: Date,
       prices: [[Number, Number]],
       market_caps: [[Number, Number]],
       total_volumes: [[Number, Number]],

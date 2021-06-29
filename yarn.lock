@@ -2407,6 +2407,11 @@ signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
+simple-rate-limiter@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/simple-rate-limiter/-/simple-rate-limiter-0.2.3.tgz#306466faff17e1f22ee758b0a37cd453e8351b41"
+  integrity sha1-MGRm+v8X4fIu51iwo3zUU+g1G0E=
+
 sliced@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sliced/-/sliced-1.0.1.tgz#0b3a662b5d04c3177b1926bea82b03f837a2ef41"
