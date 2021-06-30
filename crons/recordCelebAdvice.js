@@ -2,14 +2,15 @@ const cron = require('node-cron');
 const logger = require('../lib/logDna');
 const { getCelebrityTradeAdviceFromCoinId, logPrediction } = require('../engines/celerityTradeAdvice');
 
-let fetching = false;
+let recordCelebAdviceTaskFetching = false;
 const recordCelebAdviceTask = cron.schedule('30 12 * * *', () => {
-  !fetching && Promise.all([
+  console.log(`Firing off recordCelebAdviceTask at ${new Date().toString()}`);
+  !recordCelebAdviceTaskFetching && Promise.all([
     getCelebrityTradeAdviceFromCoinId('ethereum'),
     getCelebrityTradeAdviceFromCoinId('helium'),
     getCelebrityTradeAdviceFromCoinId('kishu-inu'),
   ]).then((respArr) => {
-    fetching = false;
+    recordCelebAdviceTaskFetching = false;
     if (respArr && Array.isArray(respArr)) {
       respArr.forEach((adviceObj) => {
         // logdna can only index so deep
@@ -19,7 +20,7 @@ const recordCelebAdviceTask = cron.schedule('30 12 * * *', () => {
       })
     }
   }).catch((e) => {
-    fetching = false;
+    recordCelebAdviceTaskFetching = false;
   });
 }, {
   timezone: "America/Los_Angeles"

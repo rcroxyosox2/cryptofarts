@@ -15,17 +15,18 @@ const updateMetas = async () => {
 //   await updateMetas();
 // })();
 
-let fetching = false;
+let updateMetasTaskFetching = false;
 const updateMetasTask = cron.schedule('0 */12 * * *', () => {
+  console.log(`Firing off updateMetasTask at ${new Date().toString()}`);
   // console.log('updating the coins...');
-  !fetching && updateMetas().then(() => {
-    fetching = false;
+  !updateMetasTaskFetching && updateMetas().then(() => {
+    updateMetasTaskFetching = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
     BugsnagClient.notify(`error in the updateMetas task: ${e.message}`);
-    fetching = false;
+    updateMetasTaskFetching = false;
   });
-  fetching = true;
+  updateMetasTaskFetching = true;
 }, {
   timezone: "America/Los_Angeles"
 });

@@ -1,3 +1,4 @@
+// require('../db');
 const Coin = require('../models/Coin');
 const { caps, capSizes, CURRENCY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;

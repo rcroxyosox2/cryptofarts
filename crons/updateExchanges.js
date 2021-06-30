@@ -9,17 +9,20 @@ const updateExchanges = async () => {
   await Exchange.Schema.upsertMany(data);
 }
 
-let fetching = false;
-const updateExchangesTask = cron.schedule('30 13 * * *', () => {
+let updateExchangesTaskFetching = false;
+// Update every monday at 1:00pm
+// cost: ~2 calls/minute
+const updateExchangesTask = cron.schedule('00 13 * * 1', () => {
+  console.log(`Firing off updateExchangesTask at ${new Date().toString()}`);
   // console.log('updating the coins...');
-  !fetching && updateExchanges().then(() => {
-    fetching = false;
+  !updateExchangesTaskFetching && updateExchanges().then(() => {
+    updateExchangesTaskFetching = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
     BugsnagClient.nofify(`error is the updateExchangesTask task: ${e.message}`);
-    fetching = false;
+    updateExchangesTaskFetching = false;
   });
-  fetching = true;
+  updateExchangesTaskFetching = true;
 }, {
   timezone: "America/Los_Angeles"
 });

@@ -5,14 +5,18 @@ const cors = require('cors');
 const http = require('http');
 const path = require('path');
 // const request = require('request');
-// const updateCoinsTask = require('./crons/updateCoins');
 // const updateExchangesTask = require('./crons/updateExchanges');
 const { Server } = require('socket.io');
 
+// crons
+const updateCoinsTask = require('./crons/updateCoins');
 const updateExchangesTask = require('./crons/updateExchanges');
 const recordCelebAdviceTask = require('./crons/recordCelebAdvice');
 const updateMetasTask = require('./crons/updateMetas');
 const updateCoinMarketDataTask = require('./crons/updateCoinMarketData');
+const updateCoinCoreDataTask = require('./crons/updateCoinCoreData');
+const updateCoinEventsTask = require('./crons/updateCoinEvents');
+
 // const coinQueries = require('./queries/coin');
 // const fetch = require("node-fetch");
 
@@ -40,16 +44,25 @@ server.listen(port, () => {
 
 
 // Start any crons
-recordCelebAdviceTask.start();
-updateMetasTask.start();
-updateExchangesTask.start();
-updateCoinMarketDataTask.start();
+if (process.env.REACT_APP_ENV !== 'development') {
+  recordCelebAdviceTask.start();
+  updateMetasTask.start();
+  updateCoinsTask.start();
+  updateExchangesTask.start();
+  updateCoinMarketDataTask.start();
+  updateCoinCoreDataTask.start();
+  updateCoinEventsTask.start();
+}
 
 // prep the responses
 app.use(express.json());
 // app.use(cors());
 
 
+
+// app.get('/sickdeals', async (req, res) => {
+
+// });
 
 // app.get('/test', async (req, res) => {
 //   // const coins = await coinQueries.getSickDealCoins();

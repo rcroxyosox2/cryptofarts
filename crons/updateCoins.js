@@ -1,5 +1,7 @@
 // Update them coins
+// require('../db');
 const cron = require('node-cron');
+const BugsnagClient = require('../lib/bugsnag');
 const coinGecko = require('../lib/coinGecko');
 const Coin = require('../models/Coin');
 
@@ -15,17 +17,23 @@ const updateCoins = (pages) => {
   })
 }
   
-let fetching = false;
-const updateCoinsTask = cron.schedule('*/300 * * * *', () => {
-  // console.log('updating the coins...');
-  !fetching && updateCoins(40).then(() => {
-    fetching = false;
+let updateCoinsTaskFetch = false;
+
+// update every 10 minutes
+// could take minutes
+// cost: ~20 calls/minute
+const updateCoinsTask = cron.schedule('*/10 * * * *', () => {
+  console.log(`Firing off updateCoinsTask at ${new Date().toString()}`);
+  !updateCoinsTaskFetch && updateCoins(40).then(() => {
+    updateCoinsTaskFetch = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
-    console.log("error is the updateCoinsTask task", e);
-    fetching = false;
+    BugsnagClient.notify(`error is the updateCoinsTask task: ${e.message}`);
+    updateCoinsTaskFetch = false;
   });
-  fetching = true;
+  updateCoinsTaskFetch = true;
 });
+
+// updateCoins(40).catch(e => console.log(e))
 
 module.exports = updateCoinsTask;
