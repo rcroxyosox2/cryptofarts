@@ -1,4 +1,5 @@
 // require('../db');
+const moment = require('moment');
 const Coin = require('../models/Coin');
 const { caps, capSizes, CURRENCY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
@@ -15,6 +16,9 @@ const getSickDealCoins = async () => {
       $gte: capSizes[caps.TINY], 
       $lt: capSizes[caps.SM]
     },
+    "genesis_date": {
+      "$lte": moment().add(1, "year").toDate(),
+    },
     "ath_change_percentage": requirement
   }).sort(sort).limit(50);
 
@@ -22,6 +26,9 @@ const getSickDealCoins = async () => {
     "market_cap": {
       $gte: capSizes[caps.SM], 
       $lt: capSizes[caps.MID]
+    },
+    "genesis_date": {
+      "$lte": moment().add(1, "year").toDate(),
     },
     "ath_change_percentage": requirement
   }).sort(sort).limit(50);

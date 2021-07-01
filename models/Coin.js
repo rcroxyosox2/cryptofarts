@@ -162,7 +162,7 @@ const coinSchema = new Schema(
       lastUpdated: Date,
     },
     fully_diluted_valuation: Number,
-    genesis_date: String,
+    genesis_date: Date,
     high_24h: Number,
     image: String,
     last_updated: Date,

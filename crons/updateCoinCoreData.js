@@ -7,7 +7,7 @@ const coinGecko = require('../lib/coinGecko');
 const Coin = require('../models/Coin');
 const limit = require("simple-rate-limiter");
 const expirationInDays = 1;
-const updateCoinCoreDataTaskFetching = false;
+let updateCoinCoreDataTaskFetching = false;
 
 const updateCoinCoreData = limit(function(coinId) {
   updateCoinCoreDataTaskFetching = true;
@@ -18,9 +18,13 @@ const updateCoinCoreData = limit(function(coinId) {
     developer_data: false,
     sparkline: false,
   }).then(async (res) => {
-    await Coin.Schema.findOneAndUpdate({ id: coinId }, {...res, image: res.image.large, coreDataLastUpdated: new Date()}, {upsert: true});
-    // console.log(coinId, ' updated');
-    updateCoinCoreDataTaskFetching = false;
+    await Coin.Schema.findOneAndUpdate({ id: coinId }, {
+      ...res, 
+      image: res.image.large, coreDataLastUpdated: new Date(),
+      genesis_date: (res.genesis_date ? moment(res.genesis_date).toDate() : null),
+    }, {upsert: true});
+    console.log(coinId, ' updated');
+    updateCoinCoreDataTaskFetching = false;q
   }).catch(e => {
     BugsnagClient.notify(`could not update coinCoreData for coin ${coinId}: ${e.message}`);
     updateCoinCoreDataTaskFetching = false;
@@ -43,8 +47,7 @@ const updateCoinsCoreData = async () => {
 }
 
 // (async function() {
-//   const x = await Coin.Schema.updateMany({"image.large": {"$ne": null}}, {"$set": {"image": null, "coreDataLastUpdated": null}});
-//   console.log(x);
+//   updateCoinsCoreData();
 // })();
 
 // updateCoinsCoreData();
