@@ -60,3 +60,5 @@ const updateCoinCoreDataTask = cron.schedule('0 22 * * *', () => {
 }, {
   timezone: "America/Los_Angeles"
 });
+
+module.exports = updateCoinCoreDataTask;
