@@ -46,6 +46,4 @@ const updateCoinEventsTask = cron.schedule('0 21 * * *', () => {
   timezone: "America/Los_Angeles"
 });
 
-module.exports = {
-  updateCoinEventsTask,
-}
+module.exports = updateCoinEventsTask;
