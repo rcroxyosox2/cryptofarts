@@ -23,8 +23,8 @@ const updateCoinCoreData = limit(function(coinId) {
       image: res.image.large, coreDataLastUpdated: new Date(),
       genesis_date: (res.genesis_date ? moment(res.genesis_date).toDate() : null),
     }, {upsert: true});
-    console.log(coinId, ' updated');
-    updateCoinCoreDataTaskFetching = false;q
+    // console.log(coinId, ' updated');
+    updateCoinCoreDataTaskFetching = false;
   }).catch(e => {
     BugsnagClient.notify(`could not update coinCoreData for coin ${coinId}: ${e.message}`);
     updateCoinCoreDataTaskFetching = false;
