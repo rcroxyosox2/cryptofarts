@@ -23,7 +23,8 @@ const recordCelebAdviceTask = cron.schedule('30 12 * * *', () => {
     recordCelebAdviceTaskFetching = false;
   });
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = recordCelebAdviceTask;

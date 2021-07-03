@@ -4,9 +4,14 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const path = require('path');
-// const request = require('request');
-// const updateExchangesTask = require('./crons/updateExchanges');
 const { Server } = require('socket.io');
+
+// queries
+const coinQueries = require('./queries/coin');
+const metaQueries = require('./queries/meta');
+
+// modles
+const Coin = require('./models/Coin');
 
 // crons
 const updateCoinsTask = require('./crons/updateCoins');
@@ -17,14 +22,17 @@ const updateCoinMarketDataTask = require('./crons/updateCoinMarketData');
 const updateCoinCoreDataTask = require('./crons/updateCoinCoreData');
 const updateCoinEventsTask = require('./crons/updateCoinEvents');
 
-// const coinQueries = require('./queries/coin');
-// const fetch = require("node-fetch");
+// libs
+const reddit = require('./lib/reddit');
+const coinGecko = require('./lib/coinGecko');
 
-// const reddit = require('./lib/reddit');
+// engines 
+const { getCelebrityTradeAdvice } = require('./engines/celerityTradeAdvice');
+
+// server
 const app = express(); 
 const port = process.env.PORT || 5000; 
 
-// This displays message that the server running and listening to specified port
 const server = http.createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
@@ -39,8 +47,6 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
-
-// start a web socket server
 
 
 // Start any crons
@@ -58,30 +64,124 @@ if (process.env.REACT_APP_ENV !== 'development') {
 app.use(express.json());
 // app.use(cors());
 
+// Day view (logo screen)
+app.get('/day', async (req, res) => {
+  try {
+    const coins = await coinQueries.getAvg24hrPriceChangePerc();
+    res.send(coins)
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+});
 
+// sick deals
+app.get('/sickdeals', async (req, res) => {
+  try {
+    const coins = await coinQueries.getSickDealCoins();
+    res.send(coins);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+});
 
-// app.get('/sickdeals', async (req, res) => {
+// reddit moonshots
+app.get('/moonshots', async (req, res) => {
+  try {
+    const moonShots = await reddit.getRedditAsMoonShots();
+    // const b = await reddit.getSub();
+    res.send(moonShots)
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+});
 
-// });
+// moonshot details
+app.get('/moonshots/:id', async (req, res) => {
+  try {
+    const moonShot = await reddit.getRedditAsMoonShots({id: req.params.id});
+    res.send(moonShot)
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+});
 
-// app.get('/test', async (req, res) => {
-//   // const coins = await coinQueries.getSickDealCoins();
-//   // res.send(coins);
-//   try {
-//     const b = await reddit.getRedditAsMoonShots();
-//     // const b = await reddit.getSub();
-//     res.send(b)
-//   } catch(e) {
-//     res.status(500).send({
-//       error: e.message
-//     });
-//   }
-// })
+// greens and reds
+app.get('/greenredlist', async(req, res) => {
+  try {
+    const redGrees = await coinQueries.getRedGreens();
+    res.send(redGrees);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+})
 
-// get the season
-// app.get('/season', async(req, res) => {
-//   const percPriceChange24Hr = await coinQueries.getAvg24hrPriceChangePerc();
-// });
+// trending
+app.get('/trending', (req, res) => {
+  coinGecko.getTrending().then(async (trending) => {
+    const query = trending.map((coin) => ({id: coin.item.id}));
+    const coins = await Coin.Schema.find({$or: query});
+    res.send(coins);
+  }).catch((e) => {
+    res.status(500).send({
+      error: e.message
+    });
+  })
+});
+
+// coin detail view
+// TODO: update so that it reads from Coin schema first
+app.get('/coin/:id', async(req, res) => {
+  try {
+    const coinData = await Promise.all([
+      coinGecko.getCoin(req.params.id, {
+        tickers: false,
+        market_data: true,
+        localization: false,
+        developer_data: false,
+        sparkline: true,
+      }),
+      coinGecko.getCoinWithMarketChart(req.params.id),
+      metaQueries.getMeta(),
+      coinQueries.getCoinEventCount(req.params.id)
+    ]).then(([coin, marketData, metas, numEvents]) => {
+      coin.market_data = marketData;
+    
+      // update the coin quietly
+      Coin.Schema.findOneAndUpdate({id: req.params.id}, coin);
+
+      const { prices:priceChartArr, total_volumes:volumeChartArr } = (marketData) ? marketData : {};
+      const { season, greedFearIndex:gfIndex } = (metas) ? metas : {};
+      const advice = getCelebrityTradeAdvice({
+        coin, 
+        priceChartArr, 
+        volumeChartArr, 
+        gfIndex,
+        season,
+        numEvents,
+      });
+      
+      return {
+        coin,
+        advice: advice.summary,
+      };
+    });
+    res.send(coinData);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+})
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, 'client/build')));

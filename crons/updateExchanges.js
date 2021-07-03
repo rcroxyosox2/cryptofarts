@@ -19,12 +19,14 @@ const updateExchangesTask = cron.schedule('00 13 * * 1', () => {
     updateExchangesTaskFetching = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
-    BugsnagClient.nofify(`error is the updateExchangesTask task: ${e.message}`);
+    // BugsnagClient.nofify(`error is the updateExchangesTask task: ${e.message}`);
+    console.log(`error is the updateExchangesTask task: ${e.message}`);
     updateExchangesTaskFetching = false;
   });
   updateExchangesTaskFetching = true;
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = updateExchangesTask;

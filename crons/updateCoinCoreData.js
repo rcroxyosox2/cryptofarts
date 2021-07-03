@@ -20,13 +20,14 @@ const updateCoinCoreData = limit(function(coinId) {
   }).then(async (res) => {
     await Coin.Schema.findOneAndUpdate({ id: coinId }, {
       ...res, 
-      image: res.image.large, coreDataLastUpdated: new Date(),
+      coreDataLastUpdated: new Date(),
       genesis_date: (res.genesis_date ? moment(res.genesis_date).toDate() : null),
     }, {upsert: true});
     // console.log(coinId, ' updated');
     updateCoinCoreDataTaskFetching = false;
   }).catch(e => {
-    BugsnagClient.notify(`could not update coinCoreData for coin ${coinId}: ${e.message}`);
+    // BugsnagClient.notify(`could not update coinCoreData for coin ${coinId}: ${e.message}`);
+    console.log(`could not update coinCoreData for coin ${coinId}: ${e.message}`);
     updateCoinCoreDataTaskFetching = false;
   })
 }).to(20).per(1000 * 60);
@@ -61,7 +62,8 @@ const updateCoinCoreDataTask = cron.schedule('0 22 * * *', () => {
     updateCoinsCoreData();
   }
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = updateCoinCoreDataTask;

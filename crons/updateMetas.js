@@ -23,12 +23,14 @@ const updateMetasTask = cron.schedule('0 */12 * * *', () => {
     updateMetasTaskFetching = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
-    BugsnagClient.notify(`error in the updateMetas task: ${e.message}`);
+    // BugsnagClient.notify(`error in the updateMetas task: ${e.message}`);
+    console.log(`error in the updateMetas task: ${e.message}`);
     updateMetasTaskFetching = false;
   });
   updateMetasTaskFetching = true;
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = updateMetasTask;

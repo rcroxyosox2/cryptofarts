@@ -14,8 +14,15 @@ const capSizes = {
   [caps.LRG]: 10_000_000_000,
 };
 
+const getNextCapSize = (capSize) => {
+  const capKeys = Object.keys(capSizes);
+  const capIndex = capKeys.indexOf(capSize);
+  return capKeys[capIndex+1];
+}
+
 module.exports = {
   caps,
   capSizes,
   CURRENCY,
+  getNextCapSize,
 };

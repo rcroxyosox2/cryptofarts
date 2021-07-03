@@ -35,14 +35,14 @@ const getCelebrityTradeAdvice = ({
 }) => {
   const VERSION = 'beta.1';
   const engineResultObj = {};
-  const marketSize = coinQueries.getMarketCapFromCoin(coin);
+  const marketSize = coinGecko.getMarketCapFromCoin(coin);
   const capSize = coinGecko.getCapSizeFromMarketCap(marketSize);
   
   // all time high 
   const athNode = ath.getDecisionNode({
     capSize,
-    athPercentage: coin.market_data.ath_change_percentage[CURRENCY], 
-    athDateStr: coin.market_data.ath_date[CURRENCY],
+    athPercentage: coinGecko.getATHPercentage(coin), 
+    athDateStr: coinGecko.getATHDate(coin),
   });
   if (athNode) {
     engineResultObj[ath.name] = athNode;

@@ -13,10 +13,11 @@ const updateCoinStolenEvents = limit(function(coinId) {
   updateCoinStolenEventsFetching = true;
   coinMarketCal.getEvents(coinId).then(async (res) => {
     await Coin.Schema.findOneAndUpdate({ id: coinId }, {stolen_events: {count: res, lastUpdated: new Date()}});
-    console.log(coinId, ' updated');
+    // console.log(coinId, ' updated');
     updateCoinStolenEventsFetching = false;
   }).catch(e => {
-    BugsnagClient.notify(`could not update coin stolen event for coin ${coinId}: ${e.message}`);
+    // BugsnagClient.notify(`could not update coin stolen event for coin ${coinId}: ${e.message}`);
+    console.log(`could not update coin stolen event for coin ${coinId}: ${e.message}`);
     updateCoinStolenEventsFetching = false;
   })
 }).to(10).per(1000 * 60);
@@ -43,7 +44,8 @@ const updateCoinEventsTask = cron.schedule('0 21 * * *', () => {
     updateCoinsStolenEvents();
   }
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = updateCoinEventsTask;

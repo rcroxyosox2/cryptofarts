@@ -1,12 +1,21 @@
 // require('../db');
 const moment = require('moment');
 const Coin = require('../models/Coin');
-const { caps, capSizes, CURRENCY } = require('../contants');
+const { caps, capSizes, getNextCapSize, CURRENCY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
+
+const getCoin = async (query = {}) => {
+  return Coin.Schema.find(query).limit(1);
+}
+
+const getCoinEventCount = async (coinId) => {
+  const x = await Coin.Schema.findOne({id: 'bitcoin'}).select('stolen_events');
+  return x.stolen_events.count;
+}
 
 const getSickDealCoins = async () => {
   const { Schema, capSizes, caps } = Coin;
-  const sort = {"ath_change_percentage": "asc"};
+  const sort = {"ath_change_percentage": 1};
   const requirement = {
     $lt: SICK_DEAL_MINIMUM_PERC,
   };
@@ -89,12 +98,132 @@ const getAvg24hrPriceChangePerc = async () => {
   return docs[0].avgChangePerc24hr;
 }
 
-const getMarketCapFromCoin = (coin) => {
-  return coin.market_data.market_cap[CURRENCY];
+const getRedGreensByQuery = ({redOrGreen = 'red', cap = caps.LRG, maxResults = 10} = {}) => {
+  const sort = {"price_change_percentage_24h": (redOrGreen === 'red') ? 1 : -1 };
+  if (!Object.values(caps).includes(cap)) {
+    throw new Error(`${cap} not found in ${caps}`);
+    return;
+  }
+
+  const query = {
+    $gte: capSizes[cap],
+  };
+
+  const nextCapSize = getNextCapSize(cap);
+  if (nextCapSize) {
+    query['$lt'] = capSizes[nextCapSize];
+  };
+
+  return Coin.Schema.find({
+    'market_cap': query,
+    'price_change_percentage_24h': (
+      (redOrGreen === 'red') 
+      ? {"$lt" : 0} 
+      : {"$gt" : 0}),
+  }).sort(sort).limit(maxResults);
 }
 
+const getRedGreens = () => {
+  const LIMIT = 20;
+  return Coin.Schema.aggregate([
+    {
+      $facet: {
+        smallCapReds: [{
+          $match: {
+              price_change_percentage_24h: {
+                $lt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.SM],
+                $lte: capSizes[caps.MID]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:1}},
+          {$limit: LIMIT},
+        ],
+        smallCapGreens: [{
+          $match: {
+              price_change_percentage_24h: {
+                $gt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.SM],
+                $lte: capSizes[caps.MID]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:-1}},
+          {$limit: LIMIT},
+        ],
+       midCapReds: [{
+          $match: {
+              price_change_percentage_24h: {
+                $lt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.MID],
+                $lte: capSizes[caps.LRG]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:1}},
+          {$limit: LIMIT},
+        ],
+        midCapGreens: [{
+          $match: {
+              price_change_percentage_24h: {
+                $gt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.MID],
+                $lte: capSizes[caps.LRG]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:-1}},
+          {$limit: LIMIT},
+        ],
+        lrgCapReds: [{
+          $match: {
+              price_change_percentage_24h: {
+                $lt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.LRG]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:1}},
+          {$limit: LIMIT},
+        ],
+        lrgCapGreens: [{
+          $match: {
+              price_change_percentage_24h: {
+                $gt: 0
+              },
+              market_cap: {
+                $gte: capSizes[caps.LRG]
+              }
+            }
+          },
+          {$sort: {price_change_percentage_24h:-1}},
+          {$limit: LIMIT},
+        ],
+      }
+    }
+  ])
+}
+
+// (async function() {
+//   const x = await Coin.Schema.findOne({id: 'bitcoin'}).select('stolen_events');
+//   return x.stolen_events.count;
+// })();
+
 module.exports = { 
-  getMarketCapFromCoin,
+  getCoin,
   getSickDealCoins,
-  getAvg24hrPriceChangePerc
+  getAvg24hrPriceChangePerc,
+  getCoinEventCount,
+  getRedGreens
 };

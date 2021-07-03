@@ -28,10 +28,14 @@ const updateCoinsTask = cron.schedule('*/10 * * * *', () => {
     updateCoinsTaskFetch = false;
     // console.log('sucessfully updated the coins');
   }).catch((e) => {
-    BugsnagClient.notify(`error is the updateCoinsTask task: ${e.message}`);
+    // BugsnagClient.notify(`error is the updateCoinsTask task: ${e.message}`);
+    console.log(`error is the updateCoinsTask task: ${e.message}`);
     updateCoinsTaskFetch = false;
   });
   updateCoinsTaskFetch = true;
+}, {
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 // updateCoins(40).catch(e => console.log(e))

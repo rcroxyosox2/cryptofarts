@@ -19,7 +19,8 @@ const getCoinMarket = limit(function(coinId) {
     // console.log(coinId, ' updated');
     updateCoinMarketDataTaskFetching = false;
   }).catch(e => {
-    BugsnagClient.notify(e.message);
+    // BugsnagClient.notify(e.message);
+    console.log(`could not update coin market for coin: ${coiId}: ${e.message}`);
     updateCoinMarketDataTaskFetching = false;
   })
 }).to(30).per(1000 * 60);
@@ -51,7 +52,8 @@ const updateCoinMarketDataTask = cron.schedule('0 17 * * *', () => {
     updateCoinMarkets();
   }
 }, {
-  timezone: "America/Los_Angeles"
+  scheduled: false,
+  timezone: "America/Los_Angeles",
 });
 
 module.exports = updateCoinMarketDataTask;
