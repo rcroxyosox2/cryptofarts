@@ -39,10 +39,28 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
       &:last-child {
         flex: 1;
         z-index: 1;
+        > div {
+          position: relative;
+        }
+      }
+    }
+    .tacos {
+      top: 9vw;
+      left: -3vw;
+      img {
+        width: 110%;
+        max-width: none;
+      }
+    }
+    .irok {
+      top: 19vw;
+      left: -12vw;
+      img {
+        width: 146%;
+        max-width: none;
       }
     }
     .beyonce {
-      position: relative;
       top: 6vw;
       left: 1vw;
       img {

@@ -20,7 +20,7 @@ const getCoinMarket = limit(function(coinId) {
     updateCoinMarketDataTaskFetching = false;
   }).catch(e => {
     // BugsnagClient.notify(e.message);
-    console.log(`could not update coin market for coin: ${coiId}: ${e.message}`);
+    console.log(`could not update coin market for coin: ${coinId}: ${e.message}`);
     updateCoinMarketDataTaskFetching = false;
   })
 }).to(30).per(1000 * 60);

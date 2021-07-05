@@ -12,18 +12,22 @@ const Search = () => {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [error, searchError] = useState(null);
   const inputRef = useRef();
   const resultsContainerRef = useRef();
   const dbSearchTerm = useDebounce(term, 500);
 
   useEffect(() => {
     if (dbSearchTerm) {
-      setIsSearching(true);
       search(dbSearchTerm).then((results) => {
         setIsSearching(false);
         setResults(results);
+        searchError(null);
         resultsContainerRef.current.scrollTop = 10000;
-      }).catch((e) => setIsSearching(false));
+      }).catch((e) => {
+        setIsSearching(false);
+        searchError(e);
+      });
     } else {
       setResults([]);
       setIsSearching(false);
@@ -32,6 +36,7 @@ const Search = () => {
 
   const handleSearch = async (e) => {
     const value = e.target.value;
+    setIsSearching(!!value);
     setTerm(value);
   }
 
@@ -47,6 +52,7 @@ const Search = () => {
   return (
     <styles.SearchStyle onKeyDown={handleKeyDown} tabIndex={-1}>
       <div>Top nav goes where</div>
+      <div>{isSearching ? 'searching...' : null}</div>
       <div className='resultsContainer' ref={resultsContainerRef}>
         <CoinStack coins={[...results].reverse()} animated={false} />
       </div>
