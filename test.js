@@ -1,3 +1,7 @@
 require('./db');
 const cron = require('node-cron')
-const Coin = require('./models/Coin');
+const emitter = require('./emitter');
+
+setInterval(() => {
+  emitter.emit('test');
+}, 3000)

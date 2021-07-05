@@ -1,15 +1,15 @@
-// require('../db');
+require('../db');
 const moment = require('moment');
 const Coin = require('../models/Coin');
 const { caps, capSizes, getNextCapSize, CURRENCY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
 
-const getCoin = async (query = {}) => {
+const getCoin = (query = {}) => {
   return Coin.Schema.find(query).limit(1);
 }
 
 const getCoinEventCount = async (coinId) => {
-  const x = await Coin.Schema.findOne({id: 'bitcoin'}).select('stolen_events');
+  const x = await Coin.Schema.findOne({id: coinId}).select('stolen_events');
   return x.stolen_events.count;
 }
 
@@ -20,16 +20,16 @@ const getSickDealCoins = async () => {
     $lt: SICK_DEAL_MINIMUM_PERC,
   };
   
-  const tinyCaps = Schema.find({
-    "market_cap": {
-      $gte: capSizes[caps.TINY], 
-      $lt: capSizes[caps.SM]
-    },
-    "genesis_date": {
-      "$lte": moment().add(1, "year").toDate(),
-    },
-    "ath_change_percentage": requirement
-  }).sort(sort).limit(50);
+  // const tinyCaps = Schema.find({
+  //   "market_cap": {
+  //     $gte: capSizes[caps.TINY], 
+  //     $lt: capSizes[caps.SM]
+  //   },
+  //   "genesis_date": {
+  //     "$lte": moment().add(1, "year").toDate(),
+  //   },
+  //   "ath_change_percentage": requirement
+  // }).sort(sort).limit(50);
 
   const smallCaps = Schema.find({
     "market_cap": {
@@ -58,14 +58,12 @@ const getSickDealCoins = async () => {
   }).sort(sort).limit(50);
 
   return await Promise.all([
-    tinyCaps,
     smallCaps,
     midCaps,
     lrgCaps
   ]).then((res) => {
-    const [tiny, sm, mid, lrg] = res;
+    const [sm, mid, lrg] = res;
     return {
-      [caps.TINY]: tiny,
       [caps.SM]: sm,
       [caps.MID]: mid,
       [caps.LRG]: lrg,
@@ -74,7 +72,7 @@ const getSickDealCoins = async () => {
 }
 
 const getAvg24hrPriceChangePerc = async () => {
-  const docs = await Schema.aggregate([
+  const docs = await Coin.Schema.aggregate([
     { 
       $match: {
         price_change_percentage_24h: {
@@ -95,7 +93,38 @@ const getAvg24hrPriceChangePerc = async () => {
     }
   ]);
 
-  return docs[0].avgChangePerc24hr;
+  return { avgChangePerc24hr: docs[0].avgChangePerc24hr };
+}
+
+const searchCoinsWithAutocomplete = (term) => {
+  return Coin.Schema.aggregate([
+    {
+      '$search': {
+        'index': 'coinsearch', 
+        'compound': {
+          'should': [
+            {
+              'autocomplete': {
+                'query': `${term}`, 
+                'path': 'name'
+              }
+            }, {
+              'autocomplete': {
+                'query': `${term}`, 
+                'path': 'symbol'
+              }
+            }
+          ]
+        }
+      }
+    }, {
+      '$sort': {
+        'community_score': -1
+      }
+    }, {
+      '$limit': 5
+    }
+  ])
 }
 
 const getRedGreensByQuery = ({redOrGreen = 'red', cap = caps.LRG, maxResults = 10} = {}) => {
@@ -220,10 +249,43 @@ const getRedGreens = () => {
 //   return x.stolen_events.count;
 // })();
 
+
+// (async function() {
+//   const term = 'bitcoin';
+//   const timetaken = "Time taken by addCount coin agg search";
+//   console.time(timetaken);
+//   await Coin.Schema.aggregate([
+//     {
+//       '$search': {
+//         'index': 'coinsearch', 
+//         'compound': {
+//           'should': [
+//             {
+//               'autocomplete': {
+//                 'query': `${term}`, 
+//                 'path': 'name'
+//               }
+//             }, {
+//               'autocomplete': {
+//                 'query': `${term}`, 
+//                 'path': 'symbol'
+//               }
+//             }
+//           ]
+//         }
+//       }
+//     }, {
+//       '$limit': 10
+//     }
+//   ])
+//   console.timeEnd(timetaken);
+// })();
+
 module.exports = { 
   getCoin,
   getSickDealCoins,
   getAvg24hrPriceChangePerc,
+  searchCoinsWithAutocomplete,
   getCoinEventCount,
   getRedGreens
 };

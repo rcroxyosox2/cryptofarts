@@ -57,10 +57,14 @@ const CoinRow = ({coin, onClick, delay}) => {
   );
 }
 
-const CoinStack = ({coins, onRowClick = () => null} = {}) => {
-  return (
+const CoinStack = ({
+  coins, 
+  animated = true, 
+  onRowClick = () => null
+} = {}) => {
+  return (animated) ? (
     <styles.CoinStackStyle>
-      <TransitionGroup>
+      <TransitionGroup component={null}>
         { coins.map((coin, i) => {
           const animTime = 500;
           const delay = (animTime/4) * i;
@@ -71,6 +75,10 @@ const CoinStack = ({coins, onRowClick = () => null} = {}) => {
           );
        })}
       </TransitionGroup>
+    </styles.CoinStackStyle>
+  ) : (
+    <styles.CoinStackStyle>
+      { coins.map((coin, i) => (<CoinRow key={coin.id} coin={coin} onClick={onRowClick} />)) }
     </styles.CoinStackStyle>
   );
 }

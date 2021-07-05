@@ -8,6 +8,8 @@ export const BeyonceStyle = styled(BGImageStyle)`
   height: 37%;
 `;
 
+export const images = [{src: beyonce, alt: 'beyonce ugly af', className: 'beyonce'}];
+
 export default [
   BeyonceStyle,
 ];

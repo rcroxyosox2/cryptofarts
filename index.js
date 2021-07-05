@@ -32,25 +32,28 @@ const { getCelebrityTradeAdvice } = require('./engines/celerityTradeAdvice');
 // server
 const app = express(); 
 const port = process.env.PORT || 5000; 
-
 const server = http.createServer(app);
 const io = new Server(server);
+
+// Events + sockets
+const emitter = require('./emitter');
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
+  console.log('socket server connected...');
 });
+
+emitter.on('coinsUpdated', async () => {
+  console.log('coins updated...');
+  const data = await coinQueries.getAvg24hrPriceChangePerc();
+  io.sockets.emit('day', data); 
+});
+
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
 
-
 // Start any crons
-if (process.env.REACT_APP_ENV !== 'development') {
+if (process.env.REACT_APP_ENV !== 'production') {
   recordCelebAdviceTask.start();
   updateMetasTask.start();
   updateCoinsTask.start();
@@ -67,14 +70,25 @@ app.use(express.json());
 // Day view (logo screen)
 app.get('/day', async (req, res) => {
   try {
-    const coins = await coinQueries.getAvg24hrPriceChangePerc();
-    res.send(coins)
+    const data = await coinQueries.getAvg24hrPriceChangePerc();
+    res.send(data);
   } catch(e) {
     res.status(500).send({
       error: e.message
     });
   }
 });
+
+// search
+app.get('/search', async (req, res) => {
+  try {
+    const term = req.query.term;
+    const result = (term) ? await coinQueries.searchCoinsWithAutocomplete(term) : [];
+    res.send(result);
+  } catch(e) {
+    console.error(e);
+  }
+})
 
 // sick deals
 app.get('/sickdeals', async (req, res) => {

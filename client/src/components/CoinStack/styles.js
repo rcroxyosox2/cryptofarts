@@ -31,7 +31,7 @@ const greenRowCSS = css`
   }
 `;
 
-export const CoinStackRowStyle = styled.div.attrs({ className: 'CoinStackRowStyle' })`
+export const CoinStackRowStyle = styled.div`
   &.enter {
     animation: ${flipAnimation} 500ms ease-in-out ${(props) => {
       return `${props.delay}ms 1`;
@@ -46,12 +46,12 @@ export const CoinStackRowStyle = styled.div.attrs({ className: 'CoinStackRowStyl
     align-items: flex-start;
     > div {
       &:first-child {
-        max-width: 54px;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 7vw;
       }
       &:last-child {
-        font-size: 0.5rem;
+        font-size: 3vw;
         position: absolute;
         left: 0;
         bottom: 0;
@@ -70,7 +70,7 @@ export const CoinStackRowStyle = styled.div.attrs({ className: 'CoinStackRowStyl
     div {
       &:last-child {
         white-space: nowrap;
-        font-size: 0.8rem;
+        font-size: 3vw;
       }
     }
   }
@@ -87,7 +87,7 @@ export const CoinStackStyle = styled.div.attrs({ className: 'CoinStackStyle' })`
   flex-flow: column nowrap;
   /* max-height: 303px;
   overflow-y: scroll; */
-  > div > * {
+  > * {
     &:nth-child(3n+0) {
       ${CoinStyleRowContainer} {
         transform: rotate(0.5deg) skew(1deg);

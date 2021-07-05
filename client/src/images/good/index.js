@@ -16,6 +16,11 @@ const TacosStyle = styled(BGImageStyle)`
   height: 30%;
 `;
 
+export const images = [
+  {src: irok, alt: 'irok', className: 'irok'},
+  {src: tacos, alt: 'racos', className: 'tacos'},
+];
+
 export default [
   IrokStyle,
   TacosStyle,

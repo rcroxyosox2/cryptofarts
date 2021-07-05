@@ -20,22 +20,31 @@ export const jiggle = keyframes`
 
 export const bobRotate = keyframes`
 	0% {
-		transform: translatey(0px) rotate(1deg);
+		transform: translateY(0px) rotate(1deg);
 	}
 	50% {
-		transform: translatey(-3px) rotate(-1deg);
+		transform: translateY(-3px) rotate(-1deg);
 	}
 	100% {
-		transform: translatey(0px) rotate(1deg);
+		transform: translateY(0px) rotate(1deg);
+	}
+`;
+
+export const nopeRotate = keyframes`
+	0%, 100% {
+		transform: translateX(0px) rotate(1deg);
+	}
+	50% {
+		transform: translateX(-5px) rotate(-1deg);
 	}
 `;
 
 export const upDown = keyframes`
   0%, 100% {
-    transform: translateY(1%) scale(1);
+    transform: translateY(10%);
   }
   50% {
-    transform: translateY(-1%) scale(0.9);
+    transform: translateY(-10%);
   }
 `;
 

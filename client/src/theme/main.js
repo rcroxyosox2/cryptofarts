@@ -21,6 +21,7 @@ const colors = {
   pink: '#FF00FF',
   red: '#FF0000',
   black: '#000000',
+  blue: '#0000FF',
   green:  '#00FF00',
 }
 
@@ -42,14 +43,15 @@ const button = {
   defaults: css`
     font-family: 'Comic Neue';
     font-weight: bold;
-    font-size: 1rem;
-    border-radius: 50px;
+    font-size: 5.3vw;
+    border-radius: 10vw;
     box-shadow: 0.2em 0.3em 0 ${colors.black};
     color: ${colors.black};
+    position: relative;
     &:active {
       box-shadow: none;
-      margin-top: 0.2em;
-      margin-left: 0.3em;
+      top: 0.2em;
+      left: 0.3em;
     }
   `,
   styleType: {

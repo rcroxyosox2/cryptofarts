@@ -32,14 +32,6 @@ export const AppStyle = createGlobalStyle`
     font-weight: bold;
     font-style: normal;
   }
-  :root {
-    font-size: 24px;
-    /* @media (min-width: 600px) {
-      max-width: 600px;
-      max-height: 700px;
-      margin: 0 auto;
-    } */
-  }
   body {
     font-family: 'Comic Neue';
     font-weight: bold;

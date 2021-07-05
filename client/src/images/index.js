@@ -1,11 +1,30 @@
-import badImages from './bad';
-import goodImages from './good';
-import pumpImages from './pumps';
-import dumpImages from './dumps';
-
+import badImageStyles, { images as badImages } from './bad';
+import goodImageStyles, { images as goodImages } from './good';
+import pumpImageStyles from './pumps';
+import dumpImageStyles from './dumps';
 import { randomResource } from 'utils';
+import * as styles from './styles';
 
-export const getRandomBadImgStyle = () => randomResource(badImages);
-export const getRandomGoodImgStyle = () => randomResource(goodImages);
-export const getRandomPumpImg = () => randomResource(pumpImages);
-export const getRandomDumpImg = () => randomResource(dumpImages);
+const AnimatedImage = ({children, imgProps}) => {
+  const { className, ...rest } = imgProps;
+  return (
+    <styles.AnimatedImageStyle className={className}>
+      { imgProps ? <img {...rest} /> : children}
+    </styles.AnimatedImageStyle>
+  );
+}
+
+export const getRandomBadImg = ({ animated = true } ={}) => 
+  animated 
+  ? <AnimatedImage imgProps={randomResource(badImages)} /> 
+  : <img {...randomResource(badImages)} />;
+
+export const getRandomGoodImg = ({ animated = true } ={}) => 
+  animated 
+  ? <AnimatedImage imgProps={randomResource(goodImages)} /> 
+  : <img {...randomResource(goodImages)} />;
+
+export const getRandomBadImgStyle = () => randomResource(badImageStyles);
+export const getRandomGoodImgStyle = () => randomResource(goodImageStyles);
+export const getRandomPumpImgStyle = () => randomResource(pumpImageStyles);
+export const getRandomDumpImgStyle = () => randomResource(dumpImageStyles);

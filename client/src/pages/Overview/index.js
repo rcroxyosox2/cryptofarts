@@ -8,8 +8,8 @@ import { getPumpsAndDumpsFromArr } from 'brains/coins';
 import Notif from 'components/Notif';
 import { db } from 'data/indexdb';
 import {
-  getRandomPumpImg,
-  getRandomDumpImg,
+  getRandomPumpImgStyle,
+  getRandomDumpImgStyle,
 } from 'images';
 import * as styles from './styles';
 
@@ -21,8 +21,8 @@ const Overview = (props) => {
     <styles.OverviewStyle>
       <Notif />
       <div>Last updated on: {moment(meta?.lastUpdated).format('LLLL')}</div>
-      <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImg()} />
-      <CoinStackImageTitleCombo title="Da Dumps" coins={dumps} Img={getRandomDumpImg()} />
+      <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImgStyle()} />
+      <CoinStackImageTitleCombo title="Da Dumps" coins={dumps} Img={getRandomDumpImgStyle()} />
     </styles.OverviewStyle>
   )
 }
