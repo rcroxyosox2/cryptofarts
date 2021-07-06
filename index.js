@@ -53,7 +53,7 @@ server.listen(port, () => {
 });
 
 // Start any crons
-if (process.env.REACT_APP_ENV !== 'production') {
+if (process.env.REACT_APP_ENV === 'production') {
   recordCelebAdviceTask.start();
   updateMetasTask.start();
   updateCoinsTask.start();
