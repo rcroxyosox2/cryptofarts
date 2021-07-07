@@ -200,7 +200,9 @@ app.get('/coin/:id', async(req, res) => {
 // Serve static files from the React frontend app
 // app.use(express.static(path.join(__dirname, 'client/build')));
 
-// Anything that doesn't match the above, send back index.html
+// List of all the files that should be served as-is
+let protected = ['transformed.js', 'main.css', 'favicon.ico']
+
 app.get("*", (req, res) => {
 
   let path = req.params['0'].substring(1)
