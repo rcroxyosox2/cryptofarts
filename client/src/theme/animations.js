@@ -16,6 +16,15 @@ export const jiggle = keyframes`
   50% {
     transform: rotate(-0.8deg);
   }
+`;
+
+export const blink = keyframes`
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 `
 
 export const bobRotateMinor = keyframes`

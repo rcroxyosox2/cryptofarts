@@ -60,10 +60,11 @@ const CoinRow = ({coin, onClick, delay}) => {
 const CoinStack = ({
   coins, 
   animated = true, 
-  onRowClick = () => null
+  onRowClick = () => null,
+  _ref = null
 } = {}) => {
   return (animated) ? (
-    <styles.CoinStackStyle>
+    <styles.CoinStackStyle ref={_ref}>
       <TransitionGroup component={null}>
         { coins.map((coin, i) => {
           const animTime = 500;

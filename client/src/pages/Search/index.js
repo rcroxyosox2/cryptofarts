@@ -19,16 +19,21 @@ const Search = () => {
   const [error, searchError] = useState(null);
   const [focused, setFocused] = useState(false);
   const inputRef = useRef();
-  const resultsContainerRef = useRef();
+  const coinStackRef = useRef();
   const dbSearchTerm = useDebounce(term, 500);
+  const MIN_CHARS = 3;
 
   useEffect(() => {
+
+    if (dbSearchTerm.length < MIN_CHARS) {
+      return;
+    }
+
     if (dbSearchTerm) {
       search(dbSearchTerm).then((results) => {
         setIsSearching(false);
         setResults(results);
         searchError(null);
-        resultsContainerRef.current.scrollTop = 10000;
       }).catch((e) => {
         setIsSearching(false);
         searchError(e);
@@ -41,7 +46,7 @@ const Search = () => {
 
   const handleSearch = async (e) => {
     const value = e.target.value;
-    setIsSearching(!!value);
+    setIsSearching(!!value && value.length >= MIN_CHARS);
     setTerm(value);
   }
 
@@ -68,19 +73,18 @@ const Search = () => {
 
   return (
     <styles.SearchStyle onKeyDown={handleKeyDown} tabIndex={-1} className={focused ? 'focused' : null}>
-      {isSearching ? <div>'searching...'</div> : null}
-      <div className="resultsContainer" ref={resultsContainerRef}>
+      <div className="resultsContainer">
         <div>
           <CSSTransition in={results.length} timeout={400}>
             <div className="resultsStackAndRainbow">
-              <CoinStack coins={[...results].reverse()} animated={false} />
+              <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} />
               <Rainbow />
             </div>
           </CSSTransition>
           <CSSTransition in={results.length} timeout={400}>
             <div className="computerContainerStyle">
               <div className="scaleContainer">
-                <Computer text={term || "the internet"} onClick={setFocusOnInput} />
+                <Computer text={term || "the internet"} onClick={setFocusOnInput} subCopy={isSearching ? 'loading' : null} />
               </div>
             </div>
           </CSSTransition>

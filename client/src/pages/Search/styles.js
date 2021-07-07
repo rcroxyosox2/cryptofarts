@@ -14,10 +14,19 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
   position: absolute;
   overflow: hidden;
   ${CoinStackStyle} {
-    position: relative;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+    top: 0;
+    left: 0;
+    padding: 4vh 4vh 10vh;
+    bottom: 0;
     z-index: 2;
+    flex-direction: column-reverse;
+    overflow-y: auto;
     > * {
-      &:last-child {
+      &:first-child {
         animation: 1400ms infinite ${bobRotateMinor};
         transform-origin: 100% 50%;
         margin-top: 3vh;
@@ -28,6 +37,7 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
     }
   }
   .resultsContainer {
+    flex: 2;
     display: flex;
     flex-flow: column;
     align-items: flex-end;
@@ -75,10 +85,11 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
       transition-delay: 0;
       transform: scaleY(0);
       transform-origin: 50% 100%;
-      position: relative;
+      position: absolute;
       width: 2vw;
       height: 10vh;
-      left: 7vw;
+      left: 12vw;
+      bottom: 0;
       > * {
         width: 100%;
         height: 100%;

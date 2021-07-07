@@ -32,6 +32,7 @@ const greenRowCSS = css`
 `;
 
 export const CoinStackRowStyle = styled.div`
+  background: white;
   &.enter {
     animation: ${flipAnimation} 500ms ease-in-out ${(props) => {
       return `${props.delay}ms 1`;
