@@ -68,7 +68,7 @@ app.use(express.json());
 // app.use(cors());
 
 // Day view (logo screen)
-app.get('/day', async (req, res) => {
+app.get('/api/day', async (req, res) => {
   try {
     const data = await coinQueries.getAvg24hrPriceChangePerc();
     res.send(data);
@@ -80,7 +80,7 @@ app.get('/day', async (req, res) => {
 });
 
 // search
-app.get('/search', async (req, res) => {
+app.get('/api/search', async (req, res) => {
   try {
     const term = req.query.term;
     const result = (term) ? await coinQueries.searchCoinsWithAutocomplete(term) : [];
@@ -91,7 +91,7 @@ app.get('/search', async (req, res) => {
 })
 
 // sick deals
-app.get('/sickdeals', async (req, res) => {
+app.get('/api/sickdeals', async (req, res) => {
   try {
     const coins = await coinQueries.getSickDealCoins();
     res.send(coins);
@@ -103,7 +103,7 @@ app.get('/sickdeals', async (req, res) => {
 });
 
 // reddit moonshots
-app.get('/moonshots', async (req, res) => {
+app.get('/api/moonshots', async (req, res) => {
   try {
     const moonShots = await reddit.getRedditAsMoonShots();
     // const b = await reddit.getSub();
@@ -116,7 +116,7 @@ app.get('/moonshots', async (req, res) => {
 });
 
 // moonshot details
-app.get('/moonshots/:id', async (req, res) => {
+app.get('/api/moonshots/:id', async (req, res) => {
   try {
     const moonShot = await reddit.getRedditAsMoonShots({id: req.params.id});
     res.send(moonShot)
@@ -128,7 +128,7 @@ app.get('/moonshots/:id', async (req, res) => {
 });
 
 // greens and reds
-app.get('/greenredlist', async(req, res) => {
+app.get('/api/greenredlist', async(req, res) => {
   try {
     const redGrees = await coinQueries.getRedGreens();
     res.send(redGrees);
@@ -140,7 +140,7 @@ app.get('/greenredlist', async(req, res) => {
 })
 
 // trending
-app.get('/trending', (req, res) => {
+app.get('/api/trending', (req, res) => {
   coinGecko.getTrending().then(async (trending) => {
     const query = trending.map((coin) => ({id: coin.item.id}));
     const coins = await Coin.Schema.find({$or: query});
@@ -154,7 +154,7 @@ app.get('/trending', (req, res) => {
 
 // coin detail view
 // TODO: update so that it reads from Coin schema first
-app.get('/coin/:id', async(req, res) => {
+app.get('/api/coin/:id', async(req, res) => {
   try {
     const coinData = await Promise.all([
       coinGecko.getCoin(req.params.id, {
@@ -197,10 +197,6 @@ app.get('/coin/:id', async(req, res) => {
   }
 })
 
-
-app.get('/search', (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-})
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client", "build")));

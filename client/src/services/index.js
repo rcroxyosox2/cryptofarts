@@ -3,12 +3,12 @@ import Storage from 'brains/storage';
 
 
 export const getDay = () => {
-  return fetch('/day').then((resp) => resp.json())
+  return fetch('/api/day').then((resp) => resp.json())
 };
 
 export const search = (term, fetchOptions) => {
   const params = new URLSearchParams({term}).toString();
-  return fetch(`/search?${params}`).then((resp) => resp.json());
+  return fetch(`/api/search?${params}`).then((resp) => resp.json());
 }
 
 
