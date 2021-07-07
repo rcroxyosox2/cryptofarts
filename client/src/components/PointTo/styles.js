@@ -12,11 +12,14 @@ export const upDownSubtle = keyframes`
 
 export const PointToStyle = styled.div.attrs({className: 'PointToStyle'})`
   position: absolute;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  animation: ${upDownSubtle} 1.2s ease-in-out 0s infinite;
+  div {
+    animation: ${upDownSubtle} 1.2s ease-in-out 0s infinite;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
   img {
+    max-width: 100%;
     &:first-child {
       margin-bottom: 12%;
     }

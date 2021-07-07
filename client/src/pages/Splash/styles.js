@@ -3,10 +3,10 @@ import { ButtonStyle } from 'theme/Button/styles';
 import { PointToStyle } from 'components/PointTo/styles';
 
 export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   > * {
     flex: 1;
     display: flex;
@@ -18,13 +18,17 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
   }
   .logoRow {
     padding: 0 10%;
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
   }
   .ctaImgRow {
     padding: 0 5%;
-    position: relative;
+    position: absolute;
+    bottom: 0;
     ${PointToStyle} {
       bottom: 115%;
-      width: 16vw;
+      width: 20vw;
       left: 25%;
       transform: rotate(-8deg);
     }
@@ -45,16 +49,15 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
       }
     }
     .tacos {
-      top: 9vw;
-      left: -3vw;
+      margin: 8vh 0 3vh;
       img {
         width: 110%;
         max-width: none;
       }
     }
     .irok {
-      top: 19vw;
-      left: -12vw;
+      margin: 23vh 0 3vh;
+      left: -11vw;
       img {
         width: 146%;
         max-width: none;

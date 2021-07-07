@@ -1,4 +1,5 @@
 const CURRENCY = 'usd';
+const COIN_CHANGE_KEY = 'price_change_percentage_24h';
 
 const caps = {
   TINY: 'tiny',
@@ -24,5 +25,6 @@ module.exports = {
   caps,
   capSizes,
   CURRENCY,
+  COIN_CHANGE_KEY,
   getNextCapSize,
 };

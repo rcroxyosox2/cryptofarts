@@ -43,7 +43,7 @@ const button = {
   defaults: css`
     font-family: 'Comic Neue';
     font-weight: bold;
-    font-size: 5.3vw;
+    font-size: 5.5vw;
     border-radius: 10vw;
     box-shadow: 0.2em 0.3em 0 ${colors.black};
     color: ${colors.black};

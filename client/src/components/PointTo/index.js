@@ -24,8 +24,10 @@ const PointTo = ({type}) => {
 
   return (
     <styles.PointToStyle>
-      <img src={message} />
-      <img src={arrow} />
+      <div>
+        <img src={message} />
+        <img src={arrow} />
+      </div>
     </styles.PointToStyle>
   );
 };

@@ -66,7 +66,6 @@ const Splash = () => {
 
   return (
     <styles.SplashStyle>
-      <div></div>
       <div className='logoRow'>
         <Logo />
       </div>

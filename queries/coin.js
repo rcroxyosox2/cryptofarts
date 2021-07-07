@@ -1,7 +1,7 @@
 require('../db');
 const moment = require('moment');
 const Coin = require('../models/Coin');
-const { caps, capSizes, getNextCapSize, CURRENCY } = require('../contants');
+const { caps, capSizes, getNextCapSize, CURRENCY, COIN_CHANGE_KEY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
 
 const getCoin = (query = {}) => {
@@ -116,6 +116,17 @@ const searchCoinsWithAutocomplete = (term) => {
             }
           ]
         }
+      }
+    }, {
+      '$project': {
+        id: 1,
+        name: 1,
+        symbol: 1,
+        image: 1,
+        sparkline_in_7d: 1,
+        community_score: 1,
+        current_price: 1,
+        [COIN_CHANGE_KEY]: 1,
       }
     }, {
       '$sort': {

@@ -18,6 +18,18 @@ export const jiggle = keyframes`
   }
 `
 
+export const bobRotateMinor = keyframes`
+	0% {
+		transform: translateY(0px) rotate(0.2deg);
+	}
+	50% {
+		transform: translateY(0.1vh) rotate(0deg);
+	}
+	100% {
+		transform: translateY(0px) rotate(0.2deg);
+	}
+`;
+
 export const bobRotate = keyframes`
 	0% {
 		transform: translateY(0px) rotate(1deg);
