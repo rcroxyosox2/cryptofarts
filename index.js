@@ -1,10 +1,13 @@
 require('dotenv').config();
 require('./db');
+
 const express = require('express'); 
 const cors = require('cors');
 const http = require('http');
 const path = require('path');
 const { Server } = require('socket.io');
+const BugsnagClient = require('./lib/bugsnag');
+const { performance } = require('perf_hooks');
 
 // queries
 const coinQueries = require('./queries/coin');
@@ -34,18 +37,29 @@ const app = express();
 const port = process.env.PORT || 5000; 
 const server = http.createServer(app);
 const io = new Server(server);
+const MAX_CALL_TIME = 3000;
 
 // Events + sockets
 const emitter = require('./emitter');
+
+
 
 io.on('connection', (socket) => {
   console.log('socket server connected...');
 });
 
 emitter.on('coinsUpdated', async () => {
+
   console.log('coins updated...');
-  const data = await coinQueries.getAvg24hrPriceChangePerc();
-  io.sockets.emit('day', data); 
+
+  // day
+  const day = await coinQueries.getAvg24hrPriceChangePerc();
+  io.sockets.emit('day', day); 
+
+  // sick deals
+  const sickDeals = await coinQueries.getSickDealCoins();
+  io.sockets.emit('sickdeals', sickDeals);
+
 });
 
 server.listen(port, () => {
@@ -83,7 +97,13 @@ app.get('/api/day', async (req, res) => {
 app.get('/api/search', async (req, res) => {
   try {
     const term = req.query.term;
+    const t0 = performance.now();
     const result = (term) ? await coinQueries.searchCoinsWithAutocomplete(term) : [];
+    const t1 = performance.now();
+    const apiCallTime = (t1 - t0);
+    if (apiCallTime >= MAX_CALL_TIME) {
+      BugsnagClient.notify('/api/search taking a long ass time. Possible throttling happening');
+    }
     res.send(result);
   } catch(e) {
     console.error(e);
@@ -196,7 +216,6 @@ app.get('/api/coin/:id', async(req, res) => {
     });
   }
 })
-
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client", "build")));

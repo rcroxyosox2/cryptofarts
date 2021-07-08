@@ -11,6 +11,9 @@ export const search = (term, fetchOptions) => {
   return fetch(`/api/search?${params}`).then((resp) => resp.json());
 }
 
+export const getSickDeals = () => {
+  return fetch('/api/sickdeals').then((resp) => resp.json());
+}
 
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {

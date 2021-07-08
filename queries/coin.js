@@ -13,9 +13,20 @@ const getCoinEventCount = async (coinId) => {
   return x.stolen_events.count;
 }
 
+
 const getSickDealCoins = async () => {
   const { Schema, capSizes, caps } = Coin;
   const sort = {"ath_change_percentage": 1};
+  const LIMIT = 10;
+  const fields = [
+    'id',
+    'name',
+    'symbol',
+    'image',
+    'current_price',
+    'ath_change_percentage',
+  ].join(' ');
+  
   const requirement = {
     $lt: SICK_DEAL_MINIMUM_PERC,
   };
@@ -40,7 +51,7 @@ const getSickDealCoins = async () => {
       "$lte": moment().add(1, "year").toDate(),
     },
     "ath_change_percentage": requirement
-  }).sort(sort).limit(50);
+  }).select(fields).sort(sort).limit(LIMIT);
 
   const midCaps = Schema.find({
     "market_cap": {
@@ -48,14 +59,14 @@ const getSickDealCoins = async () => {
       $lt: capSizes[caps.LRG]
     },
     "ath_change_percentage": requirement
-  }).sort(sort).limit(50);
+  }).select(fields).sort(sort).limit(LIMIT);
 
   const lrgCaps = Schema.find({
     "market_cap": {
       $gte: capSizes[caps.LRG], 
     },
     "ath_change_percentage": requirement
-  }).sort(sort).limit(50);
+  }).select(fields).sort(sort).limit(LIMIT);
 
   return await Promise.all([
     smallCaps,

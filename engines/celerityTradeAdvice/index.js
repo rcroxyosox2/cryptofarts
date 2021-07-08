@@ -107,13 +107,13 @@ const getCelebrityTradeAdvice = ({
 }
 
 
-const coin = {
-  ath_change_percentage: -20, 
-  ath_date: new Date(),
-  community_score: 0.31,
-  public_interest_score: 0.04,
-  sentiment_votes_up_percentage: 70,
-};
+// const coin = {
+//   ath_change_percentage: -20, 
+//   ath_date: new Date(),
+//   community_score: 0.31,
+//   public_interest_score: 0.04,
+//   sentiment_votes_up_percentage: 70,
+// };
 
 // const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
 // const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20]
@@ -141,7 +141,7 @@ const getCelebrityTradeAdviceFromCoinId = async (coinId) => {
     return {
       coinId,
       timestamp: new Date(),
-      currentPrice: coin.market_data.current_price[CURRENCY],
+      currentPrice: coin.current_price,
       advice
     };
   } 

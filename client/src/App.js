@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
-import io from "socket.io-client";
 import { useDispatch, useSelector } from 'react-redux';
 import Router from './Router';
 import Logo from 'components/Logo';
 import { saveDay } from 'redux/summary';
+import socket from 'services/socket';
 
 const App = () => { 
-  const socket = io();
   const dispatch = useDispatch();
+  const socketname = 'day';
+  const daySocketFn = (day) => {
+    dispatch(saveDay(day));
+  };
+
   useEffect(() => {
     // socket.on('chat message', function(msg) {
     //   console.log(msg);
     // });
     // saveDay
-    socket.on('day', (day) => {
-      dispatch(saveDay(day));
-    });
+    socket.off(socketname, daySocketFn).on(socketname, daySocketFn);
     // socket.on('test', (msg) => {
     //   console.log('msg', msg)
     // });
