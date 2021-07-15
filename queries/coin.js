@@ -1,4 +1,4 @@
-require('../db');
+const mongo = require('../db');
 const moment = require('moment');
 const Coin = require('../models/Coin');
 const { caps, capSizes, getNextCapSize, CURRENCY, COIN_CHANGE_KEY } = require('../contants');
@@ -13,11 +13,10 @@ const getCoinEventCount = async (coinId) => {
   return x.stolen_events.count;
 }
 
-
 const getSickDealCoins = async () => {
   const { Schema, capSizes, caps } = Coin;
-  const sort = {"ath_change_percentage": 1};
-  const LIMIT = 10;
+  const sort = {'ath_change_percentage': 1, 'market_cap': -1};
+  const LIMIT = 12;
   const fields = [
     'id',
     'name',
@@ -42,44 +41,50 @@ const getSickDealCoins = async () => {
   //   "ath_change_percentage": requirement
   // }).sort(sort).limit(50);
 
-  const smallCaps = Schema.find({
-    "market_cap": {
-      $gte: capSizes[caps.SM], 
-      $lt: capSizes[caps.MID]
-    },
-    "genesis_date": {
-      "$lte": moment().add(1, "year").toDate(),
-    },
-    "ath_change_percentage": requirement
-  }).select(fields).sort(sort).limit(LIMIT);
+  // const smallCaps = Schema.find({
+  //   "market_cap": {
+  //     $gte: capSizes[caps.SM], 
+  //     $lt: capSizes[caps.MID]
+  //   },
+  //   "genesis_date": {
+  //     "$lte": moment().add(1, "year").toDate(),
+  //   },
+  //   "coingecko_score": {
+  //     "$gte": 40,
+  //   },
+  //   "price_change_percentage_24h": {
+  //     "$gte": 0.5,
+  //   },
+  //   "ath_change_percentage": requirement
+  // }).select(fields).sort(sort).limit(LIMIT);
 
-  const midCaps = Schema.find({
-    "market_cap": {
-      $gte: capSizes[caps.MID], 
-      $lt: capSizes[caps.LRG]
-    },
-    "ath_change_percentage": requirement
-  }).select(fields).sort(sort).limit(LIMIT);
-
-  const lrgCaps = Schema.find({
-    "market_cap": {
+  // const midCaps = Schema.find({
+  //   "market_cap": {
+  //     $gte: capSizes[caps.MID], 
+  //     $lt: capSizes[caps.LRG]
+  //   },
+  //   "ath_change_percentage": requirement
+  // }).select(fields).sort(sort).limit(LIMIT);
+  await mongo();
+  return Schema.find({
+    'market_cap': {
       $gte: capSizes[caps.LRG], 
     },
-    "ath_change_percentage": requirement
+    'ath_change_percentage': requirement
   }).select(fields).sort(sort).limit(LIMIT);
 
-  return await Promise.all([
-    smallCaps,
-    midCaps,
-    lrgCaps
-  ]).then((res) => {
-    const [sm, mid, lrg] = res;
-    return {
-      [caps.SM]: sm,
-      [caps.MID]: mid,
-      [caps.LRG]: lrg,
-    }
-  })
+  // return await Promise.all([
+  //   smallCaps,
+  //   midCaps,
+  //   lrgCaps
+  // ]).then((res) => {
+  //   const [sm, mid, lrg] = res;
+  //   return {
+  //     [caps.SM]: sm,
+  //     [caps.MID]: mid,
+  //     [caps.LRG]: lrg,
+  //   }
+  // })
 }
 
 const getAvg24hrPriceChangePerc = async () => {
@@ -301,6 +306,12 @@ const getRedGreens = () => {
 //     }
 //   ])
 //   console.timeEnd(timetaken);
+// })();
+
+// (async function() {
+//   await mongo();
+//   const x = await Coin.Schema.findOne({id: 'bitcoin'});
+//   console.log(x);
 // })();
 
 module.exports = { 

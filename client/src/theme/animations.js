@@ -69,3 +69,11 @@ export const upDown = keyframes`
   }
 `;
 
+export const sizeChanger = keyframes`
+  0%, 100%{
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+`;

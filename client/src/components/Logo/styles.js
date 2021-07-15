@@ -110,7 +110,7 @@ export const LogoStyle = styled.div.attrs({className: 'LogoStyle'})`
     animation: ${(props) => sparkleAnimation(props)} 4s step-end infinite;
     background-color: ${(props) => props.theme.colors.green};
     width: 6.9%;
-    height: 19.9%;
+    height: 25%;
     top: -23%;
     left: 23.3%;
   }
@@ -118,8 +118,8 @@ export const LogoStyle = styled.div.attrs({className: 'LogoStyle'})`
     background-image: url(${shine2});
     animation: ${(props) => sparkleAnimation2(props)} 4s step-end infinite;
     background-color: ${(props) => props.theme.colors.pink};
-    width: 7.9%;
-    height: 24%;
+    width: 7%;
+    height: 27%;
     top: -5%;
     right: 0.3%;
   }

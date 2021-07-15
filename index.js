@@ -1,5 +1,5 @@
+const mongo = require('./db');
 require('dotenv').config();
-require('./db');
 
 const express = require('express'); 
 const cors = require('cors');
@@ -43,7 +43,6 @@ const MAX_CALL_TIME = 3000;
 const emitter = require('./emitter');
 
 
-
 io.on('connection', (socket) => {
   console.log('socket server connected...');
 });
@@ -62,11 +61,13 @@ emitter.on('coinsUpdated', async () => {
 
 });
 
+
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
 
 // Start any crons
+// production only crons
 if (process.env.REACT_APP_ENV === 'production') {
   recordCelebAdviceTask.start();
   updateMetasTask.start();
@@ -76,6 +77,7 @@ if (process.env.REACT_APP_ENV === 'production') {
   updateCoinCoreDataTask.start();
   updateCoinEventsTask.start();
 }
+
 
 // prep the responses
 app.use(express.json());
@@ -123,10 +125,13 @@ app.get('/api/sickdeals', async (req, res) => {
 });
 
 // reddit moonshots
-app.get('/api/moonshots', async (req, res) => {
+app.get('/api/moonshots/:maxResults', async (req, res) => {
   try {
-    const moonShots = await reddit.getRedditAsMoonShots();
-    // const b = await reddit.getSub();
+    const maxResults = req.params.maxResults || 10;
+    const moonShots = await reddit.getRedditAsMoonShots({
+      maxResults
+    });
+    reddit.pollMoonShots(io, maxResults);
     res.send(moonShots)
   } catch(e) {
     res.status(500).send({
@@ -215,7 +220,18 @@ app.get('/api/coin/:id', async(req, res) => {
       error: e.message
     });
   }
-})
+});
+
+app.get('/api/meta', async (req, res) => {
+  try {
+    const meta = await metaQueries.getMeta();
+    res.send(meta);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+});
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client", "build")));

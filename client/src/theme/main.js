@@ -30,6 +30,10 @@ const badCSS = css`
   color: ${colors.white};
 `;
 
+const warnCSS = css`
+  background: ${colors.yellow};
+`;
+
 const goodCSS = css`
   background: ${colors.green};
 `;
@@ -75,6 +79,7 @@ const button = {
 const mainTheme = {
   snippets: {
     badCSS,
+    warnCSS,
     goodCSS,
     neutralCSS,
   },

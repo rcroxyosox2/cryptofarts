@@ -12,12 +12,13 @@ const App = () => {
     dispatch(saveDay(day));
   };
 
+  // DONT update the store here. I causes everything to be called multiple times
   useEffect(() => {
     // socket.on('chat message', function(msg) {
     //   console.log(msg);
     // });
     // saveDay
-    socket.off(socketname, daySocketFn).on(socketname, daySocketFn);
+    // socket.off(socketname, daySocketFn).on(socketname, daySocketFn);
     // socket.on('test', (msg) => {
     //   console.log('msg', msg)
     // });

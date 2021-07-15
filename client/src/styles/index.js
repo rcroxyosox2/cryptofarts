@@ -13,6 +13,9 @@ import comicNeueBoldWoff from "./fonts/ComicNeue-Bold.woff";
 export const AppStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
+    -webkit-backface-visibility:  hidden;
+    backface-visibility:  hidden;
+    -webkit-tap-highlight-color:  transparent;
   }
   h1 {
     font-size: 1.3rem;

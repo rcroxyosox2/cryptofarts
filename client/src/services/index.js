@@ -15,6 +15,15 @@ export const getSickDeals = () => {
   return fetch('/api/sickdeals').then((resp) => resp.json());
 }
 
+export const getMeta = () => {
+  return fetch('/api/meta').then((resp) => resp.json());
+}
+
+export const getMoonShots = (maxResults = 10) => {
+  return fetch(`/api/moonshots/${maxResults}`).then((resp) => resp.json())
+}
+
+
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
   var requestOptions = {
@@ -77,7 +86,7 @@ export const getTopCoins = ({qty = 10, page = 1} = {}) => {
     })
 }
 
-// holy fuck this is expensive tho
+// holy balls this is expensive tho
 export const megaInitialLoad = async ({limit2, onFetchCycle} = {}) => {
 
   const fetchThrottleInMS = 5;
