@@ -192,7 +192,7 @@ class Modal extends React.PureComponent {
       <TransitionGroup>
         {this.props.isOpen
           && (
-            <Transition timeout={{ enter: 0, exit: 320 }} in={this.props.isOpen}>
+            <Transition timeout={{ enter: 0, exit: styles.ANIM_SPEED }} in={this.props.isOpen}>
               {
                 (animationStatus) => (
                   <styles.ModalContainerStyle

@@ -7,6 +7,7 @@ import Logo from 'components/Logo';
 import SeasonFlag from 'components/SeasonFlag';
 import SickDeals from 'components/SickDeals';
 import Moonshots from 'components/Moonshots';
+import GreensReds from 'components/GreensReds';
 
 // import { AnimateOnChange, HideUntilLoaded } from 'react-animation'
 // import CoinStackImageTitleCombo from 'components/CoinStackImageTitleCombo';
@@ -38,6 +39,7 @@ const Overview = (props) => {
       </header>
       <SickDeals />
       <Moonshots />
+      <GreensReds />
       {/* <Notif /> */}
       {/* <div>Last updated on: {moment(meta?.lastUpdated).format('LLLL')}</div> */}
       {/* <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImgStyle()} />

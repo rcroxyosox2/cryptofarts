@@ -74,6 +74,10 @@ export const FooterStyle = styled.footer`
     flex-flow: row nowrap;
     gap: 2vw;
   }
+  opacity: 0;
+  &.enter, &.enter-active, &.enter-done {
+    opacity: 1; 
+  }
 `;
 
 export const ImageAreaStyle = styled.div`

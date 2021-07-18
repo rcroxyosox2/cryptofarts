@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components';
 
+export const ANIM_SPEED = 280;
+
 export const ModalContainerInnerStyle = styled.div.attrs({className: 'ModalInnerContainerStyle'})`
   margin: 0 auto;
   max-width: 500px;
 `;
 
 const ModalContainerStyle = styled.div.attrs({className: 'ModalContainerStyle'})`
-  transition: opacity 320ms ease-out, transform 320ms ease-out;
+  transition: opacity ${ANIM_SPEED - 100}ms ease-out, transform ${ANIM_SPEED}ms ease-out;
   background: transparent;
   position: fixed;
   display: flex;

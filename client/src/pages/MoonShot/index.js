@@ -21,6 +21,7 @@ const MoonShot = (props) => {
   const params = useParams();
   const dispatch = useDispatch();
   const [selectedId, setSelectedId] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const { data: moonShots } = useSelector((state) => state.moonShots);
   const history = useHistory();
   const parentRef = useRef();
@@ -30,6 +31,13 @@ const MoonShot = (props) => {
   const getShotId = () => {
     return selectedId || params.id || props.id;
   }
+
+  useEffect(() => {
+    console.log(mounted);
+    if (request.response && !mounted) {
+      setMounted(true);
+    }
+  }, [request.response]);
 
   useEffect(() => {
     const shotId = getShotId();
@@ -62,6 +70,7 @@ const MoonShot = (props) => {
   }
 
   const handleCloseClick = () => {
+    setMounted(false);
     if (props.onClose) {
       props.onClose();
     } else {
@@ -138,7 +147,7 @@ const MoonShot = (props) => {
         </styles.LoadingStyle>
       </CSSTransition>
 
-      <CSSTransition in={loading} timeout={300}>
+      <CSSTransition in={mounted} timeout={300}>
         <styles.FooterStyle>
           <div>
             <FooterButton onClick={handleCloseClick}>

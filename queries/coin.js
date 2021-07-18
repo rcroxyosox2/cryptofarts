@@ -155,7 +155,7 @@ const searchCoinsWithAutocomplete = (term) => {
   ])
 }
 
-const getRedGreensByQuery = ({redOrGreen = 'red', cap = caps.LRG, maxResults = 10} = {}) => {
+const getGreensRedsByQuery = async ({redOrGreen = 'red', cap = caps.LRG, maxResults = 10} = {}) => {
   const sort = {"price_change_percentage_24h": (redOrGreen === 'red') ? 1 : -1 };
   if (!Object.values(caps).includes(cap)) {
     throw new Error(`${cap} not found in ${caps}`);
@@ -171,17 +171,42 @@ const getRedGreensByQuery = ({redOrGreen = 'red', cap = caps.LRG, maxResults = 1
     query['$lt'] = capSizes[nextCapSize];
   };
 
+  const fields = [
+    'id',
+    'name',
+    'symbol',
+    'image',
+    'current_price',
+    'ath_change_percentage',
+    'sparkline_in_7d',
+    COIN_CHANGE_KEY,
+  ].join(' ');
+
+  await mongo();
   return Coin.Schema.find({
     'market_cap': query,
     'price_change_percentage_24h': (
       (redOrGreen === 'red') 
       ? {"$lt" : 0} 
       : {"$gt" : 0}),
-  }).sort(sort).limit(maxResults);
+  }).select(fields).sort(sort).limit(maxResults);
 }
 
-const getRedGreens = () => {
-  const LIMIT = 20;
+const getGreensReds = async () => {
+  const LIMIT = 10;
+  const project = {
+    '$project': {
+      id: 1,
+      name: 1,
+      symbol: 1,
+      image: 1,
+      sparkline_in_7d: 1,
+      current_price: 1,
+      [COIN_CHANGE_KEY]: 1,
+    }
+  };
+
+  await mongo();
   return Coin.Schema.aggregate([
     {
       $facet: {
@@ -198,6 +223,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:1}},
           {$limit: LIMIT},
+          project,
         ],
         smallCapGreens: [{
           $match: {
@@ -212,6 +238,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:-1}},
           {$limit: LIMIT},
+          project,
         ],
        midCapReds: [{
           $match: {
@@ -226,6 +253,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:1}},
           {$limit: LIMIT},
+          project,
         ],
         midCapGreens: [{
           $match: {
@@ -240,6 +268,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:-1}},
           {$limit: LIMIT},
+          project,
         ],
         lrgCapReds: [{
           $match: {
@@ -253,6 +282,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:1}},
           {$limit: LIMIT},
+          project,
         ],
         lrgCapGreens: [{
           $match: {
@@ -266,6 +296,7 @@ const getRedGreens = () => {
           },
           {$sort: {price_change_percentage_24h:-1}},
           {$limit: LIMIT},
+          project,
         ],
       }
     }
@@ -311,7 +342,8 @@ const getRedGreens = () => {
 
 // (async function() {
 //   await mongo();
-//   const x = await Coin.Schema.findOne({id: 'bitcoin'});
+//   // const x = await getGreensRedsByQuery();
+//   const x = await getGreensReds();
 //   console.log(x);
 // })();
 
@@ -321,5 +353,5 @@ module.exports = {
   getAvg24hrPriceChangePerc,
   searchCoinsWithAutocomplete,
   getCoinEventCount,
-  getRedGreens
+  getGreensReds
 };

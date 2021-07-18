@@ -68,7 +68,6 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
   position: relative;
   color: white;
   padding-top: 2vh;
-  overflow-x: clip;
   &.enter, &.enter-active, &.enter-done {
     header {
       img {
@@ -79,8 +78,8 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
         transform: translate(0, 0) scale(1);
       }
       &:after {
-        transform: rotate(-4deg);
-        right: -1vw;
+        transform: rotate(0deg);
+        right: 0;
         top: -2vh;
       }
       ${StarsStyle} {
@@ -98,7 +97,6 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     }
     ul {
       opacity: 1;
-      transform: rotate(1deg);
       max-height: 40vh;
     }
   }
@@ -179,7 +177,7 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     opacity: 1;
   }
   ul {
-    width: 100%;
+    width: 93vw;
     overflow-x: scroll;
     white-space: nowrap;
     display: grid;
@@ -188,10 +186,22 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     padding: 4vh 0 7vh 6vw;
     margin: 0;
     transition: all 0.3s ease-in-out;
-    transform: rotate(1deg) translateX(100vh);
+    transform: rotate(1deg);
     max-height: 0;
     opacity: 0;
-
+    position: relative;
+    box-sizing: content-box;
+    &:after {
+      content: "";
+      position: sticky;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 2vw;
+      display: block;
+      background: black;
+      box-shadow: -1vw -1vw 5vw 6vw black;
+    }
     li {
       list-style: none;
       position: relative;

@@ -59,6 +59,10 @@ emitter.on('coinsUpdated', async () => {
   const sickDeals = await coinQueries.getSickDealCoins();
   io.sockets.emit('sickdeals', sickDeals);
 
+  // greens reds
+  const greensReds = await coinQueries.getGreensRed();
+  io.sockets.emit('greensreds', greensReds);
+
 });
 
 
@@ -153,10 +157,10 @@ app.get('/api/moonshots/:id', async (req, res) => {
 });
 
 // greens and reds
-app.get('/api/greenredlist', async(req, res) => {
+app.get('/api/greensreds', async(req, res) => {
   try {
-    const redGrees = await coinQueries.getRedGreens();
-    res.send(redGrees);
+    const greensReds = await coinQueries.getGreensReds();
+    res.send(greensReds);
   } catch(e) {
     res.status(500).send({
       error: e.message

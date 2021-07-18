@@ -1,5 +1,5 @@
 // Update them coins
-// require('../db');
+const mongo = require('../db');
 const cron = require('node-cron');
 const BugsnagClient = require('../lib/bugsnag');
 const coinGecko = require('../lib/coinGecko');
@@ -10,6 +10,7 @@ const updateCoins = (pages) => {
   return new Promise(async (res, rej) => {
     try {
       const data = await coinGecko.getPages(pages);
+      await mongo();
       await Coin.Schema.upsertMany(data);
       res();
     } catch (e) {
@@ -33,7 +34,7 @@ const updateCoinsTask = cron.schedule('*/6 * * * *', () => {
   })
   .catch((e) => {
     // BugsnagClient.notify(`error is the updateCoinsTask task: ${e.message}`);
-    console.log(`error is the updateCoinsTask task: ${e.message}`);
+    console.log(`error in the updateCoinsTask task: ${e.message}`);
     updateCoinsTaskFetch = false;
   });
   updateCoinsTaskFetch = true;

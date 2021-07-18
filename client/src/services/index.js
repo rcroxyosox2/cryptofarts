@@ -28,6 +28,10 @@ export const getMoonShot = (id) => {
   return fetch(`/api/moonshots/${id}`).then((resp) => resp.json());
 }
 
+export const getGreensReds = () => {
+  return fetch('/api/greensreds').then((resp) => resp.json());
+}
+
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
   var requestOptions = {
