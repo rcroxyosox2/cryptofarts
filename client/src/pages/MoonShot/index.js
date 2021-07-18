@@ -14,7 +14,7 @@ import msGirlsImg from 'components/Moonshots/images/msgirls.png';
 import copy from 'copy-to-clipboard';
 import * as styles from './styles';
 
-const FooterButton = (props) => <Button styleType="neutralInverseBordered" styleSize="small" {...props} />
+const FooterButton = (props) => <Button styleType="neutralInverseBordered" {...props} />
 
 const MoonShot = (props) => {
   const [copied, setCopied] = useState();

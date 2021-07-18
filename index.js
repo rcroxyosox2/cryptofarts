@@ -60,7 +60,7 @@ emitter.on('coinsUpdated', async () => {
   io.sockets.emit('sickdeals', sickDeals);
 
   // greens reds
-  const greensReds = await coinQueries.getGreensRed();
+  const greensReds = await coinQueries.getGreensReds();
   io.sockets.emit('greensreds', greensReds);
 
 });

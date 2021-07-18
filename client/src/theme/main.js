@@ -23,34 +23,49 @@ const colors = {
   black: '#000000',
   blue: '#0000FF',
   green:  '#00FF00',
-}
+};
 
-const badCSS = css`
+
+export const badCSS = css`
   background: ${colors.red};
   color: ${colors.white};
 `;
 
-const warnCSS = css`
+export const warnCSS = css`
   background: ${colors.yellow};
+  color: ${colors.black};
 `;
 
-const goodCSS = css`
+export const goodCSS = css`
   background: ${colors.green};
 `;
 
-const neutralCSS = css`
+export const neutralCSS = css`
   background: ${colors.black};
   color: ${colors.white};
 `;
 
-const neutralBorderedCSS = css`
+export const lrgCapCSS = css`
+  ${goodCSS}
+`;
+
+export const midCapCSS = css`
+  ${warnCSS};
+`;
+
+export const smCapCSS = css`
+  background: ${colors.pink};
+  color: ${colors.white};
+`;
+
+export const neutralBorderedCSS = css`
   background: ${colors.black};
   color: ${colors.white};
   border: 1px solid ${colors.white};
   box-shadow: none;
 `;
 
-const neutralInverseBorderedCSS = css`
+export const neutralInverseBorderedCSS = css`
   background: ${colors.white};
   color: ${colors.black};
   border: 1px solid ${colors.black};
@@ -83,11 +98,11 @@ const button = {
     neutralInverseBordered: neutralInverseBorderedCSS,
   },
   styleSize: {
-    small: css`
+    default: css`
       padding: 0.5em 1em;
       font-size: 4.5vw;
     `,
-    default: css`
+    large: css`
       padding: 1em 2em;
       font-size: 5vw;
     `,

@@ -1,5 +1,7 @@
 import badImageStyles, { images as badImages } from './bad';
 import goodImageStyles, { images as goodImages } from './good';
+import { images as greenImages } from './greens';
+import { images as redImages } from './reds';
 import pumpImageStyles from './pumps';
 import dumpImageStyles from './dumps';
 import { randomResource } from 'utils';
@@ -28,3 +30,5 @@ export const getRandomBadImgStyle = () => randomResource(badImageStyles);
 export const getRandomGoodImgStyle = () => randomResource(goodImageStyles);
 export const getRandomPumpImgStyle = () => randomResource(pumpImageStyles);
 export const getRandomDumpImgStyle = () => randomResource(dumpImageStyles);
+export const getRandomGreenImgStyle = () => randomResource(greenImages);
+export const getRandomRedImgStyle = () => randomResource(redImages);
