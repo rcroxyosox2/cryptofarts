@@ -20,9 +20,13 @@ export const getMeta = () => {
 }
 
 export const getMoonShots = (maxResults = 10) => {
-  return fetch(`/api/moonshots/${maxResults}`).then((resp) => resp.json())
+  const params = new URLSearchParams({maxResults}).toString();
+  return fetch(`/api/moonshots?${params}`).then((resp) => resp.json());
 }
 
+export const getMoonShot = (id) => {
+  return fetch(`/api/moonshots/${id}`).then((resp) => resp.json());
+}
 
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {

@@ -3,6 +3,7 @@ import testReducer, { doIt } from './test';
 import coinsReducer, { getCoinsMegaCall, getCoinsMegaCallQuietly } from './coins';
 import notifReducer, { setNotif } from './notif';
 import summaryReducer from './summary';
+import moonShotsReducer, { setMoonShots } from './moonshots';
 
 
   export { 
@@ -10,6 +11,7 @@ import summaryReducer from './summary';
     getCoinsMegaCall, 
     getCoinsMegaCallQuietly, 
     setNotif,
+    setMoonShots,
   };
 
   export default configureStore({
@@ -18,6 +20,7 @@ import summaryReducer from './summary';
       coins: coinsReducer,
       notif: notifReducer,
       summary: summaryReducer,
+      moonShots: moonShotsReducer,
     }
   });
 

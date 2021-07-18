@@ -12,11 +12,11 @@ const recordCelebAdviceTask = cron.schedule('30 12 * * *', () => {
   ]).then((respArr) => {
     recordCelebAdviceTaskFetching = false;
     if (respArr && Array.isArray(respArr)) {
-      respArr.forEach((adviceObj) => {
+      respArr.forEach(async (adviceObj) => {
         // logdna can only index so deep
         const { advice, ...restOfStuff } = adviceObj;
         const test = {...restOfStuff, ...advice};
-        logPrediction(test);
+        await logPrediction(test);
       })
     }
   }).catch((e) => {

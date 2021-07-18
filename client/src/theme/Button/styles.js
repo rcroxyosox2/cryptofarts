@@ -6,4 +6,8 @@ export const ButtonStyle = styled.button`
   ${(props) => props.theme.button.defaults}
   ${(props) => props.theme.button.styleType[props.styleType]}
   ${(props) => props.theme.button.styleSize[props.styleSize]}
+  &[disabled] {
+    text-decoration: line-through;
+    border-color: transparent;
+  }
 `;

@@ -125,9 +125,9 @@ app.get('/api/sickdeals', async (req, res) => {
 });
 
 // reddit moonshots
-app.get('/api/moonshots/:maxResults', async (req, res) => {
+app.get('/api/moonshots', async (req, res) => {
   try {
-    const maxResults = req.params.maxResults || 10;
+    const maxResults = req.query.maxResults || 10;
     const moonShots = await reddit.getRedditAsMoonShots({
       maxResults
     });

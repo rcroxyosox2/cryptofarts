@@ -88,6 +88,7 @@ const getSickDealCoins = async () => {
 }
 
 const getAvg24hrPriceChangePerc = async () => {
+  await mongo();
   const docs = await Coin.Schema.aggregate([
     { 
       $match: {

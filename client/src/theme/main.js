@@ -43,6 +43,20 @@ const neutralCSS = css`
   color: ${colors.white};
 `;
 
+const neutralBorderedCSS = css`
+  background: ${colors.black};
+  color: ${colors.white};
+  border: 1px solid ${colors.white};
+  box-shadow: none;
+`;
+
+const neutralInverseBorderedCSS = css`
+  background: ${colors.white};
+  color: ${colors.black};
+  border: 1px solid ${colors.black};
+  box-shadow: none;
+`;
+
 const button = {
   defaults: css`
     font-family: 'Comic Neue';
@@ -65,13 +79,17 @@ const button = {
       ${neutralCSS};
       box-shadow: none;
     `,
+    neutralBordered: neutralBorderedCSS,
+    neutralInverseBordered: neutralInverseBorderedCSS,
   },
   styleSize: {
     small: css`
       padding: 0.5em 1em;
+      font-size: 4.5vw;
     `,
     default: css`
       padding: 1em 2em;
+      font-size: 5vw;
     `,
   }
 }

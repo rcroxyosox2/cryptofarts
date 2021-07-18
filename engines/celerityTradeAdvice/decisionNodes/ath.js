@@ -16,7 +16,7 @@ const getDecisionNode = ({
     typeof capSize != 'string'
     || typeof athPercentage != 'number'
     || typeof athDateStr != 'string') {
-      console.error(`params not correctly set in decision node: ${name}`);
+      console.error(`params not correctly set in decision node: ${name} - ${capSize}, ${athPercentage}, ${athDateStr}`);
       return null;
     }
 

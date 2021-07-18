@@ -1,6 +1,8 @@
 
 require('dotenv').config();
+const mongo = require('../../db');
 const coinQueries = require('../../queries/coin');
+const adviceQueries = require('../../queries/coin');
 const engine = require('../engine');
 const logger = require('../../lib/logDna');
 const BugsnagClient = require('../../lib/bugsnag');
@@ -8,6 +10,7 @@ const coinGecko = require('../../lib/coinGecko');
 const alternative = require('../../lib/alternative');
 const blockChainCenter = require('../../lib/blockchaincenter');
 const coinMarketCal = require('../../lib/coinmarketcal');
+const AdviceModel = require('../../models/Advice');
 
 // TODO: tokenomics analysis
 const ath = require('./decisionNodes/ath');
@@ -101,7 +104,7 @@ const getCelebrityTradeAdvice = ({
     engineResultObj[key] = {weight, bool};
   });
   
-  engineResultObj._v = VERSION;
+  engineResultObj.version = VERSION;
   engineResultObj.summary = decision;
   return engineResultObj;
 }
@@ -151,21 +154,36 @@ const getCelebrityTradeAdviceFromCoinId = async (coinId) => {
   }
 }
 
-const logPrediction = (predicitonData) => {
-  logger.log(`celeb trade advice: ${process.env.REACT_APP_ENV}`, {
-    level: 'info', 
-    indexMeta: true,
-    meta: predicitonData,
-  });
+const logPrediction = async (predicitonData) => {
+  await mongo();
+  const prediction = new AdviceModel.Schema(predicitonData);
+  return prediction.save();
+  // logger.log(`celeb trade advice: ${process.env.REACT_APP_ENV}`, {
+  //   level: 'info', 
+  //   indexMeta: true,
+  //   meta: predicitonData,
+  // });
 }
 
 // (async function() {
-//   try {
-//     const x = await getCelebrityTradeAdviceFromCoinId('safemoon');
-//     console.log(x);
-//   } catch(e) {
-//     console.log(e)
-//   }
+//   Promise.all([
+//     getCelebrityTradeAdviceFromCoinId('ethereum'),
+//     getCelebrityTradeAdviceFromCoinId('helium'),
+//     getCelebrityTradeAdviceFromCoinId('kishu-inu'),
+//   ]).then((respArr) => {
+//     recordCelebAdviceTaskFetching = false;
+//     if (respArr && Array.isArray(respArr)) {
+//       respArr.forEach(async (adviceObj) => {
+//         // logdna can only index so deep
+//         const { advice, ...restOfStuff } = adviceObj;
+//         const test = {...restOfStuff, ...advice};
+//         await logPrediction(test);
+//       })
+//     }
+//   }).catch((e) => {
+//     console.log(e);
+//     recordCelebAdviceTaskFetching = false;
+//   });
 // })();
 
 

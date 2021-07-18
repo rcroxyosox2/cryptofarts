@@ -38,5 +38,6 @@ export const AppStyle = createGlobalStyle`
   body {
     font-family: 'Comic Neue';
     font-weight: bold;
+    transition: background 0.3s ease-in;
   }
 `;
