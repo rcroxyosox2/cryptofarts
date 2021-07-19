@@ -22,10 +22,15 @@ export const FilterButtonStyle = styled(ButtonStyle)`
 `;
 
 export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyle'})`
+padding: 0 9vw;
   nav {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1vh;
     div {
       display: flex;
       flex-flow: row nowrap;
+      gap: 2vw;
       > * {
         width: 33%;
         > span {
