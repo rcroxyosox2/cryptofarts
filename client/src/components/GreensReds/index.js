@@ -47,6 +47,7 @@ const GreensReds = () => {
     <styles.GreensRedsStyle>
       <nav>
         <div>
+          {/* <img {...getRandomGreenImgStyle()} /> */}
           <FB filterType="green" selected>Da Greenz</FB>
           <FB filterType="red" selected>Da Redz</FB>
         </div>

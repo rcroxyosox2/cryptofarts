@@ -31,7 +31,7 @@ padding: 0 9vw;
       display: flex;
       flex-flow: row nowrap;
       gap: 2vw;
-      > * {
+      > button {
         width: 33%;
         > span {
           display: block;
