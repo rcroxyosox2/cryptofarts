@@ -1,6 +1,7 @@
 import { expiresInMinutes } from './general';
 // import { randomResource } from 'utils';
 import { uniqBy, filter, sortBy, reverse } from 'lodash';
+import { setCoinsLoadError } from 'redux/coins';
 
 // Coins are fetched at this interval
 export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
@@ -17,11 +18,12 @@ export const coinPerformanceRanges = [
   [0, 2],
   [2, 8],
   [8, 10],
-  [10, undefined], // big pumps
+  [10, 20],
+  [20, undefined], // big pumps
 ];
 
 export const coinHasBigPump = (coin) => {
-  return getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges.slice(-1));
+  return getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[coinPerformanceRanges.length-1]);
 }
 
 export const coinHasBigDump = (coin) => {

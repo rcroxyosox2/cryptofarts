@@ -32,6 +32,11 @@ export const getGreensReds = () => {
   return fetch('/api/greensreds').then((resp) => resp.json());
 }
 
+export const getTrending = () => {
+  return fetch('/api/trending').then((resp) => resp.json());
+}
+
+
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
   var requestOptions = {

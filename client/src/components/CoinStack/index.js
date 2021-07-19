@@ -11,6 +11,7 @@ import {
   coinHasBigDump,
   COIN_CHANGE_KEY,
 } from 'brains/coins';
+const PUMP_PERC_THRESHOLD = 20;
 
 const CoinRow = ({coin, onClick, delay}) => {
 
@@ -32,7 +33,7 @@ const CoinRow = ({coin, onClick, delay}) => {
       <styles.CoinStyleRowContainer>
         <div className="coinNameCol">
           <div>{coin.symbol}</div>
-          <div>{coin.name}</div>
+          <div>{coin.name }</div>
         </div>
         <div className="sparkLinePriceCol">
           <Sparklines data={sparkLineData} margin={10} height={60}>

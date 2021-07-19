@@ -12,6 +12,7 @@ import moonShotsTextImg from './images/moonshots.png';
 import { sizeChanger, blink } from 'theme/animations';
 import MoonShot from 'pages/MoonShot';
 import socket from 'services/socket';
+import shine from 'images/shine.png';
 import Modal from 'theme/Modal';
 export const MAX_RESULTS = 20;
 
@@ -160,8 +161,8 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
       position: absolute;
       width: 45%;
       height: 100%;
-      right: 28vw;
-      top: 25vh;
+      right: 4%;
+      top: 24vh;
       transform: rotate(6deg) scale(1.1);
     }
   }
@@ -205,10 +206,22 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     li {
       list-style: none;
       position: relative;
-      height: 32vh;
+      height: 28vh;
       &:nth-child(3n+1) {
         transform: rotate(-2deg);
       }
+      /* > i {
+        display: block;
+        position: absolute;
+        background-image: url(${shine});
+        background-position: bottom left;
+        background-repeat: no-repeat;
+        background-size: 50%;
+        width: 100%; height: 100%;
+        left: 9%;
+        bottom: 5%;
+        opacity: 0.6;
+      } */
       div {
         /* background: #1e90ff; */
         /* clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%); */
@@ -343,6 +356,7 @@ const Moonshots = () => {
           {
             moonShots.map((shot, i) => (
               <li key={shot.id} onClick={handleClick(shot.id)}>
+                <i />
                 <div ref={refs[i]}>
                   <span></span>
                   <aside>{he.decode(shot.title.replace(/\|/g, ':::'))}</aside>

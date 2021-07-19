@@ -15,8 +15,11 @@ const getCoinEventCount = async (coinId) => {
 
 const getSickDealCoins = async () => {
   const { Schema, capSizes, caps } = Coin;
-  const sort = {'ath_change_percentage': 1, 'market_cap': -1};
-  const LIMIT = 12;
+  const sort = {
+    'market_cap': -1,
+    'ath_change_percentage': 1, 
+  };
+  const LIMIT = 50;
   const fields = [
     'id',
     'name',
@@ -68,7 +71,7 @@ const getSickDealCoins = async () => {
   await mongo();
   return Schema.find({
     'market_cap': {
-      $gte: capSizes[caps.LRG], 
+      $gte: capSizes[caps.MID2], 
     },
     'ath_change_percentage': requirement
   }).select(fields).sort(sort).limit(LIMIT);
@@ -207,10 +210,10 @@ const getGreensReds = async () => {
   };
 
   await mongo();
-  return Coin.Schema.aggregate([
+  const doc = await Coin.Schema.aggregate([
     {
       $facet: {
-        smallCapReds: [{
+        smred: [{
           $match: {
               price_change_percentage_24h: {
                 $lt: 0
@@ -225,7 +228,7 @@ const getGreensReds = async () => {
           {$limit: LIMIT},
           project,
         ],
-        smallCapGreens: [{
+        smgreen: [{
           $match: {
               price_change_percentage_24h: {
                 $gt: 0
@@ -240,7 +243,7 @@ const getGreensReds = async () => {
           {$limit: LIMIT},
           project,
         ],
-       midCapReds: [{
+       midred: [{
           $match: {
               price_change_percentage_24h: {
                 $lt: 0
@@ -255,7 +258,7 @@ const getGreensReds = async () => {
           {$limit: LIMIT},
           project,
         ],
-        midCapGreens: [{
+        midgreen: [{
           $match: {
               price_change_percentage_24h: {
                 $gt: 0
@@ -270,7 +273,7 @@ const getGreensReds = async () => {
           {$limit: LIMIT},
           project,
         ],
-        lrgCapReds: [{
+        lrgred: [{
           $match: {
               price_change_percentage_24h: {
                 $lt: 0
@@ -284,7 +287,7 @@ const getGreensReds = async () => {
           {$limit: LIMIT},
           project,
         ],
-        lrgCapGreens: [{
+        lrggreen: [{
           $match: {
               price_change_percentage_24h: {
                 $gt: 0
@@ -301,6 +304,8 @@ const getGreensReds = async () => {
       }
     }
   ])
+
+  return Array.isArray(doc) ? doc[0] : doc;
 }
 
 // (async function() {

@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import * as styles from './styles';
 import { getGreensReds } from 'services/';
 import socket from 'services/socket';
 import Button from 'theme/Button';
+import CoinStack from 'components/CoinStack';
+import PointTo from 'components/PointTo';
 import { getRandomGreenImgStyle, getRandomRedImgStyle } from 'images/';
 
-const FB = ({children, ...props}) => (
-  <styles.FilterButtonStyle {...props}>
+const FB = ({children, selection, onClick = () => null, ...props} = {}) => (
+  <styles.FilterButtonStyle {...props} selected={selection === props.filterType} onClick={(e) => {
+    onClick(e, props.filterType);
+  }}>
     {
       (typeof children === 'string') 
       ? <span dangerouslySetInnerHTML={{__html: children.split(' ').join('<br />')}} /> 
@@ -20,16 +25,24 @@ const GreensReds = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [greensReds, setGreensReds] = useState(null);
+  const [greenRedSelection, setGreenRedSelection] = useState(null);
+  const [capSelection, setCapSelection] = useState(null);
+  const [animated, setAnimated] = useState(false);
+
   const socketFn = (greensReds) => {
+    setAnimated(true);
     setGreensReds(greensReds);
   };
 
   useEffect(() => {
     setLoading(true);
     getGreensReds().then((resp) => {
+      setAnimated(true);
       setLoading(false);
       setError(false);
       setGreensReds(resp);
+      setGreenRedSelection('green');
+      setCapSelection('lrg');
     }).catch((e) => {
       setLoading(false);
       setError(e);
@@ -38,26 +51,53 @@ const GreensReds = () => {
 
     socket
     .off(socketName, socketFn)
-    .on(socketName, socketFn)
+    .on(socketName, socketFn);
+
   }, [])
 
-  console.log(greensReds);
+  const handleFilter = (setFn) => (e, filterType) => {
+    if ([greenRedSelection,capSelection].includes(filterType)) {
+      return;
+    }
+    setAnimated(false);
+    setFn && setFn(filterType);
+  }
+
+  const key = `${capSelection}${greenRedSelection}`;
 
   return (
     <styles.GreensRedsStyle>
+      <PointTo />
       <nav>
         <div>
-          {/* <img {...getRandomGreenImgStyle()} /> */}
-          <FB filterType="green" selected>Da Greenz</FB>
-          <FB filterType="red" selected>Da Redz</FB>
+          <div>
+            <div className="imgWrapper">
+              <CSSTransition in={greenRedSelection === 'green'} timeout={300} >
+                <img {...getRandomGreenImgStyle()} />
+              </CSSTransition>
+              <CSSTransition in={greenRedSelection === 'red'} timeout={300} >
+                <img {...getRandomRedImgStyle()} />
+              </CSSTransition>
+            </div>
+          </div>
+          <FB filterType="green" selection={greenRedSelection} onClick={handleFilter(setGreenRedSelection)}>Da Greenz</FB>
+          <FB filterType="red" selection={greenRedSelection} onClick={handleFilter(setGreenRedSelection)}>Da Redz</FB>
         </div>
         <div>
-          <FB filterType="lrg" selected>Lrg capz</FB>
-          <FB filterType="mid" selected>Mid capz</FB>
-          <FB filterType="sm" selected>Sm capz</FB>
+          <FB filterType="lrg" selection={capSelection} onClick={handleFilter(setCapSelection)} data-content="(regular risk coinz)" >
+            <i />Lrg capz
+          </FB>
+          <FB filterType="mid" selection={capSelection} onClick={handleFilter(setCapSelection)} data-content="(riskier coinz)" >
+            <i />Mid capz
+          </FB>
+          <FB filterType="sm" selection={capSelection} onClick={handleFilter(setCapSelection)} data-content="(most risky coinz)" >
+            <i />Sm capz
+          </FB>
         </div>
       </nav>
-      Hello there world
+      <main>
+        {greensReds && greensReds[key] && <CoinStack animated={animated} coins={greensReds[key]} />}
+      </main>
     </styles.GreensRedsStyle>
   );
 };

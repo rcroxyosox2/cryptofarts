@@ -1,5 +1,33 @@
 import styled, {css, keyframes} from 'styled-components';
 import { flipAnimation } from 'theme/animations';
+import buffImg from 'images/buffarm.png';
+
+export const buff = keyframes`
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+`;
+
+const bigPumpCSS = css`
+  &:after {
+    animation: ${buff} 1.2s ease-in-out 0s infinite;
+    transform-origin: 100% 100%;
+    content: "";
+    position: absolute;
+    right: 96%;
+    top: 50%;
+    margin-top: -5.5vw;
+    background-image: url(${buffImg});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center right;
+    width: 11vw;
+    height: 11vw;
+  }
+`;
 
 export const CoinStyleRowContainer = styled.div.attrs({ className: 'CoinStyleRowContainer' })`
   display: flex;
@@ -56,6 +84,10 @@ export const CoinStackRowStyle = styled.div`
         position: absolute;
         left: 0;
         bottom: 0;
+        max-width: 28vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;        
       }
     }
   }
@@ -78,6 +110,8 @@ export const CoinStackRowStyle = styled.div`
   .percChangeCol {
     flex: 20%;
     padding: 0.3rem;
+    position: relative;
+    ${(props) => props.bigPump ? bigPumpCSS : null}
   }
   ${(props) => Boolean(props.red) ? redRowCSS : null }
   ${(props) => Boolean(props.green) ? greenRowCSS : null }
