@@ -4,6 +4,17 @@ const Coin = require('../models/Coin');
 const { caps, capSizes, getNextCapSize, CURRENCY, COIN_CHANGE_KEY } = require('../contants');
 const SICK_DEAL_MINIMUM_PERC = -10;
 
+const fields = [
+  'id',
+  'name',
+  'symbol',
+  'image',
+  'current_price',
+  'ath_change_percentage',
+  'sparkline_in_7d',
+  COIN_CHANGE_KEY,
+].join(' ');
+
 const getCoin = (query = {}) => {
   return Coin.Schema.find(query).limit(1);
 }
@@ -174,17 +185,6 @@ const getGreensRedsByQuery = async ({redOrGreen = 'red', cap = caps.LRG, maxResu
     query['$lt'] = capSizes[nextCapSize];
   };
 
-  const fields = [
-    'id',
-    'name',
-    'symbol',
-    'image',
-    'current_price',
-    'ath_change_percentage',
-    'sparkline_in_7d',
-    COIN_CHANGE_KEY,
-  ].join(' ');
-
   await mongo();
   return Coin.Schema.find({
     'market_cap': query,
@@ -353,6 +353,7 @@ const getGreensReds = async () => {
 // })();
 
 module.exports = { 
+  fields,
   getCoin,
   getSickDealCoins,
   getAvg24hrPriceChangePerc,

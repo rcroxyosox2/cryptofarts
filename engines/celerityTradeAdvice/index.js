@@ -165,27 +165,29 @@ const logPrediction = async (predicitonData) => {
   // });
 }
 
-// (async function() {
-//   Promise.all([
-//     getCelebrityTradeAdviceFromCoinId('ethereum'),
-//     getCelebrityTradeAdviceFromCoinId('helium'),
-//     getCelebrityTradeAdviceFromCoinId('kishu-inu'),
-//   ]).then((respArr) => {
-//     recordCelebAdviceTaskFetching = false;
-//     if (respArr && Array.isArray(respArr)) {
-//       respArr.forEach(async (adviceObj) => {
-//         // logdna can only index so deep
-//         const { advice, ...restOfStuff } = adviceObj;
-//         const test = {...restOfStuff, ...advice};
-//         await logPrediction(test);
-//       })
-//     }
-//   }).catch((e) => {
-//     console.log(e);
-//     recordCelebAdviceTaskFetching = false;
-//   });
-// })();
+(async function() {
+  Promise.all([
+    getCelebrityTradeAdviceFromCoinId('ethereum'),
+    getCelebrityTradeAdviceFromCoinId('helium'),
+    getCelebrityTradeAdviceFromCoinId('kishu-inu'),
+  ]).then((respArr) => {
+    recordCelebAdviceTaskFetching = false;
+    if (respArr && Array.isArray(respArr)) {
+      respArr.forEach(async (adviceObj) => {
+        await logPrediction(adviceObj);
+      })
+    }
+  }).catch((e) => {
+    console.log(e);
+    recordCelebAdviceTaskFetching = false;
+  });
+})();
 
+// (async function() {
+//   const x = await getCelebrityTradeAdviceFromCoinId('ethereum');
+//   logPrediction(x);
+//   console.log(x);
+// })();
 
 module.exports = {
   getCelebrityTradeAdvice,

@@ -6,6 +6,7 @@ const adviceSchema = new Schema(
     coinId: String,
     currentPrice: Number,
     advice: {
+      ath: { weight: Number, bool: Boolean },
       community: { weight: Number, bool: Boolean, },
       greedFearIndex: { weight: Number, bool: Boolean },
       random: { weight: Number, bool: Boolean },

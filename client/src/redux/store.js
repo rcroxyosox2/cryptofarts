@@ -4,6 +4,7 @@ import coinsReducer, { getCoinsMegaCall, getCoinsMegaCallQuietly } from './coins
 import notifReducer, { setNotif } from './notif';
 import summaryReducer from './summary';
 import moonShotsReducer, { setMoonShots } from './moonshots';
+import trendingReducer, { setTrending } from './trending';
 
 
   export { 
@@ -12,6 +13,7 @@ import moonShotsReducer, { setMoonShots } from './moonshots';
     getCoinsMegaCallQuietly, 
     setNotif,
     setMoonShots,
+    setTrending,
   };
 
   export default configureStore({
@@ -21,6 +23,7 @@ import moonShotsReducer, { setMoonShots } from './moonshots';
       notif: notifReducer,
       summary: summaryReducer,
       moonShots: moonShotsReducer,
+      trending: trendingReducer,
     }
   });
 

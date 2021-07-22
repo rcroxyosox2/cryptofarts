@@ -65,6 +65,15 @@ emitter.on('coinsUpdated', async () => {
 
 });
 
+// trending
+const trendingInterval = 1000 * 60;
+setInterval(() => {
+  coinGecko.getTrending().then(async (trending) => {
+    const query = trending.map((coin) => ({id: coin.item.id}));
+    const coins = await Coin.Schema.find({$or: query});
+    io.sockets.emit('trending', coins);
+  })
+}, trendingInterval);
 
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
@@ -169,10 +178,11 @@ app.get('/api/greensreds', async(req, res) => {
 })
 
 // trending
+
 app.get('/api/trending', (req, res) => {
   coinGecko.getTrending().then(async (trending) => {
     const query = trending.map((coin) => ({id: coin.item.id}));
-    const coins = await Coin.Schema.find({$or: query});
+    const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
     res.send(coins);
   }).catch((e) => {
     res.status(500).send({
