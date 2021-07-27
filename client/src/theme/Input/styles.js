@@ -5,9 +5,9 @@ export const InputStyle = styled.input`
   font-family: inherit;
   font-weight: bold;
   outline: none;
-  font-size: 7vw;
+  font-size: 1.5rem;
   width: 100%;
-  padding: 3vw;
+  padding: 4.3%;
   transition: all 280ms ease-in-out;
   &:focus {
     border-color: ${(props) => props.theme.colors.pink};

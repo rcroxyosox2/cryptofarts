@@ -1,36 +1,37 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 
 export const MoonShotStyle = styled.div.attrs({ className: 'MoonShotStyle' })`
+  position: realtive;
   color: white;
   background: black;
   .contractBox {
     border: 1px solid white;
-    padding: 3.2vw;
+    padding: 3.2%;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    font-size: 3.2vw;
-    margin-bottom: 5vh;
+    font-size: 0.8rem;
+    margin-bottom: 5%;
     position: relative;
     i {
       display: block;
       border: 1px solid white;
-      width: 2.5vw;
-      height: 3.2vw;
+      width: 13px;
+      height: 16px;
       position: relative;
-      left: 1.1vw;
-      bottom: 0.6vw;
+      left: 1.1%;
+      bottom: 0.6%;
       &:after {
         content: "";
         display: block;
         position: relative;
         background: black;
         border: 1px solid white;
-        width: 2.1vw;
-        height: 2.9vw;
-        left: -1.1vw;
-        bottom: -0.6vw;
+        width: 100%;
+        height: 100%;
+        left: -33%;
+        bottom: -8%;
       }
     }
   }
@@ -40,31 +41,31 @@ export const MoonShotStyle = styled.div.attrs({ className: 'MoonShotStyle' })`
     flex-flow: column nowrap;
     justify-content: flex-end;
     align-items: flex-start;
-    height: 25vh;
+    height: 25%;
     h1 {
-      font-size: 8vh;
-      max-width: 91%;
+      font-size: 2.5rem;
+      max-width: 72%;
       text-shadow: 4px 4px 0 black;
       transform: rotate(-5deg);
-      line-height: 6.7vh;
+      line-height: 1em;
     }
   }
   a {
     word-break: break-word;
     color: ${(props) => props.theme.colors.pink};
-    font-size: 3.5vh;
+    font-size: 1.5rem;
   }
 `;
 
 export const FooterStyle = styled.footer`
   display: flex;
   flex-flow: row nowrap;
-  position: sticky;
+  position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
   justify-content: space-between;
-  padding: 6vh 3vh 5vw;
+  padding: 10% 3% 5%;
   background-color: white;
   clip-path: polygon(0% 22%,100% 0%,100% 100%, 0% 100%);
   z-index: 2;
@@ -78,23 +79,38 @@ export const FooterStyle = styled.footer`
   &.enter, &.enter-active, &.enter-done {
     opacity: 1; 
   }
+  ${(props) => {
+    console.log(props.footerState);
+    if (props.footerState === 'sticky') {
+      return css`
+        position: sticky;
+        opacity: 1;
+      `
+    }
+    if (props.footerState === 'stable') {
+      return css`
+        position: absolute;
+        opacity: 1 !important;
+      `
+    }
+  }}
 `;
 
-export const ImageAreaStyle = styled.div`
+export const ImageAreaStyle = styled.div.attrs({className: 'ImageAreaStyle'})`
   .StarsStyle {
-    position: fixed;
+    position: absolute;
     z-index: 2;
-    height: 13vh;
+    height: 13%;
     width: 78vw;
     left: 37%;
-    top: 39vh;
+    top: 39%;
     transform: scale(1.5);
   }
   .moonImg {
     z-index: 1;
-    width: 120vw;
-    height: 120vw;
-    position: fixed;
+    width: 120%;
+    height: 65%;
+    position: absolute;
     transition: all 0.3s ease-out;
     left: -8%;
     top: -35%;
@@ -105,9 +121,8 @@ export const ImageAreaStyle = styled.div`
     transform: rotate(5deg);
     transition: all 0.3s ease-out;
     right: 13%;
-    top: -0.8vh;
-    width: 37vw;
-    height: 29vw;
+    top: -3%;
+    width: 37%;
     opacity: 0;
   }
 
@@ -118,7 +133,7 @@ export const ImageAreaStyle = styled.div`
     }
     .girlzImg {
       right: 1%;
-      top: 8.8vh;
+      top: -1.2%;
       opacity: 1;
     }
     .StarsStyle {
@@ -130,12 +145,14 @@ export const ImageAreaStyle = styled.div`
 `;
 
 export const MainContentStyle = styled.main.attrs({ className: 'MainContentStyle'})`
-  padding: 0 8vw 5vh;
+  padding: 0 8% 5%;
   z-index: 2;
   position: relative;
-  min-height: 100vh;
+  min-height: 100%;
   transition: all 0.3s ease-out;
   opacity: 0;
+  width: 100%;
+  top: 0;
   &.enter, &.enter-active, &.enter-done {
     opacity: 1; 
   }
@@ -148,7 +165,7 @@ export const CopiedStyle = styled.div`
   transition: all 0.3s ease-out;
   opacity: 0;
   background: ${(props) => props.theme.colors.pink};
-  padding: 2vh;
+  padding: 2%;
   transform: rotate(3deg);
   color: black;
   &.enter, &.enter-active, &.enter-done {
@@ -159,11 +176,11 @@ export const CopiedStyle = styled.div`
 export const LoadingStyle = styled.div`
   transition: all 0.3s ease-out;
   opacity: 0;
-  transform: translateY(-3vh);
-  top: 43vh;
+  transform: translateY(-3%);
+  top: 43%;
   z-index: 3;
   width: 100%;
-  font-size: 14vw;
+  font-size: 2.5rem;
   text-align: center;
   position: absolute;
   &.enter, &.enter-active, &.enter-done {
@@ -173,7 +190,7 @@ export const LoadingStyle = styled.div`
 `;
 
 export const GlobalStyle = createGlobalStyle`
-  body {
+  #root {
     background: black;
   }
 `;

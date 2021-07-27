@@ -37,12 +37,21 @@ const Trending = () => {
 
   return (
     <styles.TrendingStyle>
-      <img src={trendingImg} alt="trending" className="trending" />
-      <div className="cloudContainer">
-        <img src={longCloudImg} alt="long cloud" className="longCloud" />
-        <img src={shortCloudImg} alt="short cloud" className="shortCloud" />
-      </div>
-      <RainBow />
+      <header>
+        <img src={trendingImg} alt="trending" className="trending" />
+      </header>
+      <styles.CloudBox className="longCloud"><img src={longCloudImg} alt="long cloud" /></styles.CloudBox>
+      <styles.CloudBox className="shortCloud"><img src={shortCloudImg} alt="short cloud" /></styles.CloudBox>
+      <div className="rainbowContainer"><RainBow /></div>
+      <ul>
+        <li>here is the first</li>
+        <li>here is the first</li>
+        <li>here is the first</li>
+        <li>here is the first</li>
+        <li>here is the first</li>
+        <li>here is the first</li>
+        <li>here is the first</li>
+      </ul>
     </styles.TrendingStyle>
   );
 }

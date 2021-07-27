@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import computer from 'images/computer.png';
 import { bobRotate, blink } from 'theme/animations';
 
-export const ComputerStyle = styled.div`
+export const ComputerStyle = styled.div.attrs({className: 'ComputerStyle'})`
   animation: ${bobRotate} 1.2s ease-in-out 0s infinite;
   background-image: url(${computer});
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
   width: 100%;
-  height: 40vh;
+  height: 100%;
   color: white;
   position: relative;
   display: flex;
@@ -19,20 +19,21 @@ export const ComputerStyle = styled.div`
   margin: 0 auto;
   z-index: 2;
   span {
-    bottom: 11vh;
+    top: -27%;
+    left: -6%;
+    height: 29%;
+    width: 25%;
     display: block;
     position: relative;
-    font-size: 3vh;
+    font-size: 3%;
     transform: skew(1deg, -6deg);
-    height: 11vh;
-    left: -3vh;
-    width: 14vh;
-    padding: 0.4vh 1.5vh 1.5vh;
+    padding: 0.4% 1.5% 1.5%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2; /* number of lines to show */
     -webkit-box-orient: vertical;
+    font-size: 1.4rem;
     aside {
       animation: ${blink} 1.2s ease-in-out 0s infinite;
     }

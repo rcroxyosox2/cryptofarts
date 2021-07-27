@@ -14,7 +14,7 @@ export const jiggle = keyframes`
     transform: rotate(0deg);
   }
   50% {
-    transform: rotate(-0.8deg);
+    transform: rotate(-3deg);
   }
 `;
 

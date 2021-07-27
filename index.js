@@ -69,7 +69,7 @@ emitter.on('coinsUpdated', async () => {
 const trendingInterval = 1000 * 60;
 setInterval(() => {
   coinGecko.getTrending().then(async (trending) => {
-    const query = trending.map((coin) => ({id: coin.item.id}));
+    const query = trending.map((coin) => ({id: coin.item.id})).select(coinQueries.fields);
     const coins = await Coin.Schema.find({$or: query});
     io.sockets.emit('trending', coins);
   })

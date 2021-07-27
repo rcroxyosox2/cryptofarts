@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 export const randomResource = (arr) => {
   const randomInteger = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -42,6 +43,10 @@ export function getKeyCode(event, keyCodeObj) {
     return event[keyOrKeyCode];
   }
 
+}
+
+export function formatPerc(n) {
+  return `${n >= 0 ? '+' : ''}${numeral(n).format('0.0')}%`;
 }
 
 export function eventHasKeyCode(event, keyCodes) {

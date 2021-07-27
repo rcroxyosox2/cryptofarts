@@ -64,7 +64,7 @@ const GreensReds = () => {
   }
 
   const key = `${capSelection}${greenRedSelection}`;
-
+  const filteredCoins = (key && greensReds) ? greensReds[key] : null;
   return (
     <styles.GreensRedsStyle>
       <PointTo />
@@ -96,7 +96,12 @@ const GreensReds = () => {
         </div>
       </nav>
       <main>
-        {greensReds && greensReds[key] && <CoinStack animated={animated} coins={greensReds[key]} />}
+        {
+          greensReds && filteredCoins && <CoinStack animated={animated} coins={filteredCoins} />
+        }
+        {
+          greensReds && filteredCoins && !filteredCoins.length && <div> Dang no <mark className={greenRedSelection}>{greenRedSelection}Z</mark> found</div>
+        }
       </main>
     </styles.GreensRedsStyle>
   );

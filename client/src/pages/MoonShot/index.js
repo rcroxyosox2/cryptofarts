@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Stars, MAX_RESULTS } from 'components/Moonshots';
 import moonImg from 'components/Moonshots/images/moon.png';
 import msGirlsImg from 'components/Moonshots/images/msgirls.png';
+import { throttle } from 'lodash';
 import copy from 'copy-to-clipboard';
 import * as styles from './styles';
 
@@ -23,6 +24,7 @@ const MoonShot = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   const [mounted, setMounted] = useState(false);
   const { data: moonShots } = useSelector((state) => state.moonShots);
+  const [footerState, setFooterState] = useState(null);
   const history = useHistory();
   const parentRef = useRef();
   const request = useRequest({
@@ -33,7 +35,17 @@ const MoonShot = (props) => {
   }
 
   useEffect(() => {
-    console.log(mounted);
+    const root = document.getElementById('root');
+    const modal = document.querySelector('.ModalContainerStyle');
+    const useElm = modal ? modal : root;
+    const x = throttle(() => {
+      const top = useElm.pageYOffset || useElm.scrollTop;
+      setFooterState(top > 0 ? 'sticky' : 'stable');
+    }, 5)
+    useElm.addEventListener('scroll', x);
+  }, []);
+
+  useEffect(() => {
     if (request.response && !mounted) {
       setMounted(true);
     }
@@ -110,6 +122,7 @@ const MoonShot = (props) => {
   // shot?.body && console.log(mdToHTML(shot.body))
   const body = shot?.body ? marked(shot.body) : '';
   const loading = request.loading;
+  
   return (
     <styles.MoonShotStyle ref={parentRef}>
       {props.isOpen && <styles.GlobalStyle /> }
@@ -148,7 +161,7 @@ const MoonShot = (props) => {
       </CSSTransition>
 
       <CSSTransition in={mounted} timeout={300}>
-        <styles.FooterStyle>
+        <styles.FooterStyle footerState={footerState}>
           <div>
             <FooterButton onClick={handleCloseClick}>
               close

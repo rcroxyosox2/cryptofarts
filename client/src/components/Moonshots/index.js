@@ -68,7 +68,7 @@ const StarsStyle = styled.div.attrs({ className: 'StarsStyle' })`
 const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
   position: relative;
   color: white;
-  padding-top: 2vh;
+  padding-top: 2%;
   &.enter, &.enter-active, &.enter-done {
     header {
       img {
@@ -80,8 +80,10 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
       }
       &:after {
         transform: rotate(0deg);
+        left: auto;
         right: 0;
-        top: -2vh;
+        top: -2%;
+        opacity: 1;
       }
       ${StarsStyle} {
         width: 100%;
@@ -98,7 +100,8 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     }
     ul {
       opacity: 1;
-      max-height: 40vh;
+      max-height: 40%;
+      padding: 4% 0 18% 6%;
     }
   }
   &:after {
@@ -126,31 +129,31 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
     ${StarsStyle} {
       width: 50%;
       height: 100%;
-      left: 38vw;
-      top: 8vh;
+      left: 38%;
+      top: 8%;
     }
     img {
-      margin-top: 2vh;
+      margin-top: 2%;
       width: 62%;
       animation: ${sizeChanger} 2s ease-in-out infinite;
       position: relative;
       transition: all 0.3s ease-in-out;
-      top: 8vh;
-      left: 20vw;
+      top: 8%;
+      left: 20%;
     }
     &:before {
       content: "";
       position: absolute;
       background-image: url(${moonImg});
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: contain;
       transition: all 0.3s ease-in-out;
-      width: 17vw;
-      height: 17vw;
-      top: -7vh;
-      left: 15vw;
+      width: 16%;
+      height: 52%;
+      top: -26%;
+      left: 15%;
       z-index: 2;
-      transform: translate(27vw, 6vw) scale(1.5);
+      transform: translate(27%, 6%) scale(1.5);
     }
     &:after {
       content: "";
@@ -161,30 +164,30 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
       position: absolute;
       width: 45%;
       height: 100%;
-      right: 4%;
-      top: 24vh;
+      left: 27%;
+      top: 24%;
+      opacity: 0;
       transform: rotate(6deg) scale(1.1);
     }
   }
   
   .loadingSection {
     width: 100%;
-    padding: 8vh 6vw 2vh;
+    padding: 8% 6% 20%;
     text-align: center;
-    font-size: 2vh;
+    font-size: 1rem;
     transition: all 0.3s ease-in-out;
-    transform: translate(-16vw, -17vh);
-    max-height: 13vh;
+    max-height: 13%;
     opacity: 1;
   }
   ul {
-    width: 93vw;
+    width: 93%;
     overflow-x: scroll;
     white-space: nowrap;
     display: grid;
-    grid-template-columns: repeat(${MAX_RESULTS}, 55vw);
-    gap: 5vw;
-    padding: 4vh 0 7vh 6vw;
+    grid-template-columns: repeat(${MAX_RESULTS}, 60%);
+    gap: 5%;
+    padding: 0;
     margin: 0;
     transition: all 0.3s ease-in-out;
     transform: rotate(1deg);
@@ -198,15 +201,16 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
       right: 0;
       top: 0;
       height: 100%;
-      width: 2vw;
+      width: 3%;
       display: block;
       background: black;
-      box-shadow: -1vw -1vw 5vw 6vw black;
+      box-shadow: 0 0 7px 8px black;
+      opacity: 1;
     }
     li {
       list-style: none;
       position: relative;
-      height: 28vh;
+      height: 100%;
       &:nth-child(3n+1) {
         transform: rotate(-2deg);
       }
@@ -230,7 +234,7 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
         white-space: normal;
         height: 100%;
         overflow-y: scroll;
-        padding-top: 0.5vh;
+        padding-top: 0.5%;
         > span {
           box-sizing: content-box;
           &:before, &:after {
@@ -238,7 +242,7 @@ const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyles' })`
             content: '';
             width: 50%; 
             height: 200%;
-            shape-margin: 3vw;
+            shape-margin: 3%;
             display: block;
           }
           &:before {

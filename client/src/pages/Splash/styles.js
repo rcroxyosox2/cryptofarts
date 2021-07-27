@@ -28,7 +28,7 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
     bottom: 0;
     ${PointToStyle} {
       bottom: 115%;
-      width: 20vw;
+      width: 37%;
       left: 25%;
       transform: rotate(-8deg);
     }
@@ -64,8 +64,8 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
       }
     }
     .beyonce {
-      top: 6vw;
-      left: 1vw;
+      top: 6%;
+      left: 1%;
       img {
         /* width: 130%;
         max-width: none; */
@@ -79,10 +79,10 @@ export const CTAContainerStyle = styled.div.attrs({ className: 'CTAContianerStyl
   white-space: nowrap;
   &:after { 
     position: absolute;
-    left: 96%;
-    bottom: 100%;
+    left: 71%;
+    bottom: 109%;
     text-align: right;
     content: attr(data-content);
-    font-size: 4.7vw;
+    font-size: 2em;
   }
 `;

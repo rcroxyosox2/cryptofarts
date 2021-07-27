@@ -11,36 +11,38 @@ const ModalContainerStyle = styled.div.attrs({className: 'ModalContainerStyle'})
   transition: opacity ${ANIM_SPEED - 100}ms ease-out, transform ${ANIM_SPEED}ms ease-out;
   background: transparent;
   position: fixed;
+  width: 375px;
+  height: 667px;
+  left: 50%;
+  top: 50%;
+  /* margin-left: -50%;
+  margin-top: -50%; */
   display: flex;
   overflow-x: hidden;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
-  width: 100%;
-  height: 100%;
   z-index: 101;
   justify-content: center;
   align-items: flex-start;
-  top: 0;
-  left: 0;
   ${props => {
-    let translateY = '-2%';
     let opacity = '0';
     let scale = '0.7';
     let overflow = 'hidden';
 
     if (props.animationStatus === 'entered') {
       opacity = '1';
-      translateY = '0';
       scale = '1';
       overflow = 'auto';
     }
     return css`
       opacity: ${opacity};
-      transform: translateY(${translateY}) scale(${scale});
+      transform: translate(-50%, -50%) scale(${scale});
       overflow-y: ${overflow};
     `;
   }}
   @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    width: 100%;
+    height: 100%;
     display: block;
     background: ${props => props.dark ? 'black' : 'white'};
   }
@@ -60,6 +62,9 @@ const ModalContentStyle = styled.div.attrs({className: 'ModalContentStyle'})`
   margin: 5% 0;
   position: relative;
   max-width: ${ props => props.maxWidth };
+  width: 100%;
+  height: 100%;
+  margin: 0;
   @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     width: 100%;
     margin: 0;

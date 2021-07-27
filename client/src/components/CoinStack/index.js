@@ -6,6 +6,7 @@ import {
   Sparklines,
   SparklinesLine,
 } from 'react-sparklines';
+import { formatPerc } from 'utils';
 import {
   coinHasBigPump,
   coinHasBigDump,
@@ -31,6 +32,9 @@ const CoinRow = ({coin, onClick, delay}) => {
       delay={delay}
       >
       <styles.CoinStyleRowContainer>
+        <div className="coinImgCol">
+          <img src={coin.image} alt={coin.name} width="30" height="30" />
+        </div>
         <div className="coinNameCol">
           <div>{coin.symbol}</div>
           <div>{coin.name }</div>
@@ -47,11 +51,8 @@ const CoinRow = ({coin, onClick, delay}) => {
             }
           </div>
         </div>
-        <div className="coinImgCol">
-          <img src={coin.image} alt={coin.name} width="30" height="30" />
-        </div>
         <div className="percChangeCol">
-          <div>{change && `${numeral(change).format('0.0')}%`}</div>
+          <div>{change && formatPerc(change)}</div>
         </div>
       </styles.CoinStyleRowContainer>
     </styles.CoinStackRowStyle>

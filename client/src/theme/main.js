@@ -76,7 +76,7 @@ const button = {
   defaults: css`
     font-family: 'Comic Neue';
     font-weight: bold;
-    font-size: 5.5vw;
+    font-size: 1rem;
     border-radius: 10vw;
     box-shadow: 0.2em 0.3em 0 ${colors.black};
     color: ${colors.black};
@@ -99,12 +99,12 @@ const button = {
   },
   styleSize: {
     default: css`
-      padding: 0.5em 1em;
-      font-size: 4.5vw;
+      padding: 1em;
+      font-size: 1.2rem;
     `,
     large: css`
-      padding: 1em 2em;
-      font-size: 5vw;
+      padding: 2em;
+      font-size: 2rem;
     `,
   }
 }

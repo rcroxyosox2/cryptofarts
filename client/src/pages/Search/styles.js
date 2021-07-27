@@ -53,11 +53,11 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    padding: 0 8vh 8vw;
+    padding: 0 8% 8%;
     z-index: 3;
     ${PointToStyle} {
-      width: 20vw;
-      left: 8vw;
+      width: 20%;
+      left: 8%;
       bottom: 115%;
       opacity: 1;
       transition: all 300ms ease-in-out 100ms;
@@ -74,7 +74,7 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
         transform: translateY(3vh);
       }
       input {
-        width: 60vw;
+        width: 84%;
       }
     }
   }
@@ -117,7 +117,7 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
   }
   &.focused {
     .computerContainerStyle {
-      bottom: -1vh;
+      bottom: -1%;
       .scaleContainer {
         transform: scale(0.7);
       }
@@ -135,11 +135,15 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
   .computerContainerStyle {
     position: absolute;
     width: 100%;
-    bottom: 15vh;
+    height: 50%;
+    bottom: 22%;
     /* margin-left: -6vw; */
     transition: transform 400ms ease-in-out, bottom 200ms ease-in-out;
     z-index: 2;
     .scaleContainer {
+      width: 100%;
+      height: 100%;
+      position: absolute;
       transition: transform 400ms ease-in-out;
     }
     @media (max-width: 600px) {
@@ -158,8 +162,11 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
       }
     } 
     &.enter, &.enter-active, &.enter-done {
-      transform: translate(-31vw,44vh) rotate(360deg);
+      transform: translate(-31%,111%) rotate(360deg);
       bottom: 17vh;
+      .scaleContainer {
+        transform: scale(0.6);
+      }
       @media (max-width: 700px) {
         .scaleContainer {
           transform: scale(1);

@@ -8,20 +8,20 @@ export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 6vh 10vw 0;
+    padding: 10%;
     ${ LogoStyle } {
       width: 50%;
     }
   }
   > section {
-    margin-bottom: 8vh;
+    margin-bottom: 8%;
   }
   h1 {
-    font-size: 6vh;
+    font-size: 3rem;
     max-width: 3em;
     transform: rotate(-6deg);
     line-height: 1em;
-    margin: 0 0 7vh;
+    margin: 0 0 7%;
   }
   ${CoinStackImageTitleComboStyle} {
     margin-bottom: 1.6rem;

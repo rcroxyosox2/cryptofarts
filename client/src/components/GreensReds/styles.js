@@ -13,6 +13,7 @@ const propSelectedCSSMap = {
 };
 
 export const FilterButtonStyle = styled(ButtonStyle)`
+  padding: 0.5rem 1rem;
   ${neutralInverseBorderedCSS};
   ${(props) => {
     return props.selected ? css`
@@ -27,40 +28,51 @@ export const FilterButtonStyle = styled(ButtonStyle)`
     justify-content: flex-start;
     text-align: left;
     line-height: 1em;
-    gap: 2vw;
+    gap: 2%;
   }
   i {
     display: block;
-    width: 4vw;
-    padding-bottom: 3vw;
+    width: 16px;
+    height: 12px;
+    margin-right: 4px;
     ${(props) => propSelectedCSSMap[props.filterType]}
   }
   &:after {
     content: attr(data-content);
     position: absolute;
-    bottom: -2vh;
+    bottom: -12px;
     width: 100%;
     left: 0;
     color: black;
-    font-size: 3vw;
+    font-size: 3%;
   }
 `;
 
 export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyle'})`
-  padding: 0 9vw;
+  padding: 0 9%;
   position: relative;
   ${PointToStyle} {
-    width: 22vw;
-    right: 22vw;
-    top: -9vh;
+    width: 84px;
+    right: 25%;
+    top: -44px;
     background: white;
-    padding: 3vw;
+    padding: 3%;
+  }
+  main {
+    mark {
+      &.green {
+        ${propSelectedCSSMap.green}
+      }
+      &.red {
+        ${propSelectedCSSMap.red}
+      }
+    }
   }
   nav {
     display: flex;
     flex-flow: column nowrap;
-    gap: 1vh;
-    margin-bottom: 4vh;
+    gap: 8px;
+    margin-bottom: 10%;
     .imgWrapper {
       position: relative;
       left: 0;
@@ -78,13 +90,13 @@ export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyl
       z-index: 2;
       transform: scale(0);
       &.leonardo {
-        left: -5vw;
-        bottom: -3vh;
+        left: -5%;
+        bottom: -3%;
         width: 175%;
       }
       &.fabio {
-        left: -4vw;
-        bottom: -2vh;
+        left: -4%;
+        bottom: -2%;
         width: 141%;
       }
       &.enter, &.enter-active, &.enter-done, &.shown {
@@ -94,7 +106,7 @@ export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyl
     > div {
       display: flex;
       flex-flow: row nowrap;
-      gap: 2vw;
+      gap: 2%;
       > button {
         transition: all 0.2s ease-out;
         transform: rotate(-4.5deg);

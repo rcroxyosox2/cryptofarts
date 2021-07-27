@@ -17,6 +17,23 @@ export const AppStyle = createGlobalStyle`
     backface-visibility:  hidden;
     -webkit-tap-highlight-color:  transparent;
   }
+  body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #root {
+    width: 375px;
+    height: 667px;
+    border: 1px solid red;
+    margin: 0 auto;
+    position: relative;
+    overflow-y: scroll;
+  }
   h1 {
     font-size: 1.3rem;
   }

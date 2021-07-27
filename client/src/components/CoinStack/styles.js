@@ -18,14 +18,14 @@ const bigPumpCSS = css`
     content: "";
     position: absolute;
     right: 96%;
-    top: 50%;
+    bottom: 0;
     margin-top: -5.5vw;
     background-image: url(${buffImg});
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center right;
-    width: 11vw;
-    height: 11vw;
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -72,19 +72,21 @@ export const CoinStackRowStyle = styled.div`
   }
   .coinNameCol {
     flex: 20%;
+    width: 20%;
     align-items: flex-start;
+    display: flex;
+    flex-flow: column nowrap;
     > div {
       &:first-child {
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 7vw;
+        font-size: 1.5rem;
       }
       &:last-child {
-        font-size: 3vw;
-        position: absolute;
+        font-size: 0.7rem;
         left: 0;
         bottom: 0;
-        max-width: 28vw;
+        max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;        
@@ -103,13 +105,14 @@ export const CoinStackRowStyle = styled.div`
     div {
       &:last-child {
         white-space: nowrap;
-        font-size: 3vw;
+        font-size: 1rem;
       }
     }
   }
   .percChangeCol {
     flex: 20%;
-    padding: 0.3rem;
+    padding: 0.1em;
+    font-size: 1.2rem;
     position: relative;
     ${(props) => props.bigPump ? bigPumpCSS : null}
   }
