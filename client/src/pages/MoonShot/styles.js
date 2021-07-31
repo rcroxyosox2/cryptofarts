@@ -1,9 +1,12 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
 
 export const MoonShotStyle = styled.div.attrs({ className: 'MoonShotStyle' })`
-  position: realtive;
+  position: relative;
   color: white;
   background: black;
+  .content {
+    min-height: 100vh;
+  }
   .contractBox {
     border: 1px solid white;
     padding: 3.2%;
@@ -57,63 +60,23 @@ export const MoonShotStyle = styled.div.attrs({ className: 'MoonShotStyle' })`
   }
 `;
 
-export const FooterStyle = styled.footer`
-  display: flex;
-  flex-flow: row nowrap;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  justify-content: space-between;
-  padding: 10% 3% 5%;
-  background-color: white;
-  clip-path: polygon(0% 22%,100% 0%,100% 100%, 0% 100%);
-  z-index: 2;
-  transition: all 0.3s ease-out;
-  > div {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 2vw;
-  }
-  opacity: 0;
-  &.enter, &.enter-active, &.enter-done {
-    opacity: 1; 
-  }
-  ${(props) => {
-    console.log(props.footerState);
-    if (props.footerState === 'sticky') {
-      return css`
-        position: sticky;
-        opacity: 1;
-      `
-    }
-    if (props.footerState === 'stable') {
-      return css`
-        position: absolute;
-        opacity: 1 !important;
-      `
-    }
-  }}
-`;
-
 export const ImageAreaStyle = styled.div.attrs({className: 'ImageAreaStyle'})`
   .StarsStyle {
     position: absolute;
     z-index: 2;
     height: 13%;
-    width: 78vw;
-    left: 37%;
+    width: 100%;
+    left: 0;
     top: 39%;
     transform: scale(1.5);
   }
   .moonImg {
     z-index: 1;
-    width: 120%;
-    height: 65%;
+    width: 400px;
     position: absolute;
     transition: all 0.3s ease-out;
-    left: -8%;
-    top: -35%;
+    left: 0%;
+    top: -300px;
   }
   .girlzImg {
     z-index: 0;
@@ -122,18 +85,18 @@ export const ImageAreaStyle = styled.div.attrs({className: 'ImageAreaStyle'})`
     transition: all 0.3s ease-out;
     right: 13%;
     top: -3%;
-    width: 37%;
+    width: 150px;
     opacity: 0;
   }
 
   &.enter, &.enter-active, &.enter-done {
     .moonImg {
       left: -43%;
-      top: -50%;
+      top: -300px;
     }
     .girlzImg {
       right: 1%;
-      top: -1.2%;
+      top: 21px;
       opacity: 1;
     }
     .StarsStyle {
@@ -177,7 +140,7 @@ export const LoadingStyle = styled.div`
   transition: all 0.3s ease-out;
   opacity: 0;
   transform: translateY(-3%);
-  top: 43%;
+  top: 200px;
   z-index: 3;
   width: 100%;
   font-size: 2.5rem;
@@ -189,8 +152,8 @@ export const LoadingStyle = styled.div`
   }
 `;
 
-export const GlobalStyle = createGlobalStyle`
-  #root {
-    background: black;
-  }
-`;
+// export const GlobalStyle = createGlobalStyle`
+//   #root {
+//     background: black;
+//   }
+// `;

@@ -4,6 +4,7 @@ import { PointToStyle } from 'components/PointTo/styles';
 import { RainbowStyle } from 'components/Rainbow';
 import { CoinStackStyle } from 'components/CoinStack/styles';
 import { bobRotateMinor } from 'theme/animations';
+import { ButtonWrapperStyle } from 'theme/Button/styles';
 
 export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
   width: 100%;
@@ -62,6 +63,12 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
       opacity: 1;
       transition: all 300ms ease-in-out 100ms;
       transform: translateY(0) rotate(-10deg);
+    }
+    ${ButtonWrapperStyle} {
+      position: absolute;
+      right: 8%;
+      top: -70%;
+      transform: rotate(2deg);
     }
     input {
       transform: rotate(-0.5deg);

@@ -15,7 +15,8 @@ export const KEYCODES = {
   ENTER: { keyCode: 13, key: 'Enter' },
   SPACE: { keyCode: 32, key: ' ' },
   TAB: { keyCode: 9, key: 'Tab' },
-  ESC: { keyCode: 27, key: 'Escape' }
+  ESC: { keyCode: 27, key: 'Escape' },
+  FSLASH: { keyCode: 191, key: '/' },
 };
 
 // Gets a keycode from an event. If keyCodeObj (KEYCODES.UP for example) is passed, it will use the event to
@@ -46,7 +47,15 @@ export function getKeyCode(event, keyCodeObj) {
 }
 
 export function formatPerc(n) {
-  return `${n >= 0 ? '+' : ''}${numeral(n).format('0.0')}%`;
+  return `${n >= 0 ? '+' : ''}${String(numeral(n).format('0.00')).replace(/\.?00?$/, '')}%`;
+}
+
+export function formatPrice(n) {
+  const formatted = (String(n).indexOf('e-') > -1 || n < 0)
+  ? `$${n}`
+  : numeral(n).format('$0,0.00');
+
+  return formatted.replace(/\.00?$/, '');
 }
 
 export function eventHasKeyCode(event, keyCodes) {

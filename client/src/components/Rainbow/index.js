@@ -24,7 +24,7 @@ export const RainbowStyle = styled.div`
 const Rainbow = ({ count = 1 } = {}) => {
   const rainbows = [];
   for(let i = 0; i < count; i++) {
-    rainbows.push(<RainbowImgStyle />);
+    rainbows.push(<RainbowImgStyle key={i} />);
   }
   return (
     <RainbowStyle>

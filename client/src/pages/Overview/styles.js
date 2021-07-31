@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { LogoStyle } from 'components/Logo/styles';
-import { CoinStackImageTitleComboStyle } from 'components/CoinStackImageTitleCombo/styles'
+import { CoinStackImageTitleComboStyle } from 'components/CoinStackImageTitleCombo/styles';
 
 export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
   > header {
@@ -14,7 +14,12 @@ export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
     }
   }
   > section {
-    margin-bottom: 8%;
+    margin-bottom: 3rem;
+  }
+  > * {
+    &:nth-last-child(2) {
+      margin-bottom: 5rem;
+    }
   }
   h1 {
     font-size: 3rem;

@@ -8,11 +8,12 @@ import Rainbow from 'components/Rainbow';
 import Computer from 'components/Computer';
 import PointTo from 'components/PointTo';
 import Input from 'theme/Input';
+import Button from 'theme/Button';
 import * as styles from './styles';
 const controller = new AbortController();
 const signal = controller.signal;
 
-const Search = () => {
+const Search = (props) => {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -75,13 +76,13 @@ const Search = () => {
     <styles.SearchStyle onKeyDown={handleKeyDown} tabIndex={-1} className={focused ? 'focused' : null}>
       <div className="resultsContainer">
         <div>
-          <CSSTransition in={results.length} timeout={400}>
+          <CSSTransition in={Boolean(results.length)} timeout={400}>
             <div className="resultsStackAndRainbow">
               <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} />
               <Rainbow />
             </div>
           </CSSTransition>
-          <CSSTransition in={results.length} timeout={400}>
+          <CSSTransition in={Boolean(results.length)} timeout={400}>
             <div className="computerContainerStyle">
               <div className="scaleContainer">
                 <Computer text={term || "the internet"} onClick={setFocusOnInput} subCopy={isSearching ? 'loading' : null} />
@@ -98,11 +99,16 @@ const Search = () => {
       <CSSTransition in={results.length} timeout={400}>
         <div className='searchContainer'>
           <PointTo type={PointTo.messageTypes.TYPEACOIN} />
+          <Button styleSize="small" onClick={props.handleCloseClick}>Close</Button>
           <Input value={term} onChange={handleSearch} _ref={inputRef} onFocus={handleFocus} onBlur={handleBlur} />
         </div>
       </CSSTransition>
     </styles.SearchStyle>
   );
+}
+
+Search.defaultProps = {
+  handleCloseClick: () => null,
 }
 
 export default Search;

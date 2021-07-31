@@ -101,7 +101,6 @@ class Modal extends React.PureComponent {
   }
 
   escFunction = (e) => {
-
     if (!this.props.escToClose) {
       return;
     }

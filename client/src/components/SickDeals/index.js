@@ -5,10 +5,12 @@ import socket from 'services/socket';
 import {
   COIN_CHANGE_KEY,
 } from 'brains/coins';
+import { formatPrice } from 'utils';
 import skateBoarder from 'images/skateboarder.png'
+import { paths } from 'Router';
 import * as styles from './styles';
 
-const SickDeals = () => {
+const SickDeals = (props) => {
   const socketName = 'sickdeals';
   const [sickDeals, setSickDeals] = useState([]);
   const [error, setError] = useState(null);
@@ -39,6 +41,10 @@ const SickDeals = () => {
     .on(socketName, socketFn)
   }, []);
 
+  const handleClick = (coin) => (e) => {
+    props.handleDetailModalOpen(coin.id);
+  }
+
   return (
     <styles.SickDealsStyle>
       <header>
@@ -49,12 +55,12 @@ const SickDeals = () => {
       {
         sickDeals.length ? sickDeals.map((coin) => {
           return (
-            <styles.SickDealItemStyle key={coin.id}>
+            <styles.SickDealItemStyle key={coin.id} onClick={handleClick(coin)}>
               <img src={coin.image} />
               <div>
                   <span>{coin.name}</span>
                   <span>{coin.ath_change_percentage && `${numeral(Math.abs(coin.ath_change_percentage)).format('0.0')}%`} off</span>
-                  <span>{numeral(coin.current_price).format('$0,0.00')}</span>
+                  <span>{formatPrice(coin.current_price)}</span>
               </div>
             </styles.SickDealItemStyle>
         )}) : null
@@ -63,6 +69,10 @@ const SickDeals = () => {
     </styles.SickDealsStyle>
   );
 
+};
+
+SickDeals.defaultProps = {
+  handleDetailModalOpen: () => null,
 };
 
 export default SickDeals;

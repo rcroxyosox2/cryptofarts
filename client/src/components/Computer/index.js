@@ -47,7 +47,7 @@ const Computer = ({
 } = {}) => {
   const copy = text || children;
   return ( 
-    <ComputerStyle aria-role="image" aria-label={copy} onClick={onClick} >
+    <ComputerStyle role="image" aria-label={copy} onClick={onClick} >
       <span>
         { copy }
         {subCopy && <aside>{subCopy}</aside> }

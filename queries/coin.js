@@ -20,8 +20,29 @@ const getCoin = (query = {}) => {
 }
 
 const getCoinEventCount = async (coinId) => {
-  const x = await Coin.Schema.findOne({id: coinId}).select('stolen_events');
-  return x.stolen_events.count;
+  const events = await Coin.Schema.findOne({id: coinId}).select('stolen_events');
+  return (events) ? events.stolen_events.count : 0;
+}
+
+const getTopCoinInCapSize = async (capSize, useCapSizes = capSizes) => {
+  const nextCapSize = getNextCapSize(capSize, useCapSizes);
+  console.log(capSize, nextCapSize);
+  const sort = {
+    'market_cap': -1
+  };
+  const query = {
+    "market_cap": {
+      $gte: useCapSizes[capSize]
+    }
+  }
+
+  if (nextCapSize) {
+    query.market_cap['$lt'] = useCapSizes[nextCapSize];
+  }
+
+  await mongo();
+  const doc = await Coin.Schema.find(query).sort(sort).select(fields + ' market_cap').limit(1);
+  return Array.isArray(doc) ? doc[0] : doc;
 }
 
 const getSickDealCoins = async () => {
@@ -156,12 +177,13 @@ const searchCoinsWithAutocomplete = (term) => {
         image: 1,
         sparkline_in_7d: 1,
         community_score: 1,
+        market_cap: 1,
         current_price: 1,
         [COIN_CHANGE_KEY]: 1,
       }
     }, {
       '$sort': {
-        'community_score': -1
+        'market_cap': -1
       }
     }, {
       '$limit': 5
@@ -348,7 +370,7 @@ const getGreensReds = async () => {
 // (async function() {
 //   await mongo();
 //   // const x = await getGreensRedsByQuery();
-//   const x = await getGreensReds();
+//   const x = await getTopCoinInCapSize(caps.TINY);
 //   console.log(x);
 // })();
 
@@ -359,5 +381,6 @@ module.exports = {
   getAvg24hrPriceChangePerc,
   searchCoinsWithAutocomplete,
   getCoinEventCount,
+  getTopCoinInCapSize,
   getGreensReds
 };

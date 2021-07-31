@@ -28,6 +28,7 @@ const updateCoinEventsTask = require('./crons/updateCoinEvents');
 // libs
 const reddit = require('./lib/reddit');
 const coinGecko = require('./lib/coinGecko');
+const { getGoldMarketCap } = require('./lib/gold');
 
 // engines 
 const { getCelebrityTradeAdvice } = require('./engines/celerityTradeAdvice');
@@ -42,6 +43,8 @@ const MAX_CALL_TIME = 3000;
 // Events + sockets
 const emitter = require('./emitter');
 
+// Other
+const { getCapSizeFromCap, getNextCapSize, caps, capSizesSimple } = require('./contants');
 
 io.on('connection', (socket) => {
   console.log('socket server connected...');
@@ -69,10 +72,13 @@ emitter.on('coinsUpdated', async () => {
 const trendingInterval = 1000 * 60;
 setInterval(() => {
   coinGecko.getTrending().then(async (trending) => {
-    const query = trending.map((coin) => ({id: coin.item.id})).select(coinQueries.fields);
-    const coins = await Coin.Schema.find({$or: query});
+    if (!trending) {
+      return;
+    }
+    const query = trending.map((coin) => ({id: coin.item.id}));
+    const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
     io.sockets.emit('trending', coins);
-  })
+  }).catch(e => console.error(`Error in getTrending: ${e.message}`))
 }, trendingInterval);
 
 server.listen(port, () => {
@@ -178,9 +184,11 @@ app.get('/api/greensreds', async(req, res) => {
 })
 
 // trending
-
 app.get('/api/trending', (req, res) => {
   coinGecko.getTrending().then(async (trending) => {
+    if (!trending) {
+      res.send(null);
+    }
     const query = trending.map((coin) => ({id: coin.item.id}));
     const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
     res.send(coins);
@@ -206,12 +214,31 @@ app.get('/api/coin/:id', async(req, res) => {
       coinGecko.getCoinWithMarketChart(req.params.id),
       metaQueries.getMeta(),
       coinQueries.getCoinEventCount(req.params.id)
-    ]).then(([coin, marketData, metas, numEvents]) => {
+    ]).then(async ([coin, marketData, metas, numEvents]) => {
       coin.market_data = marketData;
-    
+      const capSize = getCapSizeFromCap(coin.market_cap, capSizesSimple);
       // update the coin quietly
       Coin.Schema.findOneAndUpdate({id: req.params.id}, coin);
 
+      // get the comparison coin
+      let comparisonCoin = (coin.market_cap) ? await coinQueries.getTopCoinInCapSize(capSize, capSizesSimple) : null;
+
+
+      if (comparisonCoin) {
+        if (comparisonCoin.name === coin.name) {
+          if (capSize === caps.LRG) {
+            const goldMarketCap = await getGoldMarketCap();
+            comparisonCoin = {
+              name: 'Gold',
+              market_cap: goldMarketCap,
+            }
+          }
+          else {
+            const nextCapSize = getNextCapSize(capSize, capSizesSimple);
+            comparisonCoin = await coinQueries.getTopCoinInCapSize(nextCapSize, capSizesSimple);
+          }
+        }
+      }
       const { prices:priceChartArr, total_volumes:volumeChartArr } = (marketData) ? marketData : {};
       const { season, greedFearIndex:gfIndex } = (metas) ? metas : {};
       const advice = getCelebrityTradeAdvice({
@@ -225,6 +252,7 @@ app.get('/api/coin/:id', async(req, res) => {
       
       return {
         coin,
+        comparisonCoin,
         advice: advice.summary,
       };
     });
@@ -246,6 +274,17 @@ app.get('/api/meta', async (req, res) => {
     });
   }
 });
+
+app.get('/api/buy/:id', async (req, res) => {
+  try {
+    const { tickers } = await coinGecko.getTickers(req.params.id);
+    res.send(tickers);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message
+    });
+  }
+})
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client", "build")));

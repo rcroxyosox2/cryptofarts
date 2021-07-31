@@ -36,6 +36,13 @@ export const getTrending = () => {
   return fetch('/api/trending').then((resp) => resp.json());
 }
 
+export const getCoinById = (id) => {
+  return fetch(`/api/coin/${id}`).then((resp) => resp.json());
+}
+
+export const getWhereToBuy = (id) => {
+  return fetch(`/api/buy/${id}`).then((resp) => resp.json());
+}
 
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {

@@ -20,7 +20,7 @@ const FB = ({children, selection, onClick = () => null, ...props} = {}) => (
   </styles.FilterButtonStyle>
 );
 
-const GreensReds = () => {
+const GreensReds = ({ handleDetailModalOpen }) => {
   const socketName = 'greensreds';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -65,6 +65,8 @@ const GreensReds = () => {
 
   const key = `${capSelection}${greenRedSelection}`;
   const filteredCoins = (key && greensReds) ? greensReds[key] : null;
+  const exclaim = (greenRedSelection === 'red') ? 'Woah' : 'Dang';
+  const handleRowClick = (e, {coin}) => handleDetailModalOpen(coin.id);
   return (
     <styles.GreensRedsStyle>
       <PointTo />
@@ -97,10 +99,10 @@ const GreensReds = () => {
       </nav>
       <main>
         {
-          greensReds && filteredCoins && <CoinStack animated={animated} coins={filteredCoins} />
+          greensReds && filteredCoins && <CoinStack animated={animated} coins={filteredCoins} onRowClick={handleRowClick} />
         }
         {
-          greensReds && filteredCoins && !filteredCoins.length && <div> Dang no <mark className={greenRedSelection}>{greenRedSelection}Z</mark> found</div>
+          greensReds && filteredCoins && !filteredCoins.length && <div> {exclaim} no <mark className={greenRedSelection}>{greenRedSelection}Z</mark> found</div>
         }
       </main>
     </styles.GreensRedsStyle>

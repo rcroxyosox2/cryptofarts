@@ -12,10 +12,11 @@ import { Stars, MAX_RESULTS } from 'components/Moonshots';
 import moonImg from 'components/Moonshots/images/moon.png';
 import msGirlsImg from 'components/Moonshots/images/msgirls.png';
 import { throttle } from 'lodash';
+import FooterNav from 'components/FooterNav';
 import copy from 'copy-to-clipboard';
 import * as styles from './styles';
 
-const FooterButton = (props) => <Button styleType="neutralInverseBordered" {...props} />
+const FooterButton = (props) => <Button styleType="neutralInverseBordered" styleSize="small" {...props} />
 
 const MoonShot = (props) => {
   const [copied, setCopied] = useState();
@@ -41,8 +42,11 @@ const MoonShot = (props) => {
     const x = throttle(() => {
       const top = useElm.pageYOffset || useElm.scrollTop;
       setFooterState(top > 0 ? 'sticky' : 'stable');
-    }, 5)
+    }, 10);
     useElm.addEventListener('scroll', x);
+    return () => {
+      useElm.removeEventListener('scroll', x);
+    }
   }, []);
 
   useEffect(() => {
@@ -119,13 +123,12 @@ const MoonShot = (props) => {
     }
   };
 
-  // shot?.body && console.log(mdToHTML(shot.body))
   const body = shot?.body ? marked(shot.body) : '';
   const loading = request.loading;
   
   return (
     <styles.MoonShotStyle ref={parentRef}>
-      {props.isOpen && <styles.GlobalStyle /> }
+      {/* {props.isOpen && <styles.GlobalStyle /> } */}
 
       <CSSTransition in={!loading} timeout={300}>
         <styles.ImageAreaStyle>
@@ -161,21 +164,20 @@ const MoonShot = (props) => {
       </CSSTransition>
 
       <CSSTransition in={mounted} timeout={300}>
-        <styles.FooterStyle footerState={footerState}>
-          <div>
-            <FooterButton onClick={handleCloseClick}>
-              close
-            </FooterButton>
-          </div>
-          <div>
+        <FooterNav leftNav={(
+          <FooterButton onClick={handleCloseClick}>
+            close
+          </FooterButton>
+        )} rightNav={(
+          <>
             <FooterButton onClick={handlePrevNextShot(-1)} disabled={!hasPrevIndex()}>
               prev
             </FooterButton>
             <FooterButton onClick={handlePrevNextShot(1)} disabled={!hasNextIndex()}>
               next
             </FooterButton>
-          </div>
-        </styles.FooterStyle>
+          </>
+        )} />
       </CSSTransition>
     </styles.MoonShotStyle>
   );

@@ -5,7 +5,9 @@ import socket from 'services/socket';
 import trendingImg from './images/trending.png';
 import longCloudImg from './images/longcloud.png';
 import shortCloudImg from './images/shortcloud.png';
+import { COIN_CHANGE_KEY } from 'brains/coins';
 import { useDispatch, useSelector } from 'react-redux';
+import { formatPerc } from 'utils';
 import * as styles from './styles';
 
 const RainBow = () => {
@@ -33,8 +35,6 @@ const Trending = () => {
     .on(socketName, socketFn)
   }, []);
 
-  console.log(trending);
-
   return (
     <styles.TrendingStyle>
       <header>
@@ -44,13 +44,19 @@ const Trending = () => {
       <styles.CloudBox className="shortCloud"><img src={shortCloudImg} alt="short cloud" /></styles.CloudBox>
       <div className="rainbowContainer"><RainBow /></div>
       <ul>
-        <li>here is the first</li>
-        <li>here is the first</li>
-        <li>here is the first</li>
-        <li>here is the first</li>
-        <li>here is the first</li>
-        <li>here is the first</li>
-        <li>here is the first</li>
+        { trending.map((item) => {
+          const change = item[COIN_CHANGE_KEY];
+          return (
+            <li key={item.id}>
+              <img src={item.image} />
+              <span>{item.name}</span>
+              <aside className={`change ${(change < 0) ? 'bad' : 'good'}`}>
+                {formatPerc(change)}
+              </aside>
+              <aside className='price'>${item.current_price}</aside>
+            </li>
+          );
+        }) }
       </ul>
     </styles.TrendingStyle>
   );

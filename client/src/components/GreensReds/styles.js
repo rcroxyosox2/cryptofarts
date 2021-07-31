@@ -40,16 +40,16 @@ export const FilterButtonStyle = styled(ButtonStyle)`
   &:after {
     content: attr(data-content);
     position: absolute;
-    bottom: -12px;
+    bottom: -14px;
     width: 100%;
     left: 0;
     color: black;
-    font-size: 3%;
+    font-size: 0.7rem;
   }
 `;
 
 export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyle'})`
-  padding: 0 9%;
+  padding: 1% 9%;
   position: relative;
   ${PointToStyle} {
     width: 84px;

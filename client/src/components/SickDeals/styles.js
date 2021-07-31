@@ -46,11 +46,16 @@ export const SickDealsContainerStyle = styled.div.attrs({ className: 'SickDealsC
   width: 92%;
 `;
 
-export const SickDealItemStyle = styled.div`
+export const SickDealItemStyle = styled.div.attrs({ 'role': 'button' })`
   display: flex;
   flex-flow: column;
   align-items: center;
   transform: rotate(-7deg);
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+  &:hover {
+    transform: scale(0.95);
+  }
   > div {
     color: white;
     display: flex;

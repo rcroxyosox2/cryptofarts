@@ -1,7 +1,7 @@
 import * as styles from './styles';
 
 const Button = ({ _ref, ...restOfProps }) => {
-  return <styles.ButtonStyle {...restOfProps} ref={_ref} />
+  return (<styles.ButtonWrapperStyle><styles.ButtonStyle {...restOfProps} ref={_ref} /></styles.ButtonWrapperStyle>)
 };
 
 Button.defaultProps = {

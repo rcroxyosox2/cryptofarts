@@ -6,25 +6,28 @@ import {
   Sparklines,
   SparklinesLine,
 } from 'react-sparklines';
-import { formatPerc } from 'utils';
+import { formatPerc, formatPrice } from 'utils';
 import {
   coinHasBigPump,
   coinHasBigDump,
   COIN_CHANGE_KEY,
 } from 'brains/coins';
+import { useDispatch } from 'react-redux';
+import { setDetailModalOpen } from 'redux/app';
 const PUMP_PERC_THRESHOLD = 20;
 
 const CoinRow = ({coin, onClick, delay}) => {
-
   const bigPump = coinHasBigPump(coin);
   const bigDump = coinHasBigDump(coin);
   const change = coin[COIN_CHANGE_KEY];
   const sparkLineData = coin?.sparkline_in_7d?.price?.slice(-24);
   const handleRowClick = (e) => {
+    // window.history.replaceState(null, 'CoinDetail', newRoute);
     onClick(e, {coin});
   }
   return (
     <styles.CoinStackRowStyle
+      onClick={handleRowClick}
       bigPump={bigPump}
       bigDump={bigDump}
       red={(change < 0)}
@@ -43,13 +46,7 @@ const CoinRow = ({coin, onClick, delay}) => {
           <Sparklines data={sparkLineData} margin={10} height={60}>
               <SparklinesLine style={{ strokeWidth: '3', stroke: "#FF0000", fill: "none" }} />
           </Sparklines>
-          <div>
-            {
-              String(coin.current_price).indexOf('e-') > -1
-              ? `$${coin.current_price}`
-              : numeral(coin.current_price).format('$0,0.00')
-            }
-          </div>
+          <div>{formatPrice(coin.current_price)}</div>
         </div>
         <div className="percChangeCol">
           <div>{change && formatPerc(change)}</div>

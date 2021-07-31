@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Router from './Router';
 import Logo from 'components/Logo';
 import { saveDay } from 'redux/summary';
+import { setDetailModalOpen } from 'redux/app';
 import socket from 'services/socket';
+import Modal from 'theme/Modal';
 
 const App = () => { 
   const dispatch = useDispatch();
   const socketname = 'day';
+  
   const daySocketFn = (day) => {
     dispatch(saveDay(day));
   };
@@ -31,7 +34,7 @@ const App = () => {
   return (
     <div>
       {/* <button onClick={sendMessage}>Click to test out the thing</button> */}
-      <Router />
+      <Router />      
     </div>
   );
 };

@@ -11,7 +11,7 @@ export const buff = keyframes`
   }
 `;
 
-const bigPumpCSS = css`
+export const bigPumpCSS = css`
   &:after {
     animation: ${buff} 1.2s ease-in-out 0s infinite;
     transform-origin: 100% 100%;
@@ -59,8 +59,18 @@ const greenRowCSS = css`
   }
 `;
 
-export const CoinStackRowStyle = styled.div`
+export const CoinStackRowStyle = styled.div.attrs({ 'role': 'button' })`
   background: white;
+  cursor: pointer;
+  &:hover {
+    .coinNameCol {
+      > div {
+        &:first-child {
+          transform: scale(1.3);
+        }
+      }
+    }
+  }
   &.enter {
     animation: ${flipAnimation} 500ms ease-in-out ${(props) => {
       return `${props.delay}ms 1`;
@@ -77,6 +87,7 @@ export const CoinStackRowStyle = styled.div`
     display: flex;
     flex-flow: column nowrap;
     > div {
+      transition: all 300ms ease-in-out;
       &:first-child {
         overflow: hidden;
         text-overflow: ellipsis;

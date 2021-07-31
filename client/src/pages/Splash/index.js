@@ -24,7 +24,7 @@ const CTA = ({ percChange, children }) => {
   const styleType = isGreenDay(percChange) ? 'good' : 'bad';
 
   return (
-    <styles.CTAContainerStyle data-content={`${numeral(percChange).format('0.0')}%`}>
+    <styles.CTAContainerStyle data-content={`${numeral(percChange).format('0.00')}%`}>
       <SoundButton onEnded={handleOnEnded} soundIndex={soundIndex} buttonProps={{styleType: styleType}}>
         {children}
       </SoundButton>

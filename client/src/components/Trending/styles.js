@@ -52,7 +52,7 @@ export const CloudBox = styled.div.attrs({ className: 'CloudBox' })`
     } 
   }
   &.shortCloud {
-    bottom: -20%;
+    bottom: -31%;
     img {
       width: 30%;
       animation: ${ltor(333)} 70s linear 0s infinite;
@@ -98,11 +98,40 @@ export const TrendingStyle = styled.section.attrs({ className: 'TrendingStyle' }
     gap: 5px;
     align-items: center;
     justify-content: center;
+    position: relative;
+    img {
+      width: 50%;
+      border-radius: 15%;
+    }
+    span {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    aside {
+      position: absolute;
+    }
+    .change {
+      right: 0;
+      top: 20px;
+      padding: 10px;
+      font-size: 1.2rem;
+      transform: rotate(-1deg);
+      &.bad {
+        ${(props) => props.theme.snippets.badCSS};
+      }
+      &.good {
+        ${(props) => props.theme.snippets.goodCSS};
+      }
+    }
+    .price {
+      right: 35px;
+      bottom: 20px;
+    }
   }
   .rainbowContainer {
     position: absolute;
     width: 100%;
-    height: 310px;
+    height: 322px;
     overflow: hidden;
     ${RainBowStyle} {
       width: 105%;

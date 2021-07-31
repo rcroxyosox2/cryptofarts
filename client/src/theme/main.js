@@ -83,8 +83,7 @@ const button = {
     position: relative;
     &:active {
       box-shadow: none;
-      top: 0.2em;
-      left: 0.3em;
+      transform: translate(0.3em, 0.2em);
     }
   `,
   styleType: {
@@ -98,9 +97,13 @@ const button = {
     neutralInverseBordered: neutralInverseBorderedCSS,
   },
   styleSize: {
+    small: css`
+      padding: 0.7rem 1.1rem;
+      font-size: 1.2rem;
+    `,
     default: css`
       padding: 1em;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     `,
     large: css`
       padding: 2em;

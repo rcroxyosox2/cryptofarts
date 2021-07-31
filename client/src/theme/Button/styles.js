@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { appearance } from 'theme/mixins';
 
+export const ButtonWrapperStyle = styled.div`
+
+`;
+
 export const ButtonStyle = styled.button`
   ${appearance()}
   ${(props) => props.theme.button.defaults}

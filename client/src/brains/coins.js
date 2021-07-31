@@ -9,6 +9,15 @@ export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
 // specific to coingecko
 export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
 
+export const currency = {
+  USD: 'usd',
+  BTC: 'btc',
+};
+
+export const filterTickersByCurrencyTarget = (tickers, currency = currency.USD) => {
+  return [...tickers].filter(item => item.target?.toLowerCase() === currency?.toLowerCase());
+}
+
 // percentage change in 24rs
 export const coinPerformanceRanges = [
   [undefined, -10], // big dumps
