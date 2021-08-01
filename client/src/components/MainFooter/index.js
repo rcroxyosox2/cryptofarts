@@ -37,10 +37,15 @@ const SearchButton = (props) => {
     }
   }, [props.modalOpen]);
 
+  const handleRowClick = (e, {coin}) => {
+    // console.log(props);
+    props.onRowClick(e, {coin});
+  }
+
   return (
     <>
       <Modal isOpen={modalOpen} onModalClose={handleModalClose}>
-        <Search handleCloseClick={handleModalClose} />
+        <Search handleCloseClick={handleModalClose} onRowClick={handleRowClick} />
       </Modal>
       <Button styleType="neutralBordered" styleSize="small" onClick={handleClick}> 
         <img src={searchImg} />
@@ -51,6 +56,7 @@ const SearchButton = (props) => {
 }
 
 SearchButton.defaultProps = {
+  onRowClick: () => null,
   onClick: () => null,
   onModalClose: () => null,
 };
@@ -58,12 +64,18 @@ SearchButton.defaultProps = {
 const MainFooter = (props) => {
   return (
     <styles.MainFooterStyle>
-      <SearchButton onClick={props.handleSearchClick} onModalClose={props.onSearchModalClose} modalOpen={props.searchModalOpen} />
+      <SearchButton 
+        onClick={props.handleSearchClick} 
+        onModalClose={props.onSearchModalClose} 
+        modalOpen={props.searchModalOpen} 
+        onRowClick={props.handleDetailModalOpen}
+      />
     </styles.MainFooterStyle>
   );
 };
 
 MainFooter.defaultProps = {
+  handleDetailModalOpen: () => null,
   handleSearchClick: () => null,
   onSearchModalClose: () => null,
 }

@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 import { bigPumpCSS } from 'components/CoinStack/styles';
+import { PointToStyle } from 'components/PointTo/styles';
+import { bobRotate } from 'theme/animations';
+import { ButtonWrapperStyle } from 'theme/Button/styles';
+import chevImg from 'images/chevRightBlackBg.png';
+import x from 'images/x.png';
 // import buffImg from 'images/buffarm.png';
 
 export const ChartStyle = styled.div.attrs({ className: 'ChartStyle' })`
@@ -20,10 +25,74 @@ export const ChartStyle = styled.div.attrs({ className: 'ChartStyle' })`
   }
 `;
 
+export const PumpMessageStyle = styled.aside.attrs({className: 'PumpMessageStyle' })`
+  border: 1px solid black;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  text-align: center;
+  transform: rotate(-2deg);
+  mark {
+    background-color: ${props => props.theme.colors.yellow};
+  }
+`;
+
 export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' })`
   width: 100%;
   position: relative;
-
+  margin-bottom: 5%;
+  .closeBt {
+      appearance: none;
+      border: none;
+      background-color: transparent;
+      background-image: url(${x});
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center;
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+  header {
+    ${ButtonWrapperStyle} {
+      position: relative;
+      display: inline-flex;
+      select {
+        padding-right: 30px;
+      }
+      &:before {
+        content: "";
+        background-image: url(${chevImg});
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 28px;
+        height: 12px;
+        transform: translateY(-50%) rotate(90deg);
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        z-index: 2;
+      }
+    }
+  }
+  ${ButtonWrapperStyle} {
+    margin-bottom: 0.2rem;
+  }
+  .navAndAside {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    padding: 0 8%;
+    ${ PointToStyle } {
+      top: -5%;
+      left: 8%;
+      width: 25%;
+    }
+  }
   .exchangeLinkList {
     transform: rotate(2deg);
     padding: 0 4%;
@@ -33,7 +102,7 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
     color: white;
     width: 100%;
     background: black;
-    padding: 20% 8%;
+    padding: 15% 8%;
     position: absolute;
     z-index: 3;
     top: -220%;
@@ -50,13 +119,14 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
       flex-flow: row nowrap;
       position: relative;
       h3 {
-        max-width: 50%;
+        width: 233px;
         font-size: 1.5rem;
         transform: rotate(-8.3deg);
       }
       img {
         width: 60%;
         position: absolute;
+        animation: ${bobRotate} 2s ease-in-out infinite;
         right: -10%;
         bottom: -16%;
       }
@@ -84,14 +154,26 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
   }
 `;
 
-export const PumpMessageStyle = styled.aside.attrs({className: 'PumpMessageStyle' })`
-  border: 1px solid black;
-  padding: 0.6rem;
-  font-size: 1.2rem;
-  text-align: center;
-  transform: rotate(-2deg);
-  mark {
-    background-color: ${props => props.theme.colors.yellow};
+export const NerdStuffStyle = styled.div.attrs({ className: 'NerdStuffStyle' })`
+  ul {
+    margin: 0; 
+    padding: 0;
+    li {
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      border-bottom: 1px solid black;
+      padding: 0.2em 0;
+    }
+  }
+  a {
+    color: ${props => props.theme.colors.blue};
+  }
+  img {
+    width: 40%;
+    float: left;
   }
 `;
 
@@ -121,7 +203,7 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
     img {
       border-radius: 50%;
       width: 100%;
-      max-width: 122px;
+      max-width: 105px;
       border: 9px solid ${
         (props) => props.goodOrBad === 'good' 
         ? props.theme.colors.green 
@@ -134,7 +216,7 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
       position: relative;
       .pumpArm {
         top: -7%;
-        left: 2%;
+        left: -9%;
         transform: rotate(-34deg) scale(0.6) scaleX(-1);
         position: absolute;
         width: 100%;
@@ -185,7 +267,7 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
     transform: rotate(-5deg);
     top: -20px;
     left: -5px;
-    width: calc(100% + 5px);
+    width: 93%;
     .priceContainer {
       height: 120px;
     }
@@ -195,12 +277,18 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
       color: black;
       position: absolute;
       right: 20px;
-      bottom: -31px;
+      bottom: -18px;
       z-index: 2;
-      padding: 0.4rem;
       border-radius: 20px;
-      transform: rotate(7deg);
       font-size: 0.7rem;
+    }
+  }
+  .pointToArea {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    > * {
+      width: 32%;
     }
   }
 `;

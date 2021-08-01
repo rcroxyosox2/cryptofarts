@@ -5,7 +5,10 @@ import socket from 'services/socket';
 import trendingImg from './images/trending.png';
 import longCloudImg from './images/longcloud.png';
 import shortCloudImg from './images/shortcloud.png';
-import { COIN_CHANGE_KEY } from 'brains/coins';
+import { 
+  COIN_CHANGE_KEY,
+  coinSocketName,
+} from 'brains/coins';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatPerc } from 'utils';
 import * as styles from './styles';
@@ -25,14 +28,22 @@ const Trending = (props) => {
   
   const socketFn = (res) => {
     dispatch(setTrending(res));
+  };
+
+  const socketCoinsFn = () => {
+    dispatch(getTrendingThunk());
   }
 
   useEffect(() => {
     dispatch(getTrendingThunk())
 
     socket
-    .off(socketName, socketFn)
     .on(socketName, socketFn)
+
+    return () => {
+      socket
+      .off(socketName, socketFn)
+    }
   }, []);
 
   const handleClick = (coinId) => (e) => {
@@ -48,7 +59,7 @@ const Trending = (props) => {
       <styles.CloudBox className="shortCloud"><img src={shortCloudImg} alt="short cloud" /></styles.CloudBox>
       <div className="rainbowContainer"><RainBow /></div>
       <ul>
-        { trending.map((item) => {
+        { trending?.map((item) => {
           const change = item[COIN_CHANGE_KEY];
           return (
             <li key={item.id} onClick={handleClick(item.id)}>

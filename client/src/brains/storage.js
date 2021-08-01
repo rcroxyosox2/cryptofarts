@@ -4,7 +4,7 @@ import { expiresInMinutes } from './general';
 export default class Storage {
 
   key = null;
-  expiresInMinutes = expiresInMinutes;
+  expiresInMinutes = 5;
 
   constructor (key) {
     this.key = key;

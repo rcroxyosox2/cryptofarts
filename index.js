@@ -46,39 +46,22 @@ const emitter = require('./emitter');
 // Other
 const { getCapSizeFromCap, getNextCapSize, caps, capSizesSimple } = require('./contants');
 
-io.on('connection', (socket) => {
-  console.log('socket server connected...');
-});
-
-emitter.on('coinsUpdated', async () => {
-
-  // day
-  const day = await coinQueries.getAvg24hrPriceChangePerc();
-  io.sockets.emit('day', day); 
-
-  // sick deals
-  const sickDeals = await coinQueries.getSickDealCoins();
-  io.sockets.emit('sickdeals', sickDeals);
-
-  // greens reds
-  const greensReds = await coinQueries.getGreensReds();
-  io.sockets.emit('greensreds', greensReds);
-
-});
-
 // trending
 const trendingInterval = 1000 * 60;
+const getTrending = async () => coinGecko.getTrending().then(async (trending) => {
+  if (!trending) {
+    return;
+  }
+  const query = trending.map((coin) => ({id: coin.item.id}));
+  const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
+  io.sockets.emit('trending', coins);
+  return coins;
+}).catch(e => console.error(`Error in getTrending: ${e.message}`))
 setInterval(() => {
-  coinGecko.getTrending().then(async (trending) => {
-    if (!trending) {
-      return;
-    }
-    const query = trending.map((coin) => ({id: coin.item.id}));
-    const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
-    io.sockets.emit('trending', coins);
-  }).catch(e => console.error(`Error in getTrending: ${e.message}`))
+  getTrending();
 }, trendingInterval);
 
+// server
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
@@ -285,6 +268,32 @@ app.get('/api/buy/:id', async (req, res) => {
     });
   }
 })
+
+// sockets
+
+io.on('connection', (socket) => {
+  console.log('socket server connected...');
+});
+
+emitter.on('coinsUpdated', async () => {
+
+  // day
+  const day = await coinQueries.getAvg24hrPriceChangePerc();
+  io.sockets.emit('day', day); 
+
+  // sick deals
+  const sickDeals = await coinQueries.getSickDealCoins();
+  io.sockets.emit('sickdeals', sickDeals);
+
+  // greens reds
+  const greensReds = await coinQueries.getGreensReds();
+  io.sockets.emit('greensreds', greensReds);
+
+  // general
+  const trending = await getTrending();
+  io.sockets.emit('trending', trending);
+
+});
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client", "build")));

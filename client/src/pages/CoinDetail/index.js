@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Transition, TransitionGroup } from 'react-transition-group';
-
+import { useTheme } from 'styled-components';
+import numeral from 'numeral';
 import * as styles from './styles';
 import { 
   getCoinById, 
@@ -18,17 +19,21 @@ import {
   coinHasBigPump,
   filterTickersByCurrencyTarget,
   currency,
+  currencySymbol,
   COIN_CHANGE_KEY,
 } from 'brains/coins';
+import PointTo from 'components/PointTo';
 import moment from 'moment';
 import chevRight from 'images/chevRightBlackBg.png';
 import girlsShopping from 'images/girlsShopping.png';
+import whoCaresImg from 'images/whoCares.gif';
 import { Line, Bar } from 'react-chartjs-2';
 
 
-const Chart = ({prices, volumes}) => {
+const Chart = ({prices, volumes, goodOrBad}) => {
   const arrayColumn = (arr, n) => arr?.map(x => x[n]);
   const rand = () => Math.round(Math.random() * 20 - 10);
+  const theme = useTheme();
   const dates = arrayColumn(prices, 0);
 
   const priceData = {
@@ -39,7 +44,7 @@ const Chart = ({prices, volumes}) => {
         data: arrayColumn(prices, 1),
         fill: false,
         backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'red',
+        borderColor: (goodOrBad === 'good') ? theme.colors.green : theme.colors.red,
         order: 2,
       },
     ],
@@ -120,23 +125,33 @@ const Chart = ({prices, volumes}) => {
   );
 }
 
-const WhereToBuy = ({ tickers = [], symbol } = {}) => {
+const WhereToBuy = ({ tickers = [], symbol, whereToBuyOpen: whereToBuyOpenFromProps, onWhereToBuyOpen } = {}) => {
+
   const [currencyFilter, setCurrencyFileter] = useState(currency.USD);
-  const [whereToBuyOpen, setWhereToBuyOpen] = useState(false);
+  const [whereToBuyOpen, setWhereToBuyOpen] = useState(whereToBuyOpenFromProps);
   const targetFiltered = filterTickersByCurrencyTarget(tickers, currencyFilter);
   const filteredTickers = targetFiltered.filter(ticker => !!ticker.trade_url);
 
-  const handleFilterSelect = () => {
-
+  const handleFilterSelect = (e) => {
+    const v = e.target.value;
+    v && setCurrencyFileter(v);
   }
 
   const toggleWhereToBuy = () => {
+    onWhereToBuyOpen(!whereToBuyOpen);
     setWhereToBuyOpen(!whereToBuyOpen);
   }
-  
+
+
   const handleAddClick = () => {
 
   }
+
+  useEffect(() => {
+    if (whereToBuyOpenFromProps != whereToBuyOpen) { 
+      setWhereToBuyOpen(whereToBuyOpenFromProps);
+    }
+  }, [whereToBuyOpenFromProps])
 
   useEffect(() => {
     if (!targetFiltered.length && currencyFilter === currency.USD) {
@@ -144,23 +159,38 @@ const WhereToBuy = ({ tickers = [], symbol } = {}) => {
     }
   }, [targetFiltered, currencyFilter]);
 
+  const CurrencySelect = () => {
+    return (
+      <Button as="select" onChange={handleFilterSelect} value={currencyFilter} styleSize="small" styleType="neutralBordered" >
+        {Object.keys(currency).map((k) => {
+          const v = currency[k];
+          return <option value={k} key={currency[k]}>{currency[k]}</option>
+        })}
+      </Button>
+    );
+  }
+
   const BuyMenu = ({ onClose, transition}) => {
+
+    const currencySymbolToUse = currencySymbol[currencyFilter];
+
     return (
       <aside className={transition}>
+        <button className="closeBt" onClick={toggleWhereToBuy} />
         <header>
-          <h3>{`Where to buy ${symbol.toUpperCase()} with ${currencyFilter.toUpperCase()}`}</h3>
+          <h3>{`Where to buy ${symbol.toUpperCase()} with `}<CurrencySelect /></h3>
           <img src={girlsShopping} alt="girls shopping" />
         </header>
         <div className="exchangeLinkList">
-        {filteredTickers.map((ticker) => {
+        {filteredTickers.map((ticker, i) => {
           const { last: price } = ticker || {};
           const { logo, name, identifier } = ticker?.market || {};
           const label = [name.replace(/ Exchange$/, '')];
           if (price) {
-            label.push(formatPrice(price));
+            label.push(formatPrice(price, currencySymbolToUse));
           }
           return (
-            <Button styleSize="small" styleType="neutralBordered" key={identifier} as="a" href={ticker.trade_url} target="_blank">
+            <Button styleSize="small" styleType="neutralBordered" key={identifier+i} as="a" href={ticker.trade_url} target="_blank">
                 {logo && <img src={logo} className="exchangeLogo" /> }
                 {label.join(': ')}
                 <img src={chevRight} className="chev" />
@@ -177,16 +207,21 @@ const WhereToBuy = ({ tickers = [], symbol } = {}) => {
   
   return (
     <styles.WhereToBuyStyle>
-      {    tickers.length &&   
-        (
-          <Button styleSize="small" onClick={toggleWhereToBuy}>
-            Where to buy dis
+      <div className="navAndAside">
+        <PointTo type={PointTo.messageTypes.SCROLLFOR} />
+        <nav>
+          {    tickers.length &&   
+            (
+              <Button styleSize="small" onClick={toggleWhereToBuy}>
+                Where to buy dis
+              </Button>
+            )
+          }
+          <Button styleSize="small" onClick={handleAddClick}>
+            + add to your shit
           </Button>
-        )
-      }
-      <Button styleSize="small" onClick={handleAddClick}>
-        + add to your shit
-      </Button>
+        </nav>
+      </div>
       <TransitionGroup>
         { whereToBuyOpen && (
           <Transition in={whereToBuyOpen} timeout={{ enter: 0, exit: 300 }}>
@@ -210,9 +245,55 @@ const PumpMessage = ({cap, name, compareName, compareCap}) => {
   )
 }
 
+const NerdStuff = ({coin}) => {
+
+  const nerdTableItems = [
+    {
+      title: 'Low 24hr',
+      val: formatPrice(coin?.low_24h),
+    },
+    {
+      title: 'High 24hr',
+      val: formatPrice(coin?.high_24h),
+    },
+    {
+      title: 'Market Cap',
+      val: formatPrice(coin?.market_cap)
+    },
+    {
+      title: 'Circulating Supply',
+      val: numeral(coin?.circulating_supply).format('0,0'),
+    },
+    {
+      title: 'Total Supply',
+      val: numeral(coin?.total_supply).format('0,0'),
+    },
+    {
+      title: 'Total Volume',
+      val: numeral(coin?.total_volume).format('0,0'),
+    }
+  ];
+  const NerdRow = ({ rowTitle, rowValue }) => <li><span>{rowTitle}</span><span>{rowValue}</span></li>;
+  const desc = coin?.description?.en;
+  return (
+    <styles.NerdStuffStyle>
+      <ul>
+        {nerdTableItems.map((item) => <NerdRow rowTitle={item.title} rowValue={item.val} key={item.title} />)}
+      </ul>
+      {desc && (      
+        <p>
+          <img src={whoCaresImg} alt="who cares" />
+          <span dangerouslySetInnerHTML={{__html: desc}} />
+        </p>
+      )}
+    </styles.NerdStuffStyle>
+  )
+}
+
 const CoinDetail = (props) => {
   const coinId = props.coinId;
   const buttonRef = useRef();
+  const [whereToBuyOpen, setWhereToBuyOpen] = useState();
   const { 
     response: tickers, 
     loading: whereToBuyLoading, 
@@ -262,7 +343,7 @@ const CoinDetail = (props) => {
       changeFontSize = '3.1rem';
       break;
     case 6:
-      changeFontSize = '3.4rem';
+      changeFontSize = '4rem';
       break;
   }
 
@@ -273,8 +354,17 @@ const CoinDetail = (props) => {
       break;
   }
 
-  const bigPump = coinHasBigPump(coin);
+  const handleAdviceClick = (e, {buy}) => {
+    Boolean(buy) && setWhereToBuyOpen(!whereToBuyOpen);
+  }
 
+  const handleOnWhereToBuyOpen = (v) => {
+    if (v !== whereToBuyOpen) {
+      setWhereToBuyOpen(v);
+    }
+  }
+
+  const bigPump = coinHasBigPump(coin);
   return (
     <styles.CoinDetailStyle goodOrBad={goodOrBad} bigPump={bigPump}>
       <header>
@@ -299,10 +389,13 @@ const CoinDetail = (props) => {
       </header>
       <main>
         {comparisonCoin  && <PumpMessage name={coin.name} cap={coin.market_cap} compareName={comparisonCoin.name} compareCap={comparisonCoin.market_cap} /> }
-        { advice && <CelebAdviceInline advice={advice} />}
+        { advice && <CelebAdviceInline advice={advice} onAdviceClick={handleAdviceClick} />}
       </main>
-      <Chart prices={coin?.market_data?.prices} volumes={coin?.market_data?.total_volumes} />
-      { (coin && tickers?.length > 0) && <WhereToBuy tickers={tickers} symbol={coin.symbol} /> }
+      <Chart goodOrBad={goodOrBad} prices={coin?.market_data?.prices} volumes={coin?.market_data?.total_volumes} />
+      { (coin && tickers?.length > 0) && <WhereToBuy tickers={tickers} symbol={coin.symbol} whereToBuyOpen={whereToBuyOpen} onWhereToBuyOpen={handleOnWhereToBuyOpen} /> }
+      <main>
+        <NerdStuff coin={coin} />
+      </main>
       {footerNav}
     </styles.CoinDetailStyle>
   );

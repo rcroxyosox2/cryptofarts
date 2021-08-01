@@ -4,9 +4,9 @@ import { SoundButton } from 'components/Sounds';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSoundIndexFromRange } from 'sounds/';
 import { getDayThunk } from 'redux/summary';
-import { isGreenDay } from 'brains/general';
+import { isGreenDay } from 'brains/coins';
 import { getRandomBadImg, getRandomGoodImg } from 'images/';
-import numeral from 'numeral';
+import { formatPerc } from 'utils';
 import Logo from 'components/Logo';
 import PointTo from 'components/PointTo';
 import * as styles from './styles'
@@ -24,7 +24,7 @@ const CTA = ({ percChange, children }) => {
   const styleType = isGreenDay(percChange) ? 'good' : 'bad';
 
   return (
-    <styles.CTAContainerStyle data-content={`${numeral(percChange).format('0.00')}%`}>
+    <styles.CTAContainerStyle data-content={`${formatPerc(percChange)}`}>
       <SoundButton onEnded={handleOnEnded} soundIndex={soundIndex} buttonProps={{styleType: styleType}}>
         {children}
       </SoundButton>

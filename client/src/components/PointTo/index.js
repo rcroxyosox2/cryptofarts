@@ -1,5 +1,6 @@
 import ucantap from 'images/pointto/ucantap.png';
 import typeacoin from 'images/pointto/typeacoin.png';
+import scrollfor from 'images/pointto/scrollfor.png';
 import arrow from 'images/pointto/arrow.png';
 import arrow2 from 'images/pointto/arrow2.png';
 import * as styles from './styles';
@@ -8,11 +9,13 @@ import * as styles from './styles';
 export const messageTypes = {
   UCANTAP: 'ucantap',
   TYPEACOIN: 'typeacoin',
+  SCROLLFOR: 'scrollfor',
 };
 
 const messageTypeResourceMap = {
   [messageTypes.UCANTAP]: [ucantap, arrow],
   [messageTypes.TYPEACOIN]: [typeacoin, arrow2],
+  [messageTypes.SCROLLFOR]: [scrollfor, arrow2],
 };
 
 const PointTo = ({type}) => {

@@ -26,7 +26,11 @@ const Routes = () => {
         <Route exact path={paths.home} component={Splash} />
         <Route exact path={paths.search} component={(route) => {
           const handleCloseClick = () => route.history.push(paths.overview);
-          return <Search handleCloseClick={handleCloseClick} />;
+          const handleRowClick = (e, {coin}) => {
+            const newPath = paths.coindetail.replace(':id', coin.id);
+            route.history.push(newPath);
+          };
+          return <Search handleCloseClick={handleCloseClick} onRowClick={handleRowClick} />;
         }} />
         <Route path={paths.overview} component={() => <Overview />} />
         <Route path={paths.moonshot} component={() => <MoonShot isOpen />} />

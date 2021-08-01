@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ButtonStyle } from 'theme/Button/styles';
+import { ButtonWrapperStyle } from 'theme/Button/styles';
 import { PointToStyle } from 'components/PointTo/styles';
 
 export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
@@ -12,7 +12,7 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
     display: flex;
     align-items: center;
   }
-  ${ButtonStyle} {
+  ${ButtonWrapperStyle} {
     transform: rotate(-4.71deg);
     width: 100%;
   }

@@ -9,6 +9,9 @@ import Computer from 'components/Computer';
 import PointTo from 'components/PointTo';
 import Input from 'theme/Input';
 import Button from 'theme/Button';
+import Modal from 'theme/Modal';
+import CoinDetail from 'pages/CoinDetail';
+import { paths } from 'Router';
 import * as styles from './styles';
 const controller = new AbortController();
 const signal = controller.signal;
@@ -19,10 +22,24 @@ const Search = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [error, searchError] = useState(null);
   const [focused, setFocused] = useState(false);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const inputRef = useRef();
   const coinStackRef = useRef();
   const dbSearchTerm = useDebounce(term, 500);
   const MIN_CHARS = 3;
+
+  const handleHistoryChanged = (x) => {
+    setDetailModalOpen(false);
+  }
+
+  useEffect(() => {
+    // document.addEventListener('keydown', handleDocKeyDown);
+    window.addEventListener('popstate', handleHistoryChanged);
+    return () => {
+      // document.removeEventListener('keydown', handleDocKeyDown);
+      window.removeEventListener('popstate', handleHistoryChanged);
+    }
+  }, []);
 
   useEffect(() => {
 
@@ -72,20 +89,45 @@ const Search = (props) => {
     setFocused(false);
   }
 
+  const handleRowClick = (e, {coin}) => {
+    const coinId = coin.id;
+    const newRoute = paths.coindetail.replace(':id', coinId);
+    window.history.pushState(null, 'CoinDetail', newRoute);
+    setDetailModalOpen(coinId);
+  }
+
+  const handleDetailModalClose = () => {
+    window.history.replaceState(null, 'CoinDetail', paths.overview);
+    setDetailModalOpen(false);
+  };
+
+  let compMessage = "the internet";
+  let compMessage2 = null;
+
+  if (term && !isSearching && !results.length) {
+    compMessage2 = 'no find';
+  } else if (isSearching) {
+    compMessage2 = 'loading';
+  }
+  
+  if (term) {
+    compMessage = term;
+  }
+
   return (
     <styles.SearchStyle onKeyDown={handleKeyDown} tabIndex={-1} className={focused ? 'focused' : null}>
       <div className="resultsContainer">
         <div>
           <CSSTransition in={Boolean(results.length)} timeout={400}>
             <div className="resultsStackAndRainbow">
-              <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} />
+              <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} onRowClick={handleRowClick} />
               <Rainbow />
             </div>
           </CSSTransition>
           <CSSTransition in={Boolean(results.length)} timeout={400}>
             <div className="computerContainerStyle">
               <div className="scaleContainer">
-                <Computer text={term || "the internet"} onClick={setFocusOnInput} subCopy={isSearching ? 'loading' : null} />
+                <Computer text={compMessage} onClick={setFocusOnInput} subCopy={compMessage2} />
               </div>
             </div>
           </CSSTransition>
@@ -103,6 +145,9 @@ const Search = (props) => {
           <Input value={term} onChange={handleSearch} _ref={inputRef} onFocus={handleFocus} onBlur={handleBlur} />
         </div>
       </CSSTransition>
+      <Modal isOpen={!!detailModalOpen} onModalClose={handleDetailModalClose}>
+        <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
+      </Modal>
     </styles.SearchStyle>
   );
 }

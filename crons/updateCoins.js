@@ -33,7 +33,7 @@ const updateCoinsTask = cron.schedule('*/6 * * * *', () => {
     // console.log('sucessfully updated the coins');
   })
   .catch((e) => {
-    // BugsnagClient.notify(`error is the updateCoinsTask task: ${e.message}`);
+    BugsnagClient.notify(`error in the updateCoinsTask task: ${e.message}`);
     console.log(`error in the updateCoinsTask task: ${e.message}`);
     updateCoinsTaskFetch = false;
   });

@@ -37,6 +37,7 @@ export const CelebAdviceInlineStyle = styled.div.attrs({ className: 'CelebAdvice
       font-family: 'Courier New', monospace;
       font-weight: bold;
       ${props => props.buy ? css`
+        cursor: pointer;
         animation: ${textAnimation} 1.2s ease-in-out 0s infinite;
         text-shadow: 
           -2px 5px ${props => props.theme.colors.yellow}, 

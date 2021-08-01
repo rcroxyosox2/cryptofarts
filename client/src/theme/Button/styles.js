@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { appearance } from 'theme/mixins';
 
-export const ButtonWrapperStyle = styled.div`
+export const ButtonWrapperStyle = styled.div.attrs({ className: 'ButtonWrapperStyle' })`
 
 `;
 

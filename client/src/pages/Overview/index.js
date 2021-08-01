@@ -42,7 +42,7 @@ const Overview = (props) => {
   //   }
   // }
 
-  const handleHistoryChanged = () => {
+  const handleHistoryChanged = (x) => {
     setDetailModalOpen(false);
   }
 
@@ -97,7 +97,7 @@ const Overview = (props) => {
       {/* <div>Last updated on: {moment(meta?.lastUpdated).format('LLLL')}</div> */}
       {/* <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImgStyle()} />
       <CoinStackImageTitleCombo title="Da Dumps" coins={dumps} Img={getRandomDumpImgStyle()} /> */}
-      <MainFooter />
+      <MainFooter handleDetailModalOpen={handleDetailModalOpen} />
     </styles.OverviewStyle>
   )
 }

@@ -3,6 +3,7 @@ import { LogoStyle } from 'components/Logo/styles';
 import { CoinStackImageTitleComboStyle } from 'components/CoinStackImageTitleCombo/styles';
 
 export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
+  background: white;
   > header {
     display: flex;
     flex-flow: row nowrap;

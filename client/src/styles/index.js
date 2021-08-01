@@ -29,10 +29,10 @@ export const AppStyle = createGlobalStyle`
   #root {
     width: 375px;
     height: 667px;
-    border: 1px solid red;
     margin: 0 auto;
     position: relative;
     overflow-y: scroll;
+    background: white;
   }
   h1 {
     font-size: 1.3rem;
@@ -56,5 +56,13 @@ export const AppStyle = createGlobalStyle`
     font-family: 'Comic Neue';
     font-weight: bold;
     transition: background 0.3s ease-in;
+  }
+  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    #root {
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0 auto;
+    }
   }
 `;

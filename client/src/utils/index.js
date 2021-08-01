@@ -50,10 +50,10 @@ export function formatPerc(n) {
   return `${n >= 0 ? '+' : ''}${String(numeral(n).format('0.00')).replace(/\.?00?$/, '')}%`;
 }
 
-export function formatPrice(n) {
-  const formatted = (String(n).indexOf('e-') > -1 || n < 0)
-  ? `$${n}`
-  : numeral(n).format('$0,0.00');
+export function formatPrice(n, symbol = '$') {
+  const formatted = (String(n).indexOf('e-') > -1 || n < 0 || symbol !== '$')
+  ? `${symbol}${n}`
+  : `${symbol}${numeral(n).format(`0,0.00`)}`;
 
   return formatted.replace(/\.00?$/, '');
 }

@@ -50,8 +50,12 @@ const GreensReds = ({ handleDetailModalOpen }) => {
     });
 
     socket
-    .off(socketName, socketFn)
     .on(socketName, socketFn);
+
+    return () => {
+      socket
+      .off(socketName, socketFn);
+    }
 
   }, [])
 

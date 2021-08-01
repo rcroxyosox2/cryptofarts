@@ -51,6 +51,7 @@ export const FilterButtonStyle = styled(ButtonStyle)`
 export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyle'})`
   padding: 1% 9%;
   position: relative;
+  z-index: 1;
   ${PointToStyle} {
     width: 84px;
     right: 25%;

@@ -31,6 +31,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
 
   const src = sounds[soundIndex];
   const handleClick = (e) => {
+    ref.current.volume = 0.07;
     ref.current.play();
     onClick && onClick(e);
   }

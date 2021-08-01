@@ -106,7 +106,7 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1;
     transform: skew(0deg, 5.5deg);
   }
   header {
@@ -115,6 +115,7 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
     justify-content: space-between;
     align-items: flex-end;
     position: relative;
+    z-index: 1;
     ${StarsStyle} {
       width: 50%;
       height: 100%;
@@ -168,6 +169,8 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
     transition: all 0.3s ease-in-out;
     max-height: 13%;
     opacity: 1;
+    position: relative;
+    z-index: 1;
   }
   ul {
     width: 93%;
@@ -184,6 +187,7 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
     opacity: 0;
     position: relative;
     box-sizing: content-box;
+    z-index: 1;
     &:after {
       content: "";
       position: sticky;

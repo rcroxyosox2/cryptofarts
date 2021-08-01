@@ -1,10 +1,11 @@
-import { expiresInMinutes } from './general';
+// import { expiresInMinutes } from './general';
 // import { randomResource } from 'utils';
 import { uniqBy, filter, sortBy, reverse } from 'lodash';
+import lodash from 'lodash';
 import { setCoinsLoadError } from 'redux/coins';
 
 // Coins are fetched at this interval
-export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
+// export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
 
 // specific to coingecko
 export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
@@ -12,6 +13,11 @@ export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
 export const currency = {
   USD: 'usd',
   BTC: 'btc',
+};
+
+export const currencySymbol = {
+  USD: '$',
+  BTC: '₿',
 };
 
 export const filterTickersByCurrencyTarget = (tickers, currency = currency.USD) => {
@@ -79,3 +85,6 @@ export const topCoins = (coins, rank) => {
     return parseInt(coin.market_cap_rank) < rank;
   })
 }
+
+export const isGreenDay = (v) => lodash.toNumber(v) > 0;
+
