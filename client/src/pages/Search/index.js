@@ -90,13 +90,13 @@ const Search = (props) => {
             </div>
           </CSSTransition>
         </div>
-        <CSSTransition in={results.length} timeout={400}>
+        <CSSTransition in={Boolean(results.length)} timeout={400}>
           <div className="rainbowContainer">
             <Rainbow count={2} />
           </div>
         </CSSTransition>
       </div>
-      <CSSTransition in={results.length} timeout={400}>
+      <CSSTransition in={Boolean(results.length)} timeout={400}>
         <div className='searchContainer'>
           <PointTo type={PointTo.messageTypes.TYPEACOIN} />
           <Button styleSize="small" onClick={props.handleCloseClick}>Close</Button>

@@ -81,6 +81,10 @@ const button = {
     box-shadow: 0.2em 0.3em 0 ${colors.black};
     color: ${colors.black};
     position: relative;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    text-decoration: none;
     &:active {
       box-shadow: none;
       transform: translate(0.3em, 0.2em);

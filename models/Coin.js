@@ -197,9 +197,9 @@ const coinSchema = new Schema(
     total_volume: Number,
     market_data: {
       lastUpdated: Date,
-      prices: [[Number, Number]],
-      market_caps: [[Number, Number]],
-      total_volumes: [[Number, Number]],
+      prices: [[String, Number]],
+      market_caps: [[String, Number]],
+      total_volumes: [[String, Number]],
     },
     sparkline_in_7d: {
         price: [Number]

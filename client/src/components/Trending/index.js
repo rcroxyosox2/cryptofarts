@@ -18,7 +18,7 @@ const RainBow = () => {
   );
 }
 
-const Trending = () => {
+const Trending = (props) => {
   const socketName = 'trending';
   const { data: trending, loading, error } = useSelector((state) => state.trending);
   const dispatch = useDispatch();
@@ -35,6 +35,10 @@ const Trending = () => {
     .on(socketName, socketFn)
   }, []);
 
+  const handleClick = (coinId) => (e) => {
+    props.handleDetailModalOpen(coinId);
+  }
+
   return (
     <styles.TrendingStyle>
       <header>
@@ -47,7 +51,7 @@ const Trending = () => {
         { trending.map((item) => {
           const change = item[COIN_CHANGE_KEY];
           return (
-            <li key={item.id}>
+            <li key={item.id} onClick={handleClick(item.id)}>
               <img src={item.image} />
               <span>{item.name}</span>
               <aside className={`change ${(change < 0) ? 'bad' : 'good'}`}>

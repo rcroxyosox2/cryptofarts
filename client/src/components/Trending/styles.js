@@ -99,6 +99,11 @@ export const TrendingStyle = styled.section.attrs({ className: 'TrendingStyle' }
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: all 300ms ease-in-out;
+    &:hover {
+      cursor: pointer;
+      transform: rotate(2deg);
+    }
     img {
       width: 50%;
       border-radius: 15%;

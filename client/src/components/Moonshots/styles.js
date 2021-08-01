@@ -208,8 +208,16 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
       box-sizing: border-box;
       overflow-y: scroll;
       text-shadow: -6px 5px 0 black;
+      transition: all 300ms ease-in-out;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+      }
       &:nth-child(3n+1) {
         transform: rotate(-2deg);
+        &:hover {
+          transform: scale(1.05) rotate(-2deg);
+        }
       }
       /* > i {
         display: block;

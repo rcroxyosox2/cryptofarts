@@ -92,7 +92,7 @@ const Overview = (props) => {
         <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
       </Modal>
 
-      <Trending />
+      <Trending handleDetailModalOpen={handleDetailModalOpen} />
       {/* <Notif /> */}
       {/* <div>Last updated on: {moment(meta?.lastUpdated).format('LLLL')}</div> */}
       {/* <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImgStyle()} />

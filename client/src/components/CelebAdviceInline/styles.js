@@ -15,7 +15,7 @@ export const CelebAdviceInlineStyle = styled.div.attrs({ className: 'CelebAdvice
   align-items: center;
   font-size: 1.2rem;
   position: relative;
-  top: -0.6rem;
+  top: 0.1rem;
   img {
     max-width: 100%;
     transform: scale(1.15) rotate(-2deg);
@@ -26,7 +26,10 @@ export const CelebAdviceInlineStyle = styled.div.attrs({ className: 'CelebAdvice
     }
     &:nth-child(2) {
       flex: 2;
+      font-size: 1.5rem;
+      font-family: 'Courier New', monospace;
       padding: 0.5rem;
+      line-height: 0.8em;
     }
     &:last-child {
       flex: 1;

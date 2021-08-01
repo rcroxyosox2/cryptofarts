@@ -11,8 +11,8 @@ const ModalContainerStyle = styled.div.attrs({className: 'ModalContainerStyle'})
   transition: opacity ${ANIM_SPEED - 100}ms ease-out, transform ${ANIM_SPEED}ms ease-out;
   background: transparent;
   position: fixed;
-  width: 325px;
-  height: 617px;
+  width: 375px;
+  height: 667px;
   left: 50%;
   top: 50%;
   /* margin-left: -50%;

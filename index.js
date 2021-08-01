@@ -52,8 +52,6 @@ io.on('connection', (socket) => {
 
 emitter.on('coinsUpdated', async () => {
 
-  console.log('coins updated...');
-
   // day
   const day = await coinQueries.getAvg24hrPriceChangePerc();
   io.sockets.emit('day', day); 
@@ -218,7 +216,9 @@ app.get('/api/coin/:id', async(req, res) => {
       coin.market_data = marketData;
       const capSize = getCapSizeFromCap(coin.market_cap, capSizesSimple);
       // update the coin quietly
-      Coin.Schema.findOneAndUpdate({id: req.params.id}, coin);
+      Coin.Schema.findOneAndUpdate({id: req.params.id}, coin).then(() => {
+        emitter.emit('coinsUpdated');
+      })
 
       // get the comparison coin
       let comparisonCoin = (coin.market_cap) ? await coinQueries.getTopCoinInCapSize(capSize, capSizesSimple) : null;
