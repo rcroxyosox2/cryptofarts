@@ -36,7 +36,10 @@ const getCelebrityTradeAdvice = ({
   season,
   numEvents,
 }) => {
-  const VERSION = 'beta.1';
+
+  // CHANGE LOG
+  // beta.2 - increased the weight of random from 0.5 to 1 (FATALISM intensifies);
+  const VERSION = 'beta.2';
   const engineResultObj = {};
   const marketSize = coinGecko.getMarketCapFromCoin(coin);
   const capSize = coinGecko.getCapSizeFromMarketCap(marketSize);
@@ -132,6 +135,7 @@ const getCelebrityTradeAdviceFromCoinId = async (coinId) => {
     const gfIndex = await alternative.getGreedFearIndex();
     const season = await blockChainCenter.getSeason();
     const numEvents = await coinMarketCal.getEvents(coin.name);
+    const arrayColumn = (arr, n) => Array.isArray(arr) ? arr.map(x => x[n]) : arr;
     const advice = getCelebrityTradeAdvice({
       coin, 
       priceChartArr, 

@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { ButtonStyle } from 'theme/Button/styles';
 import { neutralInverseBorderedCSS, goodCSS, badCSS, lrgCapCSS, midCapCSS, smCapCSS } from 'theme/main';
 import { bobRotate } from 'theme/animations';
+import { MyShitStackStyle } from 'components/MyShitStack/styles';
 import { PointToStyle } from 'components/PointTo/styles';
 
 const propSelectedCSSMap = {
@@ -49,9 +50,38 @@ export const FilterButtonStyle = styled(ButtonStyle)`
 `;
 
 export const GreensRedsStyle = styled.section.attrs({ className: 'GreensRedsStyle'})`
-  padding: 1% 9%;
+  padding: 1% 10%;
   position: relative;
   z-index: 1;
+  ${MyShitStackStyle} {
+    margin-bottom: 8%;
+    position: relative;
+    &:before, &:after {
+      position: absolute;
+    }
+    &:before {
+      content: "";
+      width: 2px;
+      background: black;
+      height: 100%;
+      left: -6%;
+    }
+    &:after {
+      content: "your shit";
+      background: white;
+      top: 50%;
+      left: -10%;
+      font-size: 1.3rem;
+      max-width: 50px;
+      transform: rotate(-2deg) translateY(-50%);
+    }    
+    &.empty {
+      margin: 0;
+      &:before, &:after {
+        display: none;
+      }
+    }
+  }
   ${PointToStyle} {
     width: 84px;
     right: 25%;

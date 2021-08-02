@@ -85,6 +85,7 @@ const button = {
     flex-flow: row nowrap;
     align-items: center;
     text-decoration: none;
+    cursor: pointer;
     &:active {
       box-shadow: none;
       transform: translate(0.3em, 0.2em);
@@ -104,10 +105,18 @@ const button = {
     small: css`
       padding: 0.7rem 1.1rem;
       font-size: 1.2rem;
+      img {
+        max-width: 1.2rem;
+        margin-right: 0.2rem;
+      }
     `,
     default: css`
-      padding: 1em;
+      padding: 1.1rem 1.4rem;
       font-size: 1.5rem;
+      img {
+        max-width: 1.5rem;
+        margin-right: 0.3rem;
+      }
     `,
     large: css`
       padding: 2em;

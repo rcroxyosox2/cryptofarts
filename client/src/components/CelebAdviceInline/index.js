@@ -5,7 +5,7 @@ import * as styles from './styles';
 
 // advices comes from a /api/coin/:id call
 const CelebAdviceInline = ({ advice, onAdviceClick = () => null } = {}) => {
-  const buy = advice.score < 0;
+  const buy = advice.score > 0;
   const adviceText = buy ? 'BUY' : 'nah';
   const handleAdviceClick = (e) => {
     onAdviceClick(e, {buy})

@@ -29,10 +29,6 @@ import {
 import * as styles from './styles';
 
 const Overview = (props) => {
-  // const coins = useLiveQuery(() => db.coins.toArray());
-  // const meta = useLiveQuery(() => db.meta.get(1));
-  // const [pumps, dumps] = getPumpsAndDumpsFromArr({coins, qty: 15});
-
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   // const [searchModalOpen, setSearchModalOpen] = useState(false);
 
@@ -50,7 +46,7 @@ const Overview = (props) => {
   //   setDetailModalOpen(false);
   // };
 
-  useEffect(() => {
+  useEffect( async() => {
     // document.addEventListener('keydown', handleDocKeyDown);
     window.addEventListener('popstate', handleHistoryChanged);
     return () => {

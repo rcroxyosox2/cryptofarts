@@ -106,6 +106,7 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
       opacity: 0;
       transform: translateY(0.5vh);
       transition: all 200ms ease-in-out;
+      z-index: 3;
     }
     &.enter, &.enter-active, &.enter-done {
       ${CoinStackStyle} {

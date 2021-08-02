@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Transition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, Transition, TransitionGroup } from 'react-transition-group';
 import { useTheme } from 'styled-components';
 import numeral from 'numeral';
 import * as styles from './styles';
@@ -15,6 +15,7 @@ import {
 import CelebAdviceInline from 'components/CelebAdviceInline';
 import Button from 'theme/Button';
 import FooterNav from 'components/FooterNav';
+import AddRemoveShitButton from 'components/AddRemoveShitButton';
 import {
   coinHasBigPump,
   filterTickersByCurrencyTarget,
@@ -125,7 +126,13 @@ const Chart = ({prices, volumes, goodOrBad}) => {
   );
 }
 
-const WhereToBuy = ({ tickers = [], symbol, whereToBuyOpen: whereToBuyOpenFromProps, onWhereToBuyOpen } = {}) => {
+const WhereToBuy = ({ 
+  tickers = [], 
+  coinId,
+  symbol, 
+  whereToBuyOpen: whereToBuyOpenFromProps, 
+  onWhereToBuyOpen 
+} = {}) => {
 
   const [currencyFilter, setCurrencyFileter] = useState(currency.USD);
   const [whereToBuyOpen, setWhereToBuyOpen] = useState(whereToBuyOpenFromProps);
@@ -140,11 +147,6 @@ const WhereToBuy = ({ tickers = [], symbol, whereToBuyOpen: whereToBuyOpenFromPr
   const toggleWhereToBuy = () => {
     onWhereToBuyOpen(!whereToBuyOpen);
     setWhereToBuyOpen(!whereToBuyOpen);
-  }
-
-
-  const handleAddClick = () => {
-
   }
 
   useEffect(() => {
@@ -217,9 +219,7 @@ const WhereToBuy = ({ tickers = [], symbol, whereToBuyOpen: whereToBuyOpenFromPr
               </Button>
             )
           }
-          <Button styleSize="small" onClick={handleAddClick}>
-            + add to your shit
-          </Button>
+          <AddRemoveShitButton coinId={coinId} />
         </nav>
       </div>
       <TransitionGroup>
@@ -246,6 +246,10 @@ const PumpMessage = ({cap, name, compareName, compareCap}) => {
 }
 
 const NerdStuff = ({coin}) => {
+
+  if (!coin) {
+    return null;
+  }
 
   const nerdTableItems = [
     {
@@ -274,7 +278,7 @@ const NerdStuff = ({coin}) => {
     }
   ];
   const NerdRow = ({ rowTitle, rowValue }) => <li><span>{rowTitle}</span><span>{rowValue}</span></li>;
-  const desc = coin?.description?.en;
+  const desc = coin.description?.en;
   return (
     <styles.NerdStuffStyle>
       <ul>
@@ -288,6 +292,17 @@ const NerdStuff = ({coin}) => {
       )}
     </styles.NerdStuffStyle>
   )
+}
+
+const Loading = ({ isLoading }) => {
+  return (
+    <CSSTransition in={isLoading} timeout={500}>
+      <styles.LoadingStyle>
+        <div className="graphic" />
+        <div className="text" />
+      </styles.LoadingStyle>
+    </CSSTransition>
+  );
 }
 
 const CoinDetail = (props) => {
@@ -327,10 +342,6 @@ const CoinDetail = (props) => {
     )} />
   );
 
-  if (!coin) {
-    return footerNav;
-  }
-
   let changeFontSize;
   switch(formattedChange.length) {
     case 9:
@@ -365,39 +376,45 @@ const CoinDetail = (props) => {
   }
 
   const bigPump = coinHasBigPump(coin);
+
   return (
-    <styles.CoinDetailStyle goodOrBad={goodOrBad} bigPump={bigPump}>
-      <header>
-        <div>
-          <div className="price" style={{fontSize: priceFontSize}}>{formattedPrice}</div>
-          <div className="timeSymbolContainer">
-            <div className="symbolName">
-              <span>{coin.symbol}</span>
-              <span>{coin.name}</span>
+    <>
+      <Loading isLoading={loading || whereToBuyLoading} />
+      <CSSTransition in={!loading} timeout={500}>
+        <styles.CoinDetailStyle goodOrBad={goodOrBad} bigPump={bigPump}>
+          <header>
+            <div>
+              <div className="price" style={{fontSize: priceFontSize}}>{formattedPrice}</div>
+              <div className="timeSymbolContainer">
+                <div className="symbolName">
+                  <span>{coin?.symbol}</span>
+                  <span>{coin?.name}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div>
-          <div className="img">
-            { coin.image && <img src={coin.image} /> }
-            <div className="pumpArm" />
-          </div>
-          <div className="percChange" style={{fontSize: changeFontSize}}>
-            {change && formattedChange}
-          </div>
-        </div>
-      </header>
-      <main>
-        {comparisonCoin  && <PumpMessage name={coin.name} cap={coin.market_cap} compareName={comparisonCoin.name} compareCap={comparisonCoin.market_cap} /> }
-        { advice && <CelebAdviceInline advice={advice} onAdviceClick={handleAdviceClick} />}
-      </main>
-      <Chart goodOrBad={goodOrBad} prices={coin?.market_data?.prices} volumes={coin?.market_data?.total_volumes} />
-      { (coin && tickers?.length > 0) && <WhereToBuy tickers={tickers} symbol={coin.symbol} whereToBuyOpen={whereToBuyOpen} onWhereToBuyOpen={handleOnWhereToBuyOpen} /> }
-      <main>
-        <NerdStuff coin={coin} />
-      </main>
-      {footerNav}
-    </styles.CoinDetailStyle>
+            <div>
+              <div className="img">
+                { coin?.image && <img src={coin?.image} /> }
+                <div className="pumpArm" />
+              </div>
+              <div className="percChange" style={{fontSize: changeFontSize}}>
+                {change && formattedChange}
+              </div>
+            </div>
+          </header>
+          <main>
+            {comparisonCoin  && <PumpMessage name={coin?.name} cap={coin?.market_cap} compareName={comparisonCoin.name} compareCap={comparisonCoin.market_cap} /> }
+            { advice && <CelebAdviceInline advice={advice} onAdviceClick={handleAdviceClick} />}
+          </main>
+          <Chart goodOrBad={goodOrBad} prices={coin?.market_data?.prices} volumes={coin?.market_data?.total_volumes} />
+          { (coin && tickers?.length > 0) && <WhereToBuy coinId={coin.id} tickers={tickers} symbol={coin.symbol} whereToBuyOpen={whereToBuyOpen} onWhereToBuyOpen={handleOnWhereToBuyOpen} /> }
+          <main>
+            <NerdStuff coin={coin} />
+          </main>
+          {footerNav}
+        </styles.CoinDetailStyle>
+      </CSSTransition>
+    </>
   );
 }
 

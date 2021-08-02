@@ -40,6 +40,11 @@ export const getCoinById = (id) => {
   return fetch(`/api/coin/${id}`).then((resp) => resp.json());
 }
 
+export const getCoinsByIds = (coinIdArr = []) => {
+  const arr = (Array.isArray(coinIdArr)) ? coinIdArr.join(',') : '';
+  return fetch(`/api/coins/${arr}`).then((resp) => resp.json());
+}
+
 export const getWhereToBuy = (id) => {
   return fetch(`/api/buy/${id}`).then((resp) => resp.json());
 }

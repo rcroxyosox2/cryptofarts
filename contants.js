@@ -8,7 +8,7 @@ const caps = {
   MID2: 'mid2',
   MID3: 'mid3',
   LRG: 'lrg',
-}
+};
 
 const capSizes = {
   [caps.TINY]: 0,

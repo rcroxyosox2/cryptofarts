@@ -3,12 +3,63 @@
 import { uniqBy, filter, sortBy, reverse } from 'lodash';
 import lodash from 'lodash';
 import { setCoinsLoadError } from 'redux/coins';
+// specific to coingecko
+export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
+
+// Duplicated from BE/constants
+// TODO: SHARE WITH BE
+const caps = {
+  TINY: 'tiny',
+  SM: 'sm',
+  MID: 'mid',
+  MID2: 'mid2',
+  MID3: 'mid3',
+  LRG: 'lrg',
+};
+
+const capSizes = {
+  [caps.TINY]: 0,
+  [caps.SM]: 100_000_000,
+  [caps.MID]: 1_000_000_000,
+  [caps.LRG]: 10_000_000_000,
+};
+
+const getCapSizeFromCap = (cap, useCapSizes = capSizes) => {
+  const arr = Object.values(useCapSizes);
+  let size;
+  arr.forEach((min, i) => {
+    const max = arr[i+1];
+    if (cap >= min && (max ? (cap < max) : true)) {
+      size = Object.keys(useCapSizes)[i];
+    }
+  });
+  return size;
+}
+
+// END TODO: SHARE WITH BE
+
+export const filterCoinsByCapAndGreenRed = (coins = [], {capSelection, greenRedSelection} = {}) => {
+  const filtered = coins.filter((coin) => {
+    const coinCapSize = getCapSizeFromCap(coin.market_cap);
+    const priceChange = coin[COIN_CHANGE_KEY];
+    const coinGreenOrRed = (priceChange < 0) ? 'red' : 'green';
+    const capSizeCondition = capSelection ? (coinCapSize === capSelection) : true;
+    const greenRedCondition = greenRedSelection ? (coinGreenOrRed === greenRedSelection) : true;
+    return capSizeCondition && greenRedCondition;
+  }).sort((a,b) => {
+    if(a[COIN_CHANGE_KEY] <= b[COIN_CHANGE_KEY]) { return (greenRedSelection === 'green') ? 1 : -1; }
+    if(a[COIN_CHANGE_KEY] > b[COIN_CHANGE_KEY]) { return (greenRedSelection === 'green') ? -1 : 1; }
+    return 0;
+  });
+
+  return filtered;
+
+  // console.log(filtered);
+
+};
 
 // Coins are fetched at this interval
 // export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
-
-// specific to coingecko
-export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
 
 export const currency = {
   USD: 'usd',
@@ -38,11 +89,11 @@ export const coinPerformanceRanges = [
 ];
 
 export const coinHasBigPump = (coin) => {
-  return getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[coinPerformanceRanges.length-1]);
+  return coin ? getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[coinPerformanceRanges.length-1]) : false;
 }
 
 export const coinHasBigDump = (coin) => {
-  return getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[0]);
+  return coin ? getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[0]) : false;
 }
 
 export const getItemIsInCoinRange = (num, range) => {

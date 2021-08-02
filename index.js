@@ -222,17 +222,20 @@ app.get('/api/coin/:id', async(req, res) => {
           }
         }
       }
+      const arrayColumn = (arr, n) => Array.isArray(arr) ? arr.map(x => x[n]) : arr;
       const { prices:priceChartArr, total_volumes:volumeChartArr } = (marketData) ? marketData : {};
       const { season, greedFearIndex:gfIndex } = (metas) ? metas : {};
       const advice = getCelebrityTradeAdvice({
         coin, 
-        priceChartArr, 
-        volumeChartArr, 
+        priceChartArr: arrayColumn(priceChartArr, 1), 
+        volumeChartArr: arrayColumn(volumeChartArr, 1), 
         gfIndex,
         season,
         numEvents,
       });
       
+      // console.log(advice);
+
       return {
         coin,
         comparisonCoin,
@@ -244,6 +247,20 @@ app.get('/api/coin/:id', async(req, res) => {
     res.status(500).send({
       error: e.message
     });
+  }
+});
+
+app.get('/api/coins/:arr', async(req, res) => {
+  try {
+    const coinArr = (req.params.arr) 
+    ? req.params.arr.split(',')
+    : [];
+    const coins = await coinQueries.getCoins(coinArr);
+    res.send(coins);
+  } catch(e) {
+    res.status(500).send({
+      error: e.message,
+    })
   }
 });
 

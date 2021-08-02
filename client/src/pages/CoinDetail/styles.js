@@ -4,6 +4,9 @@ import { PointToStyle } from 'components/PointTo/styles';
 import { bobRotate } from 'theme/animations';
 import { ButtonWrapperStyle } from 'theme/Button/styles';
 import chevImg from 'images/chevRightBlackBg.png';
+import flowbeeImg from 'images/flowbee.gif';
+import flowbingImg from 'images/flowbing.png';
+import { blink } from 'theme/animations';
 import x from 'images/x.png';
 // import buffImg from 'images/buffarm.png';
 
@@ -77,6 +80,11 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
         z-index: 2;
       }
     }
+  }
+  nav {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
   }
   ${ButtonWrapperStyle} {
     margin-bottom: 0.2rem;
@@ -182,6 +190,8 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
   flex-flow: column nowrap;
   align-items: center;
   background: white;
+  position: relative;
+  z-index: 5;
   > header {
     display: flex;
     flex-flow: column nowrap;
@@ -290,5 +300,87 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
     > * {
       width: 32%;
     }
+  }
+
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+  &.enter, &.enter-active, &.enter-done {
+    opacity: 1;
+  }
+`;
+
+export const LoadingStyle = styled.div.attrs({ className: 'LoadingStyle' })`
+  position: absolute;
+  width: 80%;
+  height: 50%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: all 500ms ease-in-out;
+  transform: translate(-50%, -50%) scale(0.5) rotate(0);
+  border: 3px solid black;
+  background: white;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  opacity: 0;
+
+  > * {
+    transition: all 500ms ease-in-out;
+  }
+  .graphic {
+    background-image: url(${flowbeeImg});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    height: 52%;
+    position: relative;
+    /* transform: translateY(-50px); */
+    opacity: 0;
+  }
+  .text {
+    &:after {
+      background-image: url(${flowbingImg});
+      background-size: 70%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      animation: ${blink} 1.2s ease-in-out 0s infinite;
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    width: 70%;
+    height: 22%;
+    position: relative;
+    border-top: 2px solid black;
+    /* transform: translateY(50px) rotate(2deg); */
+    transform: rotate(2deg);
+    top: -2px;
+    opacity: 0;
+  }  
+  &.enter, &.enter-active, &.enter-done {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0) rotate(-4deg);
+    .graphic {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .text {
+      opacity: 1;
+      transform: translateY(0) rotate(2deg);
+    }
+  }
+  &.exit, &.exit-active, &.exit-done {
+    transition-delay: 500ms;
+    > * {
+      transition-delay: 1000ms;
+    }
+  }
+  &.exit-done {
+    z-index:-1;
   }
 `;

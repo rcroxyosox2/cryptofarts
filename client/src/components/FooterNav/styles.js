@@ -18,8 +18,4 @@ export const FooterNavStyle = styled.footer`
     flex-flow: row nowrap;
     gap: 2vw;
   }
-  opacity: 1;
-  &.enter, &.enter-active, &.enter-done {
-    opacity: 1; 
-  }
 `;

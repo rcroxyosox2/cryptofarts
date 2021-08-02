@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import * as styles from './styles';
+import { useLiveQuery } from "dexie-react-hooks";
 import { getGreensReds } from 'services/';
 import socket from 'services/socket';
 import Button from 'theme/Button';
+import { getShit } from 'data/indexdb';
 import CoinStack from 'components/CoinStack';
 import PointTo from 'components/PointTo';
+import MyShitStack from 'components/MyShitStack';
+
 import { getRandomGreenImgStyle, getRandomRedImgStyle } from 'images/';
 
 const FB = ({children, selection, onClick = () => null, ...props} = {}) => (
@@ -28,6 +32,7 @@ const GreensReds = ({ handleDetailModalOpen }) => {
   const [greenRedSelection, setGreenRedSelection] = useState(null);
   const [capSelection, setCapSelection] = useState(null);
   const [animated, setAnimated] = useState(false);
+  const myShitCoinIdArr = useLiveQuery(() => getShit());
 
   const socketFn = (greensReds) => {
     setAnimated(true);
@@ -68,9 +73,11 @@ const GreensReds = ({ handleDetailModalOpen }) => {
   }
 
   const key = `${capSelection}${greenRedSelection}`;
-  const filteredCoins = (key && greensReds) ? greensReds[key] : null;
+  let filteredCoins = (key && greensReds) ? greensReds[key] : null;
+  filteredCoins = filteredCoins?.filter((coin) => !myShitCoinIdArr?.includes(coin.id));
   const exclaim = (greenRedSelection === 'red') ? 'Woah' : 'Dang';
   const handleRowClick = (e, {coin}) => handleDetailModalOpen(coin.id);
+
   return (
     <styles.GreensRedsStyle>
       <PointTo />
@@ -102,6 +109,10 @@ const GreensReds = ({ handleDetailModalOpen }) => {
         </div>
       </nav>
       <main>
+        <MyShitStack onRowClick={handleRowClick} filters={{
+          capSelection,
+          greenRedSelection,
+        }} />
         {
           greensReds && filteredCoins && <CoinStack animated={animated} coins={filteredCoins} onRowClick={handleRowClick} />
         }

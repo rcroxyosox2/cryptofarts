@@ -1,9 +1,16 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
+import { FooterNavStyle } from 'components/FooterNav/styles';
 
 export const MoonShotStyle = styled.div.attrs({ className: 'MoonShotStyle' })`
   position: relative;
   color: white;
   background: black;
+  ${FooterNavStyle} {
+    opacity: 0;
+    &.enter, &.enter-active, &.enter-done {
+      opacity: 1; 
+    }
+  }
   .content {
     min-height: 100vh;
   }

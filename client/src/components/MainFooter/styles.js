@@ -30,4 +30,7 @@ export const MainFooterStyle = styled.footer.attrs({ className: 'MainFooterStyle
     bottom: -10px;
     left: -10px;
   }
+  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: fixed;
+  }
 `;

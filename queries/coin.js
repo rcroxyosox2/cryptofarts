@@ -12,11 +12,23 @@ const fields = [
   'current_price',
   'ath_change_percentage',
   'sparkline_in_7d',
+  'market_cap',
   COIN_CHANGE_KEY,
 ].join(' ');
 
 const getCoin = (query = {}) => {
   return Coin.Schema.find(query).limit(1);
+}
+
+const getCoins = async (coinIdArr) => {
+
+  if (!Array.isArray(coinIdArr) || !coinIdArr.length) {
+    return Promise.resolve([]);
+  }
+
+  await mongo();
+  const queryArr = coinIdArr.map((id) => ({id}));
+  return Coin.Schema.find({'$or': queryArr}).select(fields);
 }
 
 const getCoinEventCount = async (coinId) => {
@@ -41,7 +53,7 @@ const getTopCoinInCapSize = async (capSize, useCapSizes = capSizes) => {
   }
 
   await mongo();
-  const doc = await Coin.Schema.find(query).sort(sort).select(fields + ' market_cap').limit(1);
+  const doc = await Coin.Schema.find(query).sort(sort).select(fields).limit(1);
   return Array.isArray(doc) ? doc[0] : doc;
 }
 
@@ -370,13 +382,14 @@ const getGreensReds = async () => {
 // (async function() {
 //   await mongo();
 //   // const x = await getGreensRedsByQuery();
-//   const x = await getTopCoinInCapSize(caps.TINY);
+//   const x = await getCoins(['bitcoin', 'ethereum']);
 //   console.log(x);
 // })();
 
 module.exports = { 
   fields,
   getCoin,
+  getCoins,
   getSickDealCoins,
   getAvg24hrPriceChangePerc,
   searchCoinsWithAutocomplete,

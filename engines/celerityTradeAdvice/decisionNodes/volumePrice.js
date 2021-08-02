@@ -83,8 +83,8 @@ const getPricePredictionByVolumeAndPrice = ({priceChartArr, volumeChartArr}) => 
 
 }
 
-const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
-const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20]
+// const priceChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
+// const volumeChartArr = [1,2,2,2,3,4,8,9,10,12,17,18,20];
 
 const name = 'volumePrice';
 const getDecisionNode = ({priceChartArr, volumeChartArr}) => {

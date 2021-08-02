@@ -32,4 +32,7 @@ export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
   ${CoinStackImageTitleComboStyle} {
     margin-bottom: 1.6rem;
   }
+  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    padding-bottom: 6rem;
+  }
 `;
