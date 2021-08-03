@@ -54,10 +54,10 @@ export const AppStyle = createGlobalStyle`
     font-weight: bold;
     font-style: normal;
   }
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     #root {
       width: 100%;
-      height: 100%;
+      height: unset;
       border: none;
       margin: 0 auto;
       overflow-y: initial;

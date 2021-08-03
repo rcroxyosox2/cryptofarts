@@ -40,7 +40,7 @@ const ModalContainerStyle = styled.div.attrs({className: 'ModalContainerStyle'})
       overflow-y: ${overflow};
     `;
   }}
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     width: 100%;
     height: 100%;
     display: block;
@@ -65,7 +65,7 @@ const ModalContentStyle = styled.div.attrs({className: 'ModalContentStyle'})`
   width: 100%;
   height: 100%;
   margin: 0;
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     width: 100%;
     margin: 0;
     box-shadow: none;

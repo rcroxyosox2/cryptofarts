@@ -18,4 +18,8 @@ export const FooterNavStyle = styled.footer`
     flex-flow: row nowrap;
     gap: 2vw;
   }
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: fixed;
+    width: 100%;
+  }
 `;

@@ -108,6 +108,11 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
     width: 100%;
     align-items: flex-start;
   }
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: static;
+    overflow: initial;
+    height: 100vh;
+  }
 `;
 
 export const CTAContainerStyle = styled.div.attrs({ className: 'CTAContianerStyle' })`

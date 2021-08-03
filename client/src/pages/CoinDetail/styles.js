@@ -384,7 +384,7 @@ export const LoadingStyle = styled.div.attrs({ className: 'LoadingStyle' })`
   &.exit-done {
     z-index:-1;
   }
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     position: fixed;
     width: 80vw;
     height: 50vh;

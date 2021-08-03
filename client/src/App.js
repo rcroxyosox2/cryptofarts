@@ -18,7 +18,7 @@ const VideoStyle = styled.video`
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     display: none;
   }
 `;
@@ -40,7 +40,7 @@ const PhoneBGStyle = styled.div.attrs({ className: 'PhoneBGStyle' })`
   background-position: center 50%;
   background-size: 1214px;
   background-repeat: no-repeat;
-  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     display: none;
   }
 `;
