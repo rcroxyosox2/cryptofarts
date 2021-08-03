@@ -25,6 +25,11 @@ const CTA = ({
   children, 
   onClick = () => null, 
   onSoundEnded = () => null } = {}) => {
+
+  if (!percChange) {
+    return null;
+  }
+
   const soundIndex = getSoundIndexFromRange(percChange);
   const styleType = isGreenDay(percChange) ? 'good' : 'bad';
 
@@ -59,21 +64,6 @@ const Splash = () => {
     dispatch(getDayThunk());
   }, []);
 
-
-  const CTAAndImg = ({ onClick, onSoundEnded } = {}) => (
-    <>
-      <div>
-        <PointTo />
-        <CTA percChange={percChange} onClick={onClick} onSoundEnded={onSoundEnded}>
-          TodayZ marketZ
-        </CTA>
-      </div>
-      <div>
-        { !badDay ? getRandomGoodImg() : getRandomBadImg() }
-      </div>
-    </>
-  );
-
   const myShitSort = (a,b) => {
     if(a[COIN_CHANGE_KEY] <= b[COIN_CHANGE_KEY]) { return 1; }
     if(a[COIN_CHANGE_KEY] > b[COIN_CHANGE_KEY]) { return -1; }
@@ -102,6 +92,10 @@ const Splash = () => {
     history.push(paths.overview);
   }
 
+  const handleSummaryClick = () => {
+    history.push(paths.overview);
+  }
+
   let summaryFontSize;
   switch(formattedPercChange?.lenght) {
     case 8:
@@ -122,21 +116,28 @@ const Splash = () => {
           <MyShitStack sort={myShitSort} onCoins={handleOnMyShit} />
         </div>
         <div className="bottomContainer">
-          <div className="ctaImgRow">
-              {
-                percChange && <CTAAndImg onClick={handleCTAClick} onSoundEnded={handleOnSoundEnded} />
-              }
+
+          <div className="ctaContainer">
+            <PointTo />
+            <CTA percChange={percChange} onClick={handleCTAClick} onSoundEnded={handleOnSoundEnded}>
+              TodayZ marketZ
+            </CTA>
+            <div className="searchRow">
+              <SearchButtonAndModal styleSize={buttonStyleSize} />
+            </div>
           </div>
-          <div className="searchRow">
-            <SearchButtonAndModal styleSize={buttonStyleSize} />
+
+          <div className="imgContainer">
+            { !badDay ? getRandomGoodImg() : getRandomBadImg() }
           </div>
+
         </div>
       </styles.SplashStyle>
       <Modal isOpen={!!detailModalOpen} onModalClose={handleDetailModalClose}>
         <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
       </Modal>
 
-      <styles.DaySummaryStyle badDay={badDay} className="hidden" ref={summaryRef}>
+      <styles.DaySummaryStyle badDay={badDay} className="hidden" ref={summaryRef} onClick={handleSummaryClick}>
         { badDay ? getRandomBadImg() : getRandomGoodImg() }
         <div className="textContent">
           <h1>{badDay ? (<><i>Oh no, Stuff is</i> down</>) : 'Da hole shit is up'}</h1>

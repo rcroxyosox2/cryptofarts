@@ -2,19 +2,33 @@ import styled from 'styled-components';
 import { ButtonWrapperStyle } from 'theme/Button/styles';
 import { PointToStyle } from 'components/PointTo/styles';
 
+export const CTAContainerStyle = styled.div.attrs({ className: 'CTAContianerStyle' })`
+  position: relative;
+  white-space: nowrap;
+  &:after { 
+    position: absolute;
+    right: 44%;
+    bottom: 109%;
+    text-align: right;
+    content: attr(data-content);
+    font-size: 2em;
+  }
+`;
+
 export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  display: grid;
+  display: flex;
+  flex-flow: column nowrap;
   transition: all 300ms ease-in-out;
   &.withMyShit {
     grid-template-rows: 0.7fr 1fr 1fr;
   }
   &.withoutMyShit {
     align-items: flex-end;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 0fr 1fr;
     .myShitRow {
       display: none;
     }
@@ -43,56 +57,61 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
     overflow-y: scroll;
     padding: 0 10%;
   }
-  .ctaImgRow {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: flex-end;
-    position: relative;
-    ${PointToStyle} {
-      bottom: 115%;
-      width: 37%;
-      left: 25%;
-      transform: rotate(-8deg);
-    }
+  .imgContainer {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    z-index: 1;
     img {
+      position: relative;
       max-width: 100%;
     }
-    > * {
-      position: relative;
-      &:first-child {
-        flex: 1;
-        z-index: 2;
-      }
-      &:last-child {
-        flex: 1;
-        z-index: 1;
-        > div {
-          position: relative;
-        }
+  }
+  .ctaContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    padding: 6%;
+    z-index: 1;
+    ${PointToStyle} {
+      position: static;
+      width: 18%;
+      transform: rotate(-8deg);
+    }
+    &:first-child {
+      flex: 1;
+      z-index: 2;
+    }
+    &:last-child {
+      flex: 1;
+      z-index: 1;
+      > div {
+        position: relative;
       }
     }
-    .tacos {
-      margin: 8vh 0 3vh;
-      img {
-        width: 110%;
-        max-width: none;
-      }
+  }
+  .tacos {
+    margin: 8vh 0 3vh;
+    img {
+      width: 110%;
+      max-width: none;
     }
-    .irok {
-      margin: 23vh 0 3vh;
-      left: -11vw;
-      img {
-        width: 146%;
-        max-width: none;
-      }
+  }
+  .irok {
+    margin: 23vh 0 3vh;
+    left: -11vw;
+    img {
+      width: 146%;
+      max-width: none;
     }
-    .beyonce {
-      top: 7rem;
-      left: 1%;
-      img {
-        /* width: 130%;
-        max-width: none; */
-      }
+  }
+  .beyonce {
+    bottom: -1rem;
+    img {
+      /* width: 130%;
+      max-width: none; */
     }
   }
   .searchRow {
@@ -101,30 +120,16 @@ export const SplashStyle = styled.div.attrs({className: 'SplashStyle'})`
     transform: rotate(5deg);
   }
   .bottomContainer {
-    padding: 5%;
     display: flex;
     flex-flow: column nowrap;
     bottom: 0;
     width: 100%;
-    align-items: flex-start;
+    justify-content: flex-end;
   }
   @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
-    position: static;
+    position: fixed;
     overflow: initial;
-    height: 100vh;
-  }
-`;
-
-export const CTAContainerStyle = styled.div.attrs({ className: 'CTAContianerStyle' })`
-  position: relative;
-  white-space: nowrap;
-  &:after { 
-    position: absolute;
-    left: 71%;
-    bottom: 109%;
-    text-align: right;
-    content: attr(data-content);
-    font-size: 2em;
+    height: 100%;
   }
 `;
 
@@ -162,5 +167,8 @@ export const DaySummaryStyle = styled.div.attrs({ className: 'DaySummaryStyle' }
   .textContent {
     transform: rotate(${props => props.badDay ? '8deg' : '-8deg'});
     color: ${props => props.badDay ? props.theme.colors.red : props.theme.colors.green};
+  }
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: fixed;
   }
 `;

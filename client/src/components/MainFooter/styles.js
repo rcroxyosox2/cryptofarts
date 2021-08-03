@@ -5,7 +5,6 @@ export const MainFooterStyle = styled.footer.attrs({ className: 'MainFooterStyle
   position: sticky;
   bottom: 0;
   width: 100%;
-  position: sticky;
   overflow: hidden;
   padding: 2rem 2rem 1.3rem;
   z-index: 5;

@@ -37,9 +37,9 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
   }
 
   if (!src) {
-    console.log('no source for ', src, soundIndex);
+    console.log('no source for ', src, sounds, soundIndex);
   }
-
+  console.log("here is the src:::", src);
   return src ? (
     <>
       <audio controls ref={ref}>

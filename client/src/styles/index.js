@@ -56,6 +56,7 @@ export const AppStyle = createGlobalStyle`
   }
   @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     #root {
+      position: static;
       width: 100%;
       height: unset;
       border: none;

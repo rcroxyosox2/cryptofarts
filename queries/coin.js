@@ -38,7 +38,6 @@ const getCoinEventCount = async (coinId) => {
 
 const getTopCoinInCapSize = async (capSize, useCapSizes = capSizes) => {
   const nextCapSize = getNextCapSize(capSize, useCapSizes);
-  console.log(capSize, nextCapSize);
   const sort = {
     'market_cap': -1
   };

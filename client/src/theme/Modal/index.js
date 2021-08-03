@@ -134,12 +134,14 @@ class Modal extends React.PureComponent {
         this.onOpen();
       }
       else{
+        console.log('update');
         this.onClose();
       }
     }
   }
 
   componentWillUnmount() {
+    console.log('unmount');
     this.onClose();
   }
 
@@ -154,8 +156,11 @@ class Modal extends React.PureComponent {
   }
 
   unlockBodyScroll() {
+    const body = document.body;
     document.body.style.position = '';
     window.scrollTo(0, Math.abs(parseInt(document.body.style.top, 10)));
+    body.style.width = null;
+    body.style.height = null;
     document.body.style.top = '';
   }
 
@@ -187,11 +192,13 @@ class Modal extends React.PureComponent {
       return null;
     }
 
+    console.log(this.props.isOpen);
+
     const modal = (
-      <TransitionGroup>
+      <TransitionGroup component={null}>
         {this.props.isOpen
           && (
-            <Transition timeout={{ enter: 0, exit: styles.ANIM_SPEED }} in={this.props.isOpen}>
+            <Transition timeout={{ enter: 0, exit: styles.ANIM_SPEED }} in={this.props.isOpen} unmountOnExit={true}>
               {
                 (animationStatus) => (
                   <styles.ModalContainerStyle

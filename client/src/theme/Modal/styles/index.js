@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, createGlobalStyle } from 'styled-components';
 
 export const ANIM_SPEED = 280;
 
