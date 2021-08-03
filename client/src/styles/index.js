@@ -23,8 +23,10 @@ export const AppStyle = createGlobalStyle`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    height: 100vh;
     overflow: hidden;
+    font-family: 'Comic Neue';
+    font-weight: bold;
+    transition: background 0.3s ease-in;
   }
   #root {
     width: 375px;
@@ -52,17 +54,17 @@ export const AppStyle = createGlobalStyle`
     font-weight: bold;
     font-style: normal;
   }
-  body {
-    font-family: 'Comic Neue';
-    font-weight: bold;
-    transition: background 0.3s ease-in;
-  }
   @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     #root {
       width: 100%;
       height: 100%;
       border: none;
       margin: 0 auto;
+      overflow-y: initial;
+    }
+    body {
+      height: auto;
+      overflow: initial;
     }
   }
 `;

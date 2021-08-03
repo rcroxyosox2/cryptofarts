@@ -10,6 +10,8 @@ export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
     justify-content: space-between;
     align-items: center;
     padding: 10%;
+    position: relative;
+    z-index: 2;
     ${ LogoStyle } {
       width: 50%;
     }

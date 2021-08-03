@@ -376,11 +376,17 @@ export const LoadingStyle = styled.div.attrs({ className: 'LoadingStyle' })`
   }
   &.exit, &.exit-active, &.exit-done {
     transition-delay: 500ms;
+    transform: scale(0);
     > * {
       transition-delay: 1000ms;
     }
   }
   &.exit-done {
     z-index:-1;
+  }
+  @media only screen and (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: fixed;
+    width: 80vw;
+    height: 50vh;
   }
 `;

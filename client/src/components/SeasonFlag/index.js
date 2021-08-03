@@ -18,6 +18,7 @@ export const bands = {
 };
 
 const SeasonFlagStyle = styled.aside`
+  cursor: pointer;
   mark {
     ${props => {
       if ([bands.BUBBLE_CONFIRMED, bands.SELL, bands.FOMO].includes(props.season)) {
