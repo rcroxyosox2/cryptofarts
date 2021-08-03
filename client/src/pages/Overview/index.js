@@ -66,14 +66,6 @@ const Overview = (props) => {
     setDetailModalOpen(false);
   };
 
-  const handleKeyDown = (e) => {
-    console.log(eventHasKeyCode(e, KEYCODES.UP));
-  }
-
-  // const handleSearchModalClose = (e) => {
-  //   setSearchModalOpen(false);
-  // }
-
   return (
     <styles.OverviewStyle>
       <header>

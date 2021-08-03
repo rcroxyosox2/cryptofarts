@@ -1,6 +1,6 @@
 import styled, { css, createGlobalStyle } from 'styled-components';
 
-export const ANIM_SPEED = 280;
+export const ANIM_SPEED = 300;
 
 export const ModalContainerInnerStyle = styled.div.attrs({className: 'ModalInnerContainerStyle'})`
   margin: 0 auto;
@@ -8,9 +8,10 @@ export const ModalContainerInnerStyle = styled.div.attrs({className: 'ModalInner
 `;
 
 const ModalContainerStyle = styled.div.attrs({className: 'ModalContainerStyle'})`
-  transition: opacity ${ANIM_SPEED - 100}ms ease-out, transform ${ANIM_SPEED}ms ease-out;
+  transition: opacity ${ANIM_SPEED}ms ease-out, transform ${ANIM_SPEED}ms ease-out;
   background: transparent;
   position: fixed;
+  opacity: 0;
   width: 375px;
   height: 667px;
   left: 50%;
@@ -60,10 +61,10 @@ const ModalContentStyle = styled.div.attrs({className: 'ModalContentStyle'})`
   background: ${props => props.dark ? 'black' : 'white'};
   box-sizing: border-box;
   margin: 5% 0;
-  position: relative;
+  position: static;
   max-width: ${ props => props.maxWidth };
+  min-height: 100%;
   width: 100%;
-  height: 100%;
   margin: 0;
   @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     width: 100%;

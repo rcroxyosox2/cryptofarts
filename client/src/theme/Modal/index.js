@@ -149,10 +149,16 @@ class Modal extends React.PureComponent {
     const body = document.body;
     const scrollY = document.documentElement.style.getPropertyValue('--scroll-y') || window.scrollY || window.pageYOffset;
 
-    body.style.top = `-${scrollY}px`;
-    body.style.position = 'fixed';
-    body.style.width = '100%';
-    body.style.height = `100vh`;
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      body.style.top = `-${scrollY}px`;
+      body.style.position = 'fixed';
+      body.style.width = '100%';
+      body.style.height = `100%`;
+    }, styles.ANIM_SPEED);
   }
 
   unlockBodyScroll() {
@@ -171,6 +177,9 @@ class Modal extends React.PureComponent {
   }
 
   onClose() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
     this.unlockBodyScroll();
     this.activeElement && this.activeElement.focus(); // return focus to the original object that triggered the modal
   }
@@ -191,8 +200,6 @@ class Modal extends React.PureComponent {
     if (!this.root) {
       return null;
     }
-
-    console.log(this.props.isOpen);
 
     const modal = (
       <TransitionGroup component={null}>

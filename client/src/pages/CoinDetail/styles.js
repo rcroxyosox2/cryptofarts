@@ -192,6 +192,7 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
   background: white;
   position: relative;
   z-index: 5;
+  background: white;
   > header {
     display: flex;
     flex-flow: column nowrap;

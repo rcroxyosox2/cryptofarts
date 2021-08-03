@@ -332,6 +332,7 @@ const CoinDetail = (props) => {
   }, [response])
 
   const { coin, comparisonCoin, advice } = response || {};
+
   const change = coin ? coin[COIN_CHANGE_KEY] : null;
   const formattedChange = formatPerc(change);
   const formattedPrice = formatPrice(coin?.current_price);
@@ -376,7 +377,6 @@ const CoinDetail = (props) => {
   }
 
   const bigPump = coinHasBigPump(coin);
-
   return (
     <>
       <Loading isLoading={loading || whereToBuyLoading} />
