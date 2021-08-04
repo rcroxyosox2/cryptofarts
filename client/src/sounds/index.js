@@ -8,13 +8,13 @@ import {
     getItemIsInCoinRange,
   } from 'brains/coins';
 
-const sounds = {
+export default [
   tinyFartSound,
   medFartSound,
   medFart2Sound,
   lrgFartSound,
   riffSound,
-};
+];
 
 export const indexes = {
     TINY_FART: 0,
@@ -47,5 +47,3 @@ export const getSoundIndexFromRange = (num) => {
 
     return found;
   }
-
-  export default sounds;

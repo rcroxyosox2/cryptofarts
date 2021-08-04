@@ -42,7 +42,7 @@ const Overview = (props) => {
       </header>
       <SickDeals onCoinIdClicked={handleCoinIdClicked} />
       <Moonshots />
-      <GreensReds onCoinIdClicked={handleCoinIdClicked} />
+      <GreensReds />
       <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
       <Trending onCoinIdClicked={handleCoinIdClicked} />
       {/* <Notif /> */}

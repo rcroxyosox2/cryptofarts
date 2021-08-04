@@ -268,6 +268,7 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
     left: -5px;
     width: 93%;
     .priceContainer {
+      -webkit-touch-callout: none;
       height: 120px;
     }
     &:after {

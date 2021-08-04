@@ -23,7 +23,7 @@ const FB = ({children, selection, onClick = () => null, ...props} = {}) => (
   </styles.FilterButtonStyle>
 );
 
-const GreensReds = ({ onCoinIdClicked }) => {
+const GreensReds = ({ onCoinIdClicked = () => null } = {}) => {
   const socketName = 'greensreds';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
