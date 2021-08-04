@@ -12,6 +12,7 @@ import Trending from 'components/Trending';
 import MainFooter from 'components/MainFooter';
 import CoinDetail from 'pages/CoinDetail';
 import Modal from 'theme/Modal';
+import DetailModal from 'components/DetailModal';
 import { paths } from 'Router';
 import { KEYCODES, eventHasKeyCode } from 'utils';
 
@@ -29,63 +30,26 @@ import {
 import * as styles from './styles';
 
 const Overview = (props) => {
-  const [detailModalOpen, setDetailModalOpen] = useState(false);
-  // const [searchModalOpen, setSearchModalOpen] = useState(false);
-
-  // const handleDocKeyDown = (e) => {
-  //   if (eventHasKeyCode(e, KEYCODES.FSLASH)) {
-  //     setSearchModalOpen(true);
-  //   }
-  // }
-
-  const handleHistoryChanged = (x) => {
-    setDetailModalOpen(false);
+  const [coinIdClicked, setCoinIdClicked] = useState(null);
+  const handleCoinIdClicked = (coinId) => {
+    setCoinIdClicked(coinId);
   }
-
-  // window.onpopstate = window.history.onpushstate = function(e) { 
-  //   setDetailModalOpen(false);
-  // };
-
-  useEffect( async() => {
-    // document.addEventListener('keydown', handleDocKeyDown);
-    window.addEventListener('popstate', handleHistoryChanged);
-    return () => {
-      // document.removeEventListener('keydown', handleDocKeyDown);
-      window.removeEventListener('popstate', handleHistoryChanged);
-    }
-  }, []);
-
-  const handleDetailModalOpen = (coinId) => {
-    const newRoute = paths.coindetail.replace(':id', coinId);
-    window.history.pushState(null, 'CoinDetail', newRoute);
-    setDetailModalOpen(coinId);
-  };
-
-  const handleDetailModalClose = () => {
-    window.history.replaceState(null, 'CoinDetail', paths.overview);
-    setDetailModalOpen(false);
-  };
-
   return (
     <styles.OverviewStyle>
       <header>
         <Logo />
         <SeasonFlag />
       </header>
-      <SickDeals handleDetailModalOpen={handleDetailModalOpen} />
+      <SickDeals onCoinIdClicked={handleCoinIdClicked} />
       <Moonshots />
-      <GreensReds handleDetailModalOpen={handleDetailModalOpen} />
-      
-      <Modal isOpen={!!detailModalOpen} onModalClose={handleDetailModalClose}>
-        <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
-      </Modal>
-
-      <Trending handleDetailModalOpen={handleDetailModalOpen} />
+      <GreensReds onCoinIdClicked={handleCoinIdClicked} />
+      <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
+      <Trending onCoinIdClicked={handleCoinIdClicked} />
       {/* <Notif /> */}
       {/* <div>Last updated on: {moment(meta?.lastUpdated).format('LLLL')}</div> */}
       {/* <CoinStackImageTitleCombo title="Da Pumps" coins={pumps} Img={getRandomPumpImgStyle()} />
       <CoinStackImageTitleCombo title="Da Dumps" coins={dumps} Img={getRandomDumpImgStyle()} /> */}
-      <MainFooter handleDetailModalOpen={handleDetailModalOpen} />
+      <MainFooter handleDetailModalOpen={handleCoinIdClicked} />
     </styles.OverviewStyle>
   )
 }

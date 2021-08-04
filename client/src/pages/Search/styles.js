@@ -208,4 +208,7 @@ export const SearchStyle = styled.div.attrs({ className: 'SearchStyle' })`
       transform: scaleY(0);
     }
   }
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    position: fixed;
+  }
 `;

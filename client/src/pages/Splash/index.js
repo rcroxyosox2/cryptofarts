@@ -5,7 +5,7 @@ import { SoundButton } from 'components/Sounds';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSoundIndexFromRange } from 'sounds/';
 import { getDayThunk } from 'redux/summary';
-import { isGreenDay, COIN_CHANGE_KEY } from 'brains/coins';
+import { isGreenDay } from 'brains/coins';
 import { getRandomBadImg, getRandomGoodImg } from 'images/';
 import { formatPerc } from 'utils';
 import Logo from 'components/Logo';
@@ -13,7 +13,7 @@ import PointTo from 'components/PointTo';
 import { paths } from 'Router';
 import SearchButtonAndModal from 'components/SearchButtonAndModal';
 import { setSplashPageLastVisited, splashPageIsStale } from 'data/indexdb';
-import MyShitStack from 'components/MyShitStack';
+import MyShitStack, { myShitSortDesc } from 'components/MyShitStack';
 import CoinDetail from 'pages/CoinDetail';
 import Modal from 'theme/Modal';
 import * as styles from './styles'
@@ -54,21 +54,19 @@ const Splash = () => {
   const history = useHistory();
   const { day } = useSelector((state) => state.summary);
   const [myShitClassName, setMyShitClassName] = useState(null);
-  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [showDaySummary, setShowDaySummary] = useState(false);
   const percChange = day.data.avgChangePerc24hr;
   const formattedPercChange = formatPerc(percChange);
   const badDay = (percChange < 0);
 
   useEffect( async() => {
+    const isStale = await splashPageIsStale();
+    if (isStale) {
+      history.replace(paths.overview);
+    } 
+
     dispatch(getDayThunk());
   }, []);
-
-  const myShitSort = (a,b) => {
-    if(a[COIN_CHANGE_KEY] <= b[COIN_CHANGE_KEY]) { return 1; }
-    if(a[COIN_CHANGE_KEY] > b[COIN_CHANGE_KEY]) { return -1; }
-    return 0;
-  };
 
   const handleOnMyShit = (coins) => {
     if (coins?.length) {
@@ -77,11 +75,6 @@ const Splash = () => {
       setMyShitClassName('withoutMyShit');
     }
   }
-
-  const handleDetailModalClose = () => {
-    window.history.replaceState(null, 'CoinDetail', paths.overview);
-    setDetailModalOpen(false);
-  };
 
   const handleCTAClick = () => {
     summaryRef.current.classList.remove('hidden');
@@ -96,16 +89,6 @@ const Splash = () => {
     history.push(paths.overview);
   }
 
-  let summaryFontSize;
-  switch(formattedPercChange?.lenght) {
-    case 8:
-      summaryFontSize = '5rem';
-      break;
-    case 7:
-      summaryFontSize = '5.9rem';
-      break;
-  }
-
   return (
     <>
       <styles.SplashStyle className={myShitClassName}>
@@ -113,10 +96,9 @@ const Splash = () => {
           <Logo />
         </div>
         <div className="myShitRow">
-          <MyShitStack sort={myShitSort} onCoins={handleOnMyShit} />
+          <MyShitStack sort={myShitSortDesc} onCoins={handleOnMyShit} />
         </div>
         <div className="bottomContainer">
-
           <div className="ctaContainer">
             <PointTo />
             <CTA percChange={percChange} onClick={handleCTAClick} onSoundEnded={handleOnSoundEnded}>
@@ -128,15 +110,11 @@ const Splash = () => {
           </div>
 
           <div className="imgContainer">
-            { !badDay ? getRandomGoodImg() : getRandomBadImg() }
+            { percChange && (!badDay ? getRandomGoodImg() : getRandomBadImg()) }
           </div>
 
         </div>
       </styles.SplashStyle>
-      <Modal isOpen={!!detailModalOpen} onModalClose={handleDetailModalClose}>
-        <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
-      </Modal>
-
       <styles.DaySummaryStyle badDay={badDay} className="hidden" ref={summaryRef} onClick={handleSummaryClick}>
         { badDay ? getRandomBadImg() : getRandomGoodImg() }
         <div className="textContent">

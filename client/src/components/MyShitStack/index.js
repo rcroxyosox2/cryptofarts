@@ -4,15 +4,23 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { getShit } from 'data/indexdb';
 import useRequest from 'hooks/useRequest';
 import CoinStack from 'components/CoinStack';
+import { COIN_CHANGE_KEY } from 'brains/coins';
 import { filterCoinsByCapAndGreenRed } from 'brains/coins';
 import * as styles from './styles';
+
+
+export const myShitSortDesc = (a,b) => {
+  if(a[COIN_CHANGE_KEY] <= b[COIN_CHANGE_KEY]) { return 1; }
+  if(a[COIN_CHANGE_KEY] > b[COIN_CHANGE_KEY]) { return -1; }
+  return 0;
+};
 
 const MyShitStack = ({ filters, onRowClick, sort, onCoins }) => {
   
   const coinsArr = useLiveQuery(() => getShit());
 
   const [filteredCoins, setFilteredCoins] = useState(null);
-  const { response: coins, loading, error, makeRequest } = useRequest({
+  const { response: coins, error, makeRequest } = useRequest({
     request: getCoinsByIds,
   });
 
@@ -24,8 +32,12 @@ const MyShitStack = ({ filters, onRowClick, sort, onCoins }) => {
   }, [filters, coins]);
 
   useEffect( async() => {
-    makeRequest(coinsArr);
-    onCoins(coinsArr);
+    try {
+      await makeRequest(coinsArr);
+      onCoins(coinsArr);
+    } catch (e) {
+      // bugsnagging on BE
+    }
   }, [coinsArr]);
 
   const condCoins = filteredCoins || coins;

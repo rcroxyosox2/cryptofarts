@@ -42,7 +42,6 @@ export const PumpMessageStyle = styled.aside.attrs({className: 'PumpMessageStyle
 export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' })`
   width: 100%;
   position: relative;
-  margin-bottom: 5%;
   .closeBt {
       appearance: none;
       border: none;
@@ -81,11 +80,6 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
       }
     }
   }
-  nav {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-end;
-  }
   ${ButtonWrapperStyle} {
     margin-bottom: 0.2rem;
   }
@@ -94,12 +88,6 @@ export const WhereToBuyStyle = styled.div.attrs({ className: 'WhereToBuyStyle' }
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
-    padding: 0 8%;
-    ${ PointToStyle } {
-      top: -5%;
-      left: 8%;
-      width: 25%;
-    }
   }
   .exchangeLinkList {
     transform: rotate(2deg);
@@ -294,15 +282,23 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
       font-size: 0.7rem;
     }
   }
-  .pointToArea {
-    position: relative;
-    height: 100px;
-    width: 100%;
-    > * {
-      width: 32%;
-    }
+  ${ PointToStyle } {
+    top: -5%;
+    left: 8%;
+    width: 25%;
   }
 
+  .buttonNav {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    position: relative;
+    ${ButtonWrapperStyle} {
+      padding-right: 4%;
+      margin-bottom: 2%;
+    }
+  }
   opacity: 0;
   transition: opacity 500ms ease-in-out;
   &.enter, &.enter-active, &.enter-done {
@@ -325,7 +321,7 @@ export const LoadingStyle = styled.div.attrs({ className: 'LoadingStyle' })`
   background: white;
   left: 50%;
   top: 50%;
-  z-index: 4;
+  z-index: 6;
   opacity: 0;
 
   > * {

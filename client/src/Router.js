@@ -12,12 +12,10 @@ export const paths = {
   search: '/search',
   moonshot: '/moonshot/:id',
   coindetail: '/coin/:id',
+  mestuff: '/mestuff',
   fourohfour: '*'
 };
 
-const Test = () => {
-  return "coming soon...";
-};
 
 const Routes = () => {
   return (

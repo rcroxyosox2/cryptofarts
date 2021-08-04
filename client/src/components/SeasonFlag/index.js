@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import useRequest from 'hooks/useRequest';
 import { getMeta } from 'services/';

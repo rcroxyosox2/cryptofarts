@@ -36,8 +36,15 @@ export const getTrending = () => {
   return fetch('/api/trending').then((resp) => resp.json());
 }
 
-export const getCoinById = (id) => {
-  return fetch(`/api/coin/${id}`).then((resp) => resp.json());
+export const getCoinById = async(id) => {
+  const response = await fetch(`/api/coin/${id}`);
+  const responseJson = await response.json();
+
+  if (responseJson.error) {
+    console.log(responseJson.error);
+    throw new Error(responseJson.error);
+  }
+  return responseJson;
 }
 
 export const getCoinsByIds = (coinIdArr = []) => {
@@ -46,7 +53,9 @@ export const getCoinsByIds = (coinIdArr = []) => {
 }
 
 export const getWhereToBuy = (id) => {
-  return fetch(`/api/buy/${id}`).then((resp) => resp.json());
+  return fetch(`/api/buy/${id}`).then((resp) => {
+    return resp ? resp.json() : {};
+  });
 }
 
 ////// old 
@@ -113,8 +122,6 @@ export const getTopCoins = ({qty = 10, page = 1} = {}) => {
 
 // holy balls this is expensive tho
 export const megaInitialLoad = async ({limit2, onFetchCycle} = {}) => {
-
-  const fetchThrottleInMS = 5;
   const fetchLoop = (page) => {
     var requestOptions = {
       method: 'GET',

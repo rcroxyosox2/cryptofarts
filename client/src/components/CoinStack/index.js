@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import * as styles from './styles';
-import numeral from 'numeral';
-import { AnimateGroup } from 'react-animation';
-import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   Sparklines,
   SparklinesLine,
@@ -12,9 +11,7 @@ import {
   coinHasBigDump,
   COIN_CHANGE_KEY,
 } from 'brains/coins';
-import { useDispatch } from 'react-redux';
-import { setDetailModalOpen } from 'redux/app';
-const PUMP_PERC_THRESHOLD = 20;
+import DetailModal from 'components/DetailModal';
 
 const CoinRow = ({coin, onClick, delay}) => {
   const bigPump = coinHasBigPump(coin);
@@ -62,24 +59,37 @@ const CoinStack = ({
   onRowClick = () => null,
   _ref = null
 } = {}) => {
+
+  const [coinIdClicked, setCoinIdClicked] = useState(null);
+  const handleRowClick = (e, {coin}) => {
+    setCoinIdClicked(coin?.id)
+    onRowClick(e, {coin});
+  }
+  
   return (animated) ? (
-    <styles.CoinStackStyle ref={_ref}>
-      <TransitionGroup component={null}>
-        { coins.map((coin, i) => {
-          const animTime = 500;
-          const delay = (animTime/4) * i;
-          return (
-            <CSSTransition in={true} timeout={animTime + delay} key={coin.id}>
-              <CoinRow key={coin.id} coin={coin} onClick={onRowClick} delay={delay} />
-            </CSSTransition>
-          );
-       })}
-      </TransitionGroup>
-    </styles.CoinStackStyle>
+    <>
+      <styles.CoinStackStyle ref={_ref}>
+        <TransitionGroup component={null}>
+          { coins.map((coin, i) => {
+            const animTime = 500;
+            const delay = (animTime/4) * i;
+            return (
+              <CSSTransition in={true} timeout={animTime + delay} key={coin.id}>
+                <CoinRow key={coin.id} coin={coin} onClick={handleRowClick} delay={delay} />
+              </CSSTransition>
+            );
+        })}
+        </TransitionGroup>
+      </styles.CoinStackStyle>
+      <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
+    </>
   ) : (
-    <styles.CoinStackStyle>
-      { coins.map((coin, i) => (<CoinRow key={coin.id} coin={coin} onClick={onRowClick} />)) }
-    </styles.CoinStackStyle>
+    <>
+      <styles.CoinStackStyle>
+        { coins.map((coin, i) => (<CoinRow key={coin.id} coin={coin} onClick={handleRowClick} />)) }
+      </styles.CoinStackStyle>
+      <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
+    </>
   );
 }
 

@@ -129,19 +129,17 @@ class Modal extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.isOpen != prevProps.isOpen){
+    if(this.props.isOpen !== prevProps.isOpen){
       if (this.props.isOpen) {
         this.onOpen();
       }
       else{
-        console.log('update');
         this.onClose();
       }
     }
   }
 
   componentWillUnmount() {
-    console.log('unmount');
     this.onClose();
   }
 

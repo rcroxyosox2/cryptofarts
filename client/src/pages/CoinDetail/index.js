@@ -28,6 +28,7 @@ import moment from 'moment';
 import chevRight from 'images/chevRightBlackBg.png';
 import girlsShopping from 'images/girlsShopping.png';
 import whoCaresImg from 'images/whoCares.gif';
+import ErrorScreen from 'components/ErrorScreen';
 import { Line, Bar } from 'react-chartjs-2';
 
 
@@ -166,7 +167,7 @@ const WhereToBuy = ({
       <Button as="select" onChange={handleFilterSelect} value={currencyFilter} styleSize="small" styleType="neutralBordered" >
         {Object.keys(currency).map((k) => {
           const v = currency[k];
-          return <option value={k} key={currency[k]}>{currency[k]}</option>
+          return <option value={k} key={String(currency[k])}>{currency[k]}</option>
         })}
       </Button>
     );
@@ -210,17 +211,13 @@ const WhereToBuy = ({
   return (
     <styles.WhereToBuyStyle>
       <div className="navAndAside">
-        <PointTo type={PointTo.messageTypes.SCROLLFOR} />
-        <nav>
-          {    tickers.length &&   
+        {    tickers.length &&   
             (
               <Button styleSize="small" onClick={toggleWhereToBuy}>
                 Where to buy dis
               </Button>
             )
           }
-          <AddRemoveShitButton coinId={coinId} />
-        </nav>
       </div>
       <TransitionGroup>
         { whereToBuyOpen && (
@@ -316,14 +313,23 @@ const CoinDetail = (props) => {
   } = useRequest({
     request: getWhereToBuy,
   })
-  const { response, loading, error, makeRequest } = useRequest({
+  const { 
+    response, 
+    loading, 
+    error, 
+    makeRequest 
+  } = useRequest({
     request: getCoinById,
   });
 
-  useEffect(() => {
+  useEffect(async () => {
     if (coinId) {
-      makeRequest(coinId);
-      whereToBuyRequest(coinId);
+      try {
+        await makeRequest(coinId);
+        await whereToBuyRequest(coinId);
+      } catch(e) {
+        // bugsnagging on the BE
+      }
     }
   }, [coinId]);
 
@@ -377,6 +383,11 @@ const CoinDetail = (props) => {
   }
 
   const bigPump = coinHasBigPump(coin);
+
+  if (error) {
+    return <ErrorScreen />;
+  }
+  
   return (
     <>
       <Loading isLoading={loading || whereToBuyLoading} />
@@ -407,7 +418,15 @@ const CoinDetail = (props) => {
             { advice && <CelebAdviceInline advice={advice} onAdviceClick={handleAdviceClick} />}
           </main>
           <Chart goodOrBad={goodOrBad} prices={coin?.market_data?.prices} volumes={coin?.market_data?.total_volumes} />
-          { (coin && tickers?.length > 0) && <WhereToBuy coinId={coin.id} tickers={tickers} symbol={coin.symbol} whereToBuyOpen={whereToBuyOpen} onWhereToBuyOpen={handleOnWhereToBuyOpen} /> }
+          <nav className="buttonNav">
+          <PointTo type={PointTo.messageTypes.SCROLLFOR} />
+
+            { 
+            (coin && tickers?.length > 0) 
+              && <WhereToBuy coinId={coin.id} tickers={tickers} symbol={coin.symbol} whereToBuyOpen={whereToBuyOpen} onWhereToBuyOpen={handleOnWhereToBuyOpen} /> 
+            }
+            <AddRemoveShitButton coinId={coinId} />
+          </nav>
           <main>
             <NerdStuff coin={coin} />
           </main>

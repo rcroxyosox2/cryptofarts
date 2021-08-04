@@ -58,6 +58,16 @@ export const MoonShotsStyles = styled.section.attrs({ className: 'MoonShotsStyle
   position: relative;
   color: white;
   padding-top: 2%;
+
+  .errorSection {
+    padding: 20%;
+    color: white;
+    z-index: 2;
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+  
   &.enter, &.enter-active, &.enter-done {
     header {
       img {

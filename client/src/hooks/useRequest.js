@@ -22,7 +22,7 @@ const useRequest = function(props) {
       .catch(error => {
         const errorMessage = error?.message ? error?.message : error;
         !unmounted && setRequestResult({error: errorMessage, response: null, loading: false});
-        return error;
+        throw error;
       });
   }
 

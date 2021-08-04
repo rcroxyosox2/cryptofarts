@@ -42,7 +42,7 @@ const SickDeals = (props) => {
   }, []);
 
   const handleClick = (coin) => (e) => {
-    props.handleDetailModalOpen(coin.id);
+    props.onCoinIdClicked(coin.id);
   }
 
   return (
@@ -72,7 +72,7 @@ const SickDeals = (props) => {
 };
 
 SickDeals.defaultProps = {
-  handleDetailModalOpen: () => null,
+  onCoinIdClicked: () => null,
 };
 
 export default SickDeals;

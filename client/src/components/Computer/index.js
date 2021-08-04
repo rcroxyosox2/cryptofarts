@@ -25,7 +25,6 @@ export const ComputerStyle = styled.div.attrs({className: 'ComputerStyle'})`
     width: 25%;
     display: block;
     position: relative;
-    font-size: 3%;
     transform: skew(1deg, -6deg);
     padding: 0.4% 1.5% 1.5%;
     overflow: hidden;
@@ -38,8 +37,37 @@ export const ComputerStyle = styled.div.attrs({className: 'ComputerStyle'})`
       animation: ${blink} 1.2s ease-in-out 0s infinite;
     }
   }
-`;
+  @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
+    span {
+      border: 1px solid red;
+      top: -27%;
+      left: -3.3%;
+      height: 88px;
+      width: 99px;
+    }
+  }
 
+  @media (max-width: 450px) {
+    span {
+      left: -6%;
+      height: 86px;
+      width: 100px;
+    }
+  }
+  @media (max-height: 642px) {
+    span {
+      left: -5%;
+      height: 75px;
+      width: 87px;
+      font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 277px) {
+    span {
+      display: none;
+    }
+  }
+`;
 const Computer = ({ 
   text = 'the internet', 
   subCopy = 'hello',

@@ -1,12 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { uniqBy, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
-import { COIN_CHANGE_KEY } from 'brains/coins';
-import { megaInitialLoad } from 'services';
 
-const newsSources = {
-  CRYPTO_NEWS: 'https://www.reddit.com/r/javascript/hot.json',
-};
+// const newsSources = {
+//   CRYPTO_NEWS: 'https://www.reddit.com/r/javascript/hot.json',
+// };
 
 export const notifTypes = {
   ARTICLE: 'ARTICLE',

@@ -5,7 +5,7 @@ import coin from './images/coin.png';
 const Logo = () => {
   return (
     <styles.LogoStyle>
-      <span><img src={coin} className="coinImg" /></span>
+      <span><img src={coin} className="coinImg" alt="coin" /></span>
       <span><img src={logo} className="kripdoeImg" alt="Kripdoe" /></span>
     </styles.LogoStyle>
   );

@@ -5,18 +5,22 @@ import './index.css';
 import App from './App';
 import { AppStyle } from './styles';
 import reportWebVitals from './reportWebVitals';
+import { ErrorBoundry } from 'lib/bugsnag';
+import ErrorScreen from 'components/ErrorScreen';
 import mainTheme from './theme/main';
 import store from 'redux/store';
 import { Provider as RProvider } from 'react-redux';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={mainTheme}>
-      <AppStyle />
-      <RProvider store={store}>
-        <App />
-      </RProvider>
-    </ThemeProvider>
+    <ErrorBoundry FallbackComponent={ErrorScreen}>
+      <ThemeProvider theme={mainTheme}>
+        <AppStyle />
+        <RProvider store={store}>
+          <App />
+        </RProvider>
+      </ThemeProvider>
+    </ErrorBoundry>
   </React.StrictMode>,
   document.getElementById('root')
 );

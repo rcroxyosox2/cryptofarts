@@ -1,5 +1,6 @@
 import Dexie from 'dexie';
-import { getIsExpired } from 'brains/general';
+import moment from 'moment';
+import { getIsBeforeToday } from 'brains/general';
 export const db = new Dexie('kripdoe');
 
 const init = () => {
@@ -20,14 +21,18 @@ export const setSplashPageLastVisited = async () => {
 }
 
 export const splashPageIsStale = async () => {
+  if ((process.env.REACT_APP_ENV || process.env.NODE_ENV) === 'development') {
+    return false;
+  }
+
   const expiresInMinutes = 60 * 24;
   let stale = false;
   try {
     // const coins = await db.coins.toArray();
     const meta = await dbi.meta.get(1);
     if (meta.splashpageLastVisited) {
-        stale = getIsExpired(meta.splashpageLastVisited, expiresInMinutes);
-    }  
+      stale = getIsBeforeToday(meta.splashpageLastVisited);
+    }
   } catch(e) {
     stale = true;
   }
@@ -56,6 +61,6 @@ export const addToShit = async (coinId) => {
 
 export const getShit = () => {
   return db.table('myshit').toArray().then((arr) => {
-    return arr.map(item => item.coinId);
+    return arr?.map(item => item.coinId);
   });
 }

@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { COIN_CHANGE_KEY, filteredCoins } from 'brains/coins';
 import { getMoonShots } from 'services';
 
 export const getMoonShotsThunk = createAsyncThunk(

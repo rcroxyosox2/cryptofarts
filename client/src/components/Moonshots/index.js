@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { useDispatch, useSelector } from 'react-redux';
 import he from 'he';
 import { paths } from 'Router';
-import { useHistory } from 'react-router-dom';
 import { getMoonShotsThunk, setMoonShots } from 'redux/moonshots';
 import moonShotsTextImg from './images/moonshots.png';
 import MoonShot from 'pages/MoonShot';
@@ -26,7 +25,6 @@ export const Stars = () => (
 
 const Moonshots = () => {
   const socketName = 'moonshots';
-  const history = useHistory();
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(null); // contains moonshot id if open
   const { data: moonShots, loading, error } = useSelector((state) => state.moonShots);
@@ -87,6 +85,22 @@ const Moonshots = () => {
     window.history.replaceState(null, 'Overview', paths.overview);
   }
 
+  const List = () => (
+    <ul>
+      {
+        moonShots?.map((shot, i) => (
+          <li key={shot.id} onClick={handleClick(shot.id)}>
+            <i />
+            <div ref={refs[i]}>
+              <span></span>
+              <aside>{he.decode(shot.title.replace(/\|/g, ':::'))}</aside>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  );
+
   return (
     <CSSTransition in={!loading} timeout={300}>
       <styles.MoonShotsStyles maxResults={MAX_RESULTS}>
@@ -95,19 +109,7 @@ const Moonshots = () => {
           <img src={moonShotsTextImg} />
         </header>
         <section className="loadingSection">Loading...</section>
-        <ul>
-          {
-            moonShots?.map((shot, i) => (
-              <li key={shot.id} onClick={handleClick(shot.id)}>
-                <i />
-                <div ref={refs[i]}>
-                  <span></span>
-                  <aside>{he.decode(shot.title.replace(/\|/g, ':::'))}</aside>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
+        { (!loading && error) ? <div className="errorSection">'Sorry, no moonshots rn'</div> : <List /> }
         <Modal isOpen={!!modalOpen} onModalClose={handleModalClose} dark>
           <MoonShot id={modalOpen} onClose={handleModalClose} isOpen={!!modalOpen} />
         </Modal>

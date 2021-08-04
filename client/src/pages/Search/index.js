@@ -22,24 +22,10 @@ const Search = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [error, searchError] = useState(null);
   const [focused, setFocused] = useState(false);
-  const [detailModalOpen, setDetailModalOpen] = useState(false);
   const inputRef = useRef();
   const coinStackRef = useRef();
   const dbSearchTerm = useDebounce(term, 500);
   const MIN_CHARS = 3;
-
-  const handleHistoryChanged = (x) => {
-    setDetailModalOpen(false);
-  }
-
-  useEffect(() => {
-    // document.addEventListener('keydown', handleDocKeyDown);
-    window.addEventListener('popstate', handleHistoryChanged);
-    return () => {
-      // document.removeEventListener('keydown', handleDocKeyDown);
-      window.removeEventListener('popstate', handleHistoryChanged);
-    }
-  }, []);
 
   useEffect(() => {
 
@@ -89,18 +75,6 @@ const Search = (props) => {
     setFocused(false);
   }
 
-  const handleRowClick = (e, {coin}) => {
-    const coinId = coin.id;
-    const newRoute = paths.coindetail.replace(':id', coinId);
-    window.history.pushState(null, 'CoinDetail', newRoute);
-    setDetailModalOpen(coinId);
-  }
-
-  const handleDetailModalClose = () => {
-    window.history.replaceState(null, 'CoinDetail', paths.overview);
-    setDetailModalOpen(false);
-  };
-
   let compMessage = "the internet";
   let compMessage2 = null;
 
@@ -120,7 +94,7 @@ const Search = (props) => {
         <div>
           <CSSTransition in={Boolean(results.length)} timeout={400}>
             <div className="resultsStackAndRainbow">
-              <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} onRowClick={handleRowClick} />
+              <CoinStack coins={[...results]} animated={false} _ref={coinStackRef} />
               <Rainbow />
             </div>
           </CSSTransition>
@@ -145,9 +119,6 @@ const Search = (props) => {
           <Input value={term} onChange={handleSearch} _ref={inputRef} onFocus={handleFocus} onBlur={handleBlur} />
         </div>
       </CSSTransition>
-      <Modal isOpen={!!detailModalOpen} onModalClose={handleDetailModalClose}>
-        <CoinDetail coinId={detailModalOpen} handleBackClick={handleDetailModalClose} />
-      </Modal>
     </styles.SearchStyle>
   );
 }

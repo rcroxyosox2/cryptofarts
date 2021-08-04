@@ -116,8 +116,12 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/sickdeals', async (req, res) => {
   try {
     const coins = await coinQueries.getSickDealCoins();
+    if (!coins || !coins.length) {
+      BugsnagClient.notify(`No sick deals!`);
+    }
     res.send(coins);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/sickdeals: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -134,6 +138,7 @@ app.get('/api/moonshots', async (req, res) => {
     reddit.pollMoonShots(io, maxResults);
     res.send(moonShots)
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/moonshots: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -146,6 +151,7 @@ app.get('/api/moonshots/:id', async (req, res) => {
     const moonShot = await reddit.getRedditAsMoonShots({id: req.params.id});
     res.send(moonShot)
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/moonshots/:id: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -158,6 +164,7 @@ app.get('/api/greensreds', async(req, res) => {
     const greensReds = await coinQueries.getGreensReds();
     res.send(greensReds);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/greensreds: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -174,6 +181,7 @@ app.get('/api/trending', (req, res) => {
     const coins = await Coin.Schema.find({$or: query}).select(coinQueries.fields);
     res.send(coins);
   }).catch((e) => {
+    BugsnagClient.notify(`Error getting /api/trending: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -222,7 +230,7 @@ app.get('/api/coin/:id', async(req, res) => {
           }
         }
       }
-      const arrayColumn = (arr, n) => Array.isArray(arr) ? arr.map(x => x[n]) : arr;
+      const arrayColumn = (arrr, n) => Array.isArray(arrr) ? arrr.map(x => x[n]) : arrr;
       const { prices:priceChartArr, total_volumes:volumeChartArr } = (marketData) ? marketData : {};
       const { season, greedFearIndex:gfIndex } = (metas) ? metas : {};
       const advice = getCelebrityTradeAdvice({
@@ -244,6 +252,7 @@ app.get('/api/coin/:id', async(req, res) => {
     });
     res.send(coinData);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/coin/:id: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -258,6 +267,7 @@ app.get('/api/coins/:arr', async(req, res) => {
     const coins = await coinQueries.getCoins(coinArr);
     res.send(coins);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/coins/:arr: ${e.message}`);
     res.status(500).send({
       error: e.message,
     })
@@ -269,6 +279,7 @@ app.get('/api/meta', async (req, res) => {
     const meta = await metaQueries.getMeta();
     res.send(meta);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/meta: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -280,6 +291,7 @@ app.get('/api/buy/:id', async (req, res) => {
     const { tickers } = await coinGecko.getTickers(req.params.id);
     res.send(tickers);
   } catch(e) {
+    BugsnagClient.notify(`Error getting /api/buy/:id: ${e.message}`);
     res.status(500).send({
       error: e.message
     });
@@ -287,7 +299,6 @@ app.get('/api/buy/:id', async (req, res) => {
 })
 
 // sockets
-
 io.on('connection', (socket) => {
   console.log('socket server connected...');
 });

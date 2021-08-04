@@ -8,7 +8,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
   const [loading, setIsLoading] = useState(false);
   const ref = useRef();
   const handleCanPlayThrough = () => {
-    console.log('ready.');
+    // console.log('ready.');
     setIsLoading(false);
   };
 
@@ -31,7 +31,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
 
   const src = sounds[soundIndex];
   const handleClick = (e) => {
-    ref.current.volume = 0.07;
+    ref.current.volume = 0.1;
     ref.current.play();
     onClick && onClick(e);
   }
@@ -39,7 +39,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
   if (!src) {
     console.log('no source for ', src, sounds, soundIndex);
   }
-  console.log("here is the src:::", src);
+
   return src ? (
     <>
       <audio controls ref={ref}>

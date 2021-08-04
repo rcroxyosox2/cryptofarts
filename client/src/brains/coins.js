@@ -2,9 +2,19 @@
 // import { randomResource } from 'utils';
 import { uniqBy, filter, sortBy, reverse } from 'lodash';
 import lodash from 'lodash';
-import { setCoinsLoadError } from 'redux/coins';
+// import { setCoinsLoadError } from 'redux/coins';
 // specific to coingecko
 export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
+
+export const currency = {
+  USD: 'usd',
+  BTC: 'btc',
+};
+
+export const currencySymbol = {
+  USD: '$',
+  BTC: '₿',
+};
 
 // Duplicated from BE/constants
 // TODO: SHARE WITH BE
@@ -60,16 +70,6 @@ export const filterCoinsByCapAndGreenRed = (coins = [], {capSelection, greenRedS
 
 // Coins are fetched at this interval
 // export const checkForUpdatesInterval = (1000 * 60) * expiresInMinutes;
-
-export const currency = {
-  USD: 'usd',
-  BTC: 'btc',
-};
-
-export const currencySymbol = {
-  USD: '$',
-  BTC: '₿',
-};
 
 export const filterTickersByCurrencyTarget = (tickers, currency = currency.USD) => {
   return [...tickers].filter(item => item.target?.toLowerCase() === currency?.toLowerCase());

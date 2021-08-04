@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import SearchButtonAndModal from 'components/SearchButtonAndModal';
+// import MyShitButtonAndModal from 'components/MyShitButtonAndModal';
 import * as styles from './styles';
 
 const MainFooter = (props) => {

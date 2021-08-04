@@ -1,6 +1,6 @@
-import styled, { css, createGlobalStyle } from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const ANIM_SPEED = 280;
+export const ANIM_SPEED = 200;
 
 export const ModalContainerInnerStyle = styled.div.attrs({className: 'ModalInnerContainerStyle'})`
   margin: 0 auto;

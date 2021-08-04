@@ -55,13 +55,19 @@ const MoonShot = (props) => {
     }
   }, [request.response]);
 
-  useEffect(() => {
-    const shotId = getShotId();
-    !!shotId && request.makeRequest(shotId);
-    
+  useEffect(async() => {
+
+    try {
+      const shotId = getShotId();
+      !!shotId && await request.makeRequest(shotId); 
+    } catch(e) {
+      // bugsnagging on BE
+    }
+
     if (!moonShots.length) {
       dispatch(getMoonShotsThunk(MAX_RESULTS));
     }
+
   }, [getShotId()])
 
   const shot = request.response;

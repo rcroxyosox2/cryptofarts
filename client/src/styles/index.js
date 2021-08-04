@@ -1,5 +1,4 @@
-import { appearance } from 'theme/mixins';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
 // Regular
 import comicNeueRegularWoff2 from "./fonts/ComicNeue-Regular.woff2";

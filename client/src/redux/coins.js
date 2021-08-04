@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { uniqBy, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
-import { COIN_CHANGE_KEY, filteredCoins } from 'brains/coins';
 import { megaInitialLoad } from 'services';
 
 export const getCoinsMegaCall = createAsyncThunk(

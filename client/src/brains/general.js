@@ -8,3 +8,8 @@ export const getIsExpired = (time, expiresInMinutes) => {
   const expirationDate = timeCreated.add(expiresInMinutes, 'minutes');
   return moment().isAfter(expirationDate);
 }
+
+export const getIsBeforeToday = (time) => {
+  const today = moment().startOf('day');
+  return moment(time).isBefore(today);
+}

@@ -4,7 +4,6 @@ import * as styles from './styles';
 import { useLiveQuery } from "dexie-react-hooks";
 import { getGreensReds } from 'services/';
 import socket from 'services/socket';
-import Button from 'theme/Button';
 import { getShit } from 'data/indexdb';
 import CoinStack from 'components/CoinStack';
 import PointTo from 'components/PointTo';
@@ -24,7 +23,7 @@ const FB = ({children, selection, onClick = () => null, ...props} = {}) => (
   </styles.FilterButtonStyle>
 );
 
-const GreensReds = ({ handleDetailModalOpen }) => {
+const GreensReds = ({ onCoinIdClicked }) => {
   const socketName = 'greensreds';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -76,7 +75,7 @@ const GreensReds = ({ handleDetailModalOpen }) => {
   let filteredCoins = (key && greensReds) ? greensReds[key] : null;
   filteredCoins = filteredCoins?.filter((coin) => !myShitCoinIdArr?.includes(coin.id));
   const exclaim = (greenRedSelection === 'red') ? 'Woah' : 'Dang';
-  const handleRowClick = (e, {coin}) => handleDetailModalOpen(coin.id);
+  const handleRowClick = (e, {coin}) => onCoinIdClicked(coin.id);
 
   return (
     <styles.GreensRedsStyle>
@@ -86,10 +85,10 @@ const GreensReds = ({ handleDetailModalOpen }) => {
           <div>
             <div className="imgWrapper">
               <CSSTransition in={greenRedSelection === 'green'} timeout={300} >
-                <img {...getRandomGreenImgStyle()} />
+                <img alt="green" {...getRandomGreenImgStyle()} />
               </CSSTransition>
               <CSSTransition in={greenRedSelection === 'red'} timeout={300} >
-                <img {...getRandomRedImgStyle()} />
+                <img alt="red" {...getRandomRedImgStyle()} />
               </CSSTransition>
             </div>
           </div>
@@ -109,6 +108,7 @@ const GreensReds = ({ handleDetailModalOpen }) => {
         </div>
       </nav>
       <main>
+        {loading && <div>Loading...</div>}
         <MyShitStack onRowClick={handleRowClick} filters={{
           capSelection,
           greenRedSelection,

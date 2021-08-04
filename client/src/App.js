@@ -1,14 +1,11 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Router from './Router';
-import Logo from 'components/Logo';
 import { saveDay } from 'redux/summary';
-import { setDetailModalOpen } from 'redux/app';
 import phonebgImg from 'images/phonebg.png';
 import rad from 'video/rad.mp4';
 import socket from 'services/socket';
-import Modal from 'theme/Modal';
 
 
 const VideoStyle = styled.video`
@@ -64,10 +61,6 @@ const App = () => {
       console.log('msg', msg)
     });
   }, [])
-
-  const sendMessage = () => {
-    socket.emit('chat message', 'here is the message...');
-  }
 
   return (
     <div>

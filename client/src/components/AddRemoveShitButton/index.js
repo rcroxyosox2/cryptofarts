@@ -1,5 +1,4 @@
 import { isInShit, addToShit, removeFromShit } from 'data/indexdb';
-import { CSSTransition } from 'react-transition-group';
 import { useLiveQuery } from "dexie-react-hooks";
 import Button from 'theme/Button';
 

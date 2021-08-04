@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import shine from './images/shine.png';
 import shine2 from './images/shine2.png';
 
@@ -31,15 +31,14 @@ const sparkleAnimation = (props) => keyframes`
 // width: 7.9%;
 // height: 33%;
 
-const getSizeFromWidth = (scale, width, unit = '%') => {
-  const height = width * scale;
-  return css`
-    width: ${width}${unit};
-    height: ${height}${unit};
-  `;
-}
+// const getSizeFromWidth = (scale, width, unit = '%') => {
+//   const height = width * scale;
+//   return css`
+//     width: ${width}${unit};
+//     height: ${height}${unit};
+//   `;
+// }
 
-const afterScale = 21.8/7;
 const sparkleAnimation2 = (props) => keyframes`
   0% { 
     background-color: ${props.theme.colors.pink};

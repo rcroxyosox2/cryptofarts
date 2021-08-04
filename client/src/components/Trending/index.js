@@ -47,7 +47,7 @@ const Trending = (props) => {
   }, []);
 
   const handleClick = (coinId) => (e) => {
-    props.handleDetailModalOpen(coinId);
+    props.onCoinIdClicked(coinId);
   }
 
   return (
