@@ -407,7 +407,7 @@ const CoinDetail = (props) => {
   
   return (
     <>
-      <Loading isLoading={loading} />
+      <Loading isLoading={loading || whereToBuyLoading} />
       <CSSTransition in={!loading} timeout={500}>
         <styles.CoinDetailStyle goodOrBad={goodOrBad} bigPump={bigPump}>
           <header>

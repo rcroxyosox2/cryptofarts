@@ -262,6 +262,9 @@ export const CoinDetailStyle = styled.div.attrs({ className: 'CoinDetailStyle' }
     width: 100%;
     padding: 0 8%;
   }
+  nav {
+    min-height: 92px;
+  }
   ${ChartStyle} {
     transform: rotate(-5deg);
     top: -20px;
