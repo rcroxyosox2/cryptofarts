@@ -6,7 +6,7 @@ import summaryReducer from './summary';
 import moonShotsReducer, { setMoonShots } from './moonshots';
 import trendingReducer, { setTrending } from './trending';
 import appReducer, { setSearchModalOpen, setDetailModalOpen } from './app';
-
+import myShitReducer, { setMyCoins } from './myShit';
 
   export { 
     doIt, 
@@ -15,6 +15,7 @@ import appReducer, { setSearchModalOpen, setDetailModalOpen } from './app';
     setNotif,
     setMoonShots,
     setTrending,
+    setMyCoins,
     setSearchModalOpen,
     setDetailModalOpen,
   };
@@ -28,6 +29,7 @@ import appReducer, { setSearchModalOpen, setDetailModalOpen } from './app';
       moonShots: moonShotsReducer,
       trending: trendingReducer,
       app: appReducer,
+      myShit: myShitReducer,
     }
   });
 

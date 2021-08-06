@@ -1,5 +1,5 @@
 import SearchButtonAndModal from 'components/SearchButtonAndModal';
-// import MyShitButtonAndModal from 'components/MyShitButtonAndModal';
+import MyShitButtonAndModal from 'components/MyShitButtonAndModal';
 import * as styles from './styles';
 
 const MainFooter = (props) => {
@@ -11,6 +11,7 @@ const MainFooter = (props) => {
         modalOpen={props.searchModalOpen} 
         onRowClick={props.handleDetailModalOpen}
       />
+      <MyShitButtonAndModal />
     </styles.MainFooterStyle>
   );
 };

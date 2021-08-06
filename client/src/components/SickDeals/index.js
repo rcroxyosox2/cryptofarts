@@ -15,34 +15,38 @@ const SickDeals = (props) => {
   const [sickDeals, setSickDeals] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+  let unmounted = false;
   const socketFn = (sickDeals) => {
-    setSickDeals(sickDeals);
+    !unmounted && setSickDeals(sickDeals);
   };
 
   useEffect(async() => {
     // sick deals
-    setLoading(true);
+    !unmounted && setLoading(true);
 
     getSickDeals()
     .then(res => {
-      setError(null);
-      setLoading(false);
-      setSickDeals(res);
+      !unmounted && setError(null);
+      !unmounted && setLoading(false);
+      !unmounted && setSickDeals(res);
     })
     .catch(e => {
-      setLoading(false);
-      setSickDeals([]);
-      setError(e);
+      !unmounted && setLoading(false);
+      !unmounted && setSickDeals([]);
+      !unmounted && setError(e);
     });
 
     socket
     .off(socketName, socketFn)
-    .on(socketName, socketFn)
+    .on(socketName, socketFn);
+
+    return () => {
+      unmounted = true;
+    }
   }, []);
 
   const handleClick = (coin) => (e) => {
-    props.onCoinIdClicked(coin.id);
+    !unmounted && props.onCoinIdClicked(coin.id);
   }
 
   return (

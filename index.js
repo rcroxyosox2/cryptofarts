@@ -298,6 +298,21 @@ app.get('/api/buy/:id', async (req, res) => {
   }
 })
 
+app.get('/api/avgshit/:arr', async (req, res) => {
+  try {
+    const coinArr = (req.params.arr) 
+    ? req.params.arr.split(',')
+    : [];
+    const coins = await coinQueries.getAvg24hrPriceChangeByIdsPerc(coinArr);
+    res.send(coins);
+  } catch (e) {
+    BugsnagClient.notify(`Error getting /api/avgshit/:arr: ${e.message}`);
+    res.status(500).send({
+      error: e.message
+    });
+  }
+})
+
 // sockets
 io.on('connection', (socket) => {
   console.log('socket server connected...');

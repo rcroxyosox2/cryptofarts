@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as styles from './styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
@@ -12,6 +12,7 @@ import {
   COIN_CHANGE_KEY,
 } from 'brains/coins';
 import DetailModal from 'components/DetailModal';
+import PercChangeBox from 'components/PercChangeBox';
 
 const CoinRow = ({coin, onClick, delay}) => {
   const bigPump = coinHasBigPump(coin);
@@ -19,7 +20,6 @@ const CoinRow = ({coin, onClick, delay}) => {
   const change = coin[COIN_CHANGE_KEY];
   const sparkLineData = coin?.sparkline_in_7d?.price?.slice(-24);
   const handleRowClick = (e) => {
-    // window.history.replaceState(null, 'CoinDetail', newRoute);
     onClick(e, {coin});
   }
   return (
@@ -46,7 +46,7 @@ const CoinRow = ({coin, onClick, delay}) => {
           <div>{formatPrice(coin.current_price)}</div>
         </div>
         <div className="percChangeCol">
-          <div>{change && formatPerc(change)}</div>
+          { change && <PercChangeBox>{formatPerc(change)}</PercChangeBox> }
         </div>
       </styles.CoinStyleRowContainer>
     </styles.CoinStackRowStyle>
@@ -61,11 +61,23 @@ const CoinStack = ({
 } = {}) => {
 
   const [coinIdClicked, setCoinIdClicked] = useState(null);
+  let unmounted = false;
+
+  useEffect(() => {
+    return () => {
+      unmounted = true;
+    }
+  }, []);
+
   const handleRowClick = (e, {coin}) => {
-    setCoinIdClicked(coin?.id)
-    onRowClick(e, {coin});
+    !unmounted && setCoinIdClicked(coin?.id)
+    !unmounted && onRowClick(e, {coin});
   }
   
+  const handleDetailModalClose = () => {
+    !unmounted && setCoinIdClicked(false);
+  }
+
   return (animated) ? (
     <>
       <styles.CoinStackStyle ref={_ref}>
@@ -81,14 +93,14 @@ const CoinStack = ({
         })}
         </TransitionGroup>
       </styles.CoinStackStyle>
-      <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
+      <DetailModal onModalClose={handleDetailModalClose} coinId={coinIdClicked} />
     </>
   ) : (
     <>
       <styles.CoinStackStyle>
         { coins.map((coin, i) => (<CoinRow key={coin.id} coin={coin} onClick={handleRowClick} />)) }
       </styles.CoinStackStyle>
-      <DetailModal onModalClose={() => setCoinIdClicked(false)} coinId={coinIdClicked} />
+      <DetailModal onModalClose={handleDetailModalClose} coinId={coinIdClicked} />
     </>
   );
 }

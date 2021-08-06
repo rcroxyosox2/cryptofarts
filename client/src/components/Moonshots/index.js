@@ -82,7 +82,7 @@ const Moonshots = () => {
 
   const handleModalClose = () => {
     setModalOpen(false);
-    window.history.replaceState(null, 'Overview', paths.overview);
+    window.history.back();
   }
 
   const List = () => (

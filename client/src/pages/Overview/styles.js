@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 import { LogoStyle } from 'components/Logo/styles';
 import { CoinStackImageTitleComboStyle } from 'components/CoinStackImageTitleCombo/styles';
+import { PercChangeBoxStyle } from 'components/PercChangeBox/styles';
 
 export const OverviewStyle = styled.div.attrs({ className: 'OverviewStyle' })`
   background: white;
+  > ${PercChangeBoxStyle} {
+    position: absolute; 
+    left: 32.6%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transform: rotate(-5deg);
+  }
   > header {
     display: flex;
     flex-flow: row nowrap;

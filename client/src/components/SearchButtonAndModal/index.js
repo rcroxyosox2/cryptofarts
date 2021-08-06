@@ -52,7 +52,7 @@ const SearchButtonAndModal = (props) => {
   return (
     <>
       <Modal isOpen={modalOpen} onModalClose={handleModalClose}>
-        <Search handleCloseClick={handleModalClose} onRowClick={handleRowClick} />
+        <Search handleCloseClick={() => window.history.back() } onRowClick={handleRowClick} />
       </Modal>
       <Button styleType="neutralBordered" styleSize={props.styleSize} onClick={handleClick}> 
         <img src={searchImg} />

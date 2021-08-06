@@ -1,5 +1,14 @@
 import { keyframes } from 'styled-components';
 
+export const buff = keyframes`
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+`;
+
 export const flipAnimation = keyframes`
   0%, 100% {
     transform: rotateX(0deg);

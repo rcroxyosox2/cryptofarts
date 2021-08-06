@@ -58,6 +58,13 @@ export const getWhereToBuy = (id) => {
   });
 }
 
+export const getAvgShit = (coinIdArr = []) => {
+  const arr = (Array.isArray(coinIdArr)) ? coinIdArr.join(',') : '';
+  return fetch(`/api/avgshit/${arr}`).then((resp) => resp.json()).then(json => {
+    return json?.avgChangePerc24hr;
+  });
+}
+
 ////// old 
 export const apiGetCoinData = ({coin = 'bitcoin'} = {}) => {
   var requestOptions = {

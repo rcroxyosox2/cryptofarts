@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { bigPumpCSS } from 'components/CoinStack/styles';
+import { bigPumpCSS } from 'components/PercChangeBox/styles';
 import { PointToStyle } from 'components/PointTo/styles';
 import { bobRotate } from 'theme/animations';
 import { ButtonWrapperStyle } from 'theme/Button/styles';
@@ -8,7 +8,7 @@ import flowbeeImg from 'images/flowbee.gif';
 import flowbingImg from 'images/flowbing.png';
 import { blink } from 'theme/animations';
 import x from 'images/x.png';
-// import buffImg from 'images/buffarm.png';
+import buffImg from 'images/buffarm.png';
 
 export const ChartStyle = styled.div.attrs({ className: 'ChartStyle' })`
   position: relative;

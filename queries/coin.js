@@ -133,6 +133,26 @@ const getSickDealCoins = async () => {
   // })
 }
 
+const getAvg24hrPriceChangeByIdsPerc = async (ids) => {
+  await mongo();
+  const queryArr = ids.map((id) => ({id}));
+  const doc = await Coin.Schema.aggregate([
+    {
+      '$match': {
+        '$or': queryArr
+      }
+    }, {
+      '$group': {
+        _id: null, 
+        avgChangePerc24hr: {
+          $avg: '$price_change_percentage_24h'
+        }
+      }
+    }
+  ])
+  return Array.isArray(doc) ? doc[0] : doc;
+}
+
 const getAvg24hrPriceChangePerc = async () => {
   await mongo();
   const docs = await Coin.Schema.aggregate([
@@ -391,6 +411,7 @@ module.exports = {
   getCoins,
   getSickDealCoins,
   getAvg24hrPriceChangePerc,
+  getAvg24hrPriceChangeByIdsPerc,
   searchCoinsWithAutocomplete,
   getCoinEventCount,
   getTopCoinInCapSize,

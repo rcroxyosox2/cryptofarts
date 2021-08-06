@@ -5,6 +5,7 @@ import Search from 'pages/Search';
 import Overview from 'pages/Overview';
 import MoonShot from 'pages/MoonShot';
 import CoinDetail from 'pages/CoinDetail';
+import MyShit from 'pages/MyShit';
 
 export const paths = {
   home: '/',
@@ -12,7 +13,7 @@ export const paths = {
   search: '/search',
   moonshot: '/moonshot/:id',
   coindetail: '/coin/:id',
-  mestuff: '/mestuff',
+  yourshit: '/yourshit',
   fourohfour: '*'
 };
 
@@ -35,6 +36,10 @@ const Routes = () => {
         <Route path={paths.coindetail} component={(route) => {
           const handleBackClick = () => route.history.push(paths.overview);
           return <CoinDetail coinId={route?.match?.params?.id} handleBackClick={handleBackClick}/>;
+        }} />
+        <Route path={paths.yourshit} component={(route) => {
+          const handleBackClick = () => route.history.push(paths.overview);
+          return <MyShit onBackClick={handleBackClick} />
         }} />
         {/* <Route path={paths.fourohfour} component={() => <div>Four oh four</div>} /> */}
       </Switch>

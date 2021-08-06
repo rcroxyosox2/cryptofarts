@@ -5,6 +5,7 @@ import lodash from 'lodash';
 // import { setCoinsLoadError } from 'redux/coins';
 // specific to coingecko
 export const COIN_CHANGE_KEY = 'price_change_percentage_24h';
+export const MAX_SHIT = 50;
 
 export const currency = {
   USD: 'usd',
@@ -88,12 +89,20 @@ export const coinPerformanceRanges = [
   [20, undefined], // big pumps
 ];
 
+export const numHasBigPump = (num) => {
+  return num ? getItemIsInCoinRange(num, coinPerformanceRanges[coinPerformanceRanges.length-1]) : false;
+}
+
+export const numHasBigDump = (num) => {
+  return num ? getItemIsInCoinRange(num, coinPerformanceRanges[0]) : false;
+}
+
 export const coinHasBigPump = (coin) => {
-  return coin ? getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[coinPerformanceRanges.length-1]) : false;
+  return coin ? numHasBigPump(coin[COIN_CHANGE_KEY]) : false;
 }
 
 export const coinHasBigDump = (coin) => {
-  return coin ? getItemIsInCoinRange(coin[COIN_CHANGE_KEY], coinPerformanceRanges[0]) : false;
+  return coin ? numHasBigDump(coin[COIN_CHANGE_KEY]) : false;
 }
 
 export const getItemIsInCoinRange = (num, range) => {

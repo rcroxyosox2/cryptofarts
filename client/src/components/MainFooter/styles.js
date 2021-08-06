@@ -8,6 +8,9 @@ export const MainFooterStyle = styled.footer.attrs({ className: 'MainFooterStyle
   overflow: hidden;
   padding: 2rem 2rem 1.3rem;
   z-index: 5;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   ${ButtonStyle} {
     display: flex;
     flex-flow: row nowrap;

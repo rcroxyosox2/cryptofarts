@@ -139,28 +139,35 @@ const WhereToBuy = ({
   const [whereToBuyOpen, setWhereToBuyOpen] = useState(whereToBuyOpenFromProps);
   const targetFiltered = filterTickersByCurrencyTarget(tickers, currencyFilter);
   const filteredTickers = targetFiltered.filter(ticker => !!ticker.trade_url);
+  let unmounted = false;
 
   const handleFilterSelect = (e) => {
     const v = e.target.value;
-    v && setCurrencyFileter(v);
+    v && !unmounted && setCurrencyFileter(v);
   }
 
   const toggleWhereToBuy = () => {
-    onWhereToBuyOpen(!whereToBuyOpen);
-    setWhereToBuyOpen(!whereToBuyOpen);
+    !unmounted && onWhereToBuyOpen(!whereToBuyOpen);
+    !unmounted && setWhereToBuyOpen(!whereToBuyOpen);
   }
 
   useEffect(() => {
     if (whereToBuyOpenFromProps != whereToBuyOpen) { 
-      setWhereToBuyOpen(whereToBuyOpenFromProps);
+      !unmounted && setWhereToBuyOpen(whereToBuyOpenFromProps);
     }
   }, [whereToBuyOpenFromProps])
 
   useEffect(() => {
     if (!targetFiltered.length && currencyFilter === currency.USD) {
-      setCurrencyFileter(currency.BTC);
+      !unmounted && setCurrencyFileter(currency.BTC);
     }
   }, [targetFiltered, currencyFilter]);
+
+  useEffect(() => {
+    return () => {
+      unmounted = true;
+    }
+  }, []);
 
   const CurrencySelect = () => {
     return (
@@ -306,6 +313,8 @@ const CoinDetail = (props) => {
   const coinId = props.coinId;
   const buttonRef = useRef();
   const [whereToBuyOpen, setWhereToBuyOpen] = useState();
+  let unmounted = false;
+
   const { 
     response: tickers, 
     loading: whereToBuyLoading, 
@@ -325,8 +334,8 @@ const CoinDetail = (props) => {
   useEffect(async () => {
     if (coinId) {
       try {
-        await makeRequest(coinId);
-        await whereToBuyRequest(coinId);
+        !unmounted && await makeRequest(coinId);
+        !unmounted && await whereToBuyRequest(coinId);
       } catch(e) {
         // bugsnagging on the BE
       }
@@ -337,6 +346,12 @@ const CoinDetail = (props) => {
     buttonRef.current?.focus();
   }, [response])
 
+  useEffect(() => {
+    return () => {
+      unmounted = true;
+    }
+  }, [])
+
   const { coin, comparisonCoin, advice } = response || {};
 
   const change = coin ? coin[COIN_CHANGE_KEY] : null;
@@ -344,9 +359,11 @@ const CoinDetail = (props) => {
   const formattedPrice = formatPrice(coin?.current_price);
   const goodOrBad = change < 0 ? 'bad' : 'good' ;
   const footerNav = (
-    <FooterNav leftNav={(
-      <FooterButton onClick={props.handleBackClick} _ref={buttonRef}>Back</FooterButton>
-    )} />
+    <FooterNav 
+      leftNav={(
+        <FooterButton onClick={props.handleBackClick} _ref={buttonRef}>Back</FooterButton>
+      )}
+    />
   );
 
   let changeFontSize;
@@ -373,11 +390,11 @@ const CoinDetail = (props) => {
   }
 
   const handleAdviceClick = (e, {buy}) => {
-    Boolean(buy) && setWhereToBuyOpen(!whereToBuyOpen);
+    !unmounted && Boolean(buy) && setWhereToBuyOpen(!whereToBuyOpen);
   }
 
   const handleOnWhereToBuyOpen = (v) => {
-    if (v !== whereToBuyOpen) {
+    if (v !== whereToBuyOpen && !unmounted) {
       setWhereToBuyOpen(v);
     }
   }
@@ -390,7 +407,7 @@ const CoinDetail = (props) => {
   
   return (
     <>
-      <Loading isLoading={loading || whereToBuyLoading} />
+      <Loading isLoading={loading} />
       <CSSTransition in={!loading} timeout={500}>
         <styles.CoinDetailStyle goodOrBad={goodOrBad} bigPump={bigPump}>
           <header>

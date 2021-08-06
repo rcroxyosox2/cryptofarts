@@ -31,7 +31,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
 
   const src = sounds[soundIndex];
   const handleClick = (e) => {
-    ref.current.volume = 0.1;
+    ref.current.volume = 0.08;
     ref.current.play();
     onClick && onClick(e);
   }
@@ -43,7 +43,7 @@ export const SoundButton = ({soundIndex, onClick, onEnded, buttonProps, children
   return src ? (
     <>
       <audio controls ref={ref}>
-          <source src={src} type="audio/mpeg" />
+        <source src={src} type="audio/mpeg" />
       </audio>
       <Button {...buttonProps} onClick={handleClick}>{children}</Button>
     </>

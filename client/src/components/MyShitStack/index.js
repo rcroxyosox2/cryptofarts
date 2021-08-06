@@ -23,22 +23,29 @@ const MyShitStack = ({ filters, onRowClick, sort, onCoins }) => {
   const { response: coins, error, makeRequest } = useRequest({
     request: getCoinsByIds,
   });
+  let unmounted = false;
 
   useEffect( async() => {
     if (coins && filters) {
       const newlyFilteredCoins = filterCoinsByCapAndGreenRed(coins, filters);
-      setFilteredCoins(newlyFilteredCoins);
+      !unmounted && setFilteredCoins(newlyFilteredCoins);
     }
   }, [filters, coins]);
 
   useEffect( async() => {
     try {
-      await makeRequest(coinsArr);
-      onCoins(coinsArr);
+      !unmounted && coinsArr && await makeRequest(coinsArr);
+      !unmounted && onCoins(coinsArr);
     } catch (e) {
       // bugsnagging on BE
     }
   }, [coinsArr]);
+
+  useEffect(async() => {
+    return () => {
+      unmounted = true;
+    }
+  }, [])
 
   const condCoins = filteredCoins || coins;
   const sortedCoins = condCoins?.sort(sort);

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDayThunk } from 'redux/summary';
 import { useLiveQuery } from "dexie-react-hooks";
-import { useSelector } from 'react-redux';
 import useRequest from 'hooks/useRequest';
 import Logo from 'components/Logo';
 import SeasonFlag from 'components/SeasonFlag';
@@ -13,6 +14,8 @@ import MainFooter from 'components/MainFooter';
 import CoinDetail from 'pages/CoinDetail';
 import Modal from 'theme/Modal';
 import DetailModal from 'components/DetailModal';
+import PercChangeBox from 'components/PercChangeBox';
+
 import { paths } from 'Router';
 import { KEYCODES, eventHasKeyCode } from 'utils';
 
@@ -34,8 +37,17 @@ const Overview = (props) => {
   const handleCoinIdClicked = (coinId) => {
     setCoinIdClicked(coinId);
   }
+
+  const dispatch = useDispatch();
+  const { day } = useSelector((state) => state.summary);
+  const percChange = day.data.avgChangePerc24hr;
+  useEffect(() => {
+    dispatch(getDayThunk());
+  }, []);
+
   return (
     <styles.OverviewStyle>
+      <PercChangeBox>{percChange}</PercChangeBox>
       <header>
         <Logo />
         <SeasonFlag />

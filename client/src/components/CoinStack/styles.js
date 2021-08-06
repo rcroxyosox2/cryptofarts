@@ -1,33 +1,6 @@
 import styled, {css, keyframes} from 'styled-components';
 import { flipAnimation } from 'theme/animations';
-import buffImg from 'images/buffarm.png';
-
-export const buff = keyframes`
-  0%, 100% {
-    transform: rotate(-10deg);
-  }
-  50% {
-    transform: rotate(0);
-  }
-`;
-
-export const bigPumpCSS = css`
-  &:after {
-    animation: ${buff} 1.2s ease-in-out 0s infinite;
-    transform-origin: 100% 100%;
-    content: "";
-    position: absolute;
-    right: 96%;
-    bottom: 0;
-    margin-top: -5.5vw;
-    background-image: url(${buffImg});
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center right;
-    width: 100%;
-    height: 100%;
-  }
-`;
+import { PercChangeBoxStyle } from 'components/PercChangeBox/styles';
 
 export const CoinStyleRowContainer = styled.div.attrs({ className: 'CoinStyleRowContainer' })`
   display: flex;
@@ -44,18 +17,6 @@ export const CoinStyleRowContainer = styled.div.attrs({ className: 'CoinStyleRow
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
-  }
-`;
-
-const redRowCSS = css`
-  .percChangeCol {
-    ${(props) => props.theme.snippets.badCSS}
-  }
-`;
-
-const greenRowCSS = css`
-  .percChangeCol {
-    ${(props) => props.theme.snippets.goodCSS}
   }
 `;
 
@@ -120,15 +81,11 @@ export const CoinStackRowStyle = styled.div.attrs({ 'role': 'button' })`
       }
     }
   }
-  .percChangeCol {
+  ${PercChangeBoxStyle} {
     flex: 20%;
     padding: 0.1em;
     font-size: 1.2rem;
-    position: relative;
-    ${(props) => props.bigPump ? bigPumpCSS : null}
   }
-  ${(props) => Boolean(props.red) ? redRowCSS : null }
-  ${(props) => Boolean(props.green) ? greenRowCSS : null }
 `;
 
 export const CoinStackStyle = styled.div.attrs({ className: 'CoinStackStyle' })`

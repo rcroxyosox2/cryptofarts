@@ -58,6 +58,7 @@ const Splash = () => {
   const percChange = day.data.avgChangePerc24hr;
   const formattedPercChange = formatPerc(percChange);
   const badDay = (percChange < 0);
+  let unmounted = false;
 
   useEffect( async() => {
     const isStale = await splashPageIsStale();
@@ -66,13 +67,16 @@ const Splash = () => {
     } 
 
     dispatch(getDayThunk());
+    return () => {
+      unmounted = true;
+    }
   }, []);
 
   const handleOnMyShit = (coins) => {
     if (coins?.length) {
-      setMyShitClassName('withMyShit');
+      !unmounted && setMyShitClassName('withMyShit');
     } else {
-      setMyShitClassName('withoutMyShit');
+      !unmounted && setMyShitClassName('withoutMyShit');
     }
   }
 
@@ -93,7 +97,7 @@ const Splash = () => {
     <>
       <styles.SplashStyle className={myShitClassName}>
         <div className="logoRow">
-          <Logo />
+          <Logo showDayFlag={false} />
         </div>
         <div className="myShitRow">
           <MyShitStack sort={myShitSortDesc} onCoins={handleOnMyShit} />

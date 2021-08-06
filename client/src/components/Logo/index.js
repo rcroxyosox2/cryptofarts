@@ -2,7 +2,7 @@ import * as styles from './styles';
 import logo from './images/logo.png';
 import coin from './images/coin.png';
 
-const Logo = () => {
+const Logo = ({ showDayFlag = true } = {}) => {
   return (
     <styles.LogoStyle>
       <span><img src={coin} className="coinImg" alt="coin" /></span>
