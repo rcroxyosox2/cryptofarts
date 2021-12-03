@@ -12,7 +12,7 @@ import Logo from 'components/Logo';
 import PointTo from 'components/PointTo';
 import { paths } from 'Router';
 import SearchButtonAndModal from 'components/SearchButtonAndModal';
-import { setSplashPageLastVisited, splashPageIsStale } from 'data/indexdb';
+import { setSplashPageLastVisited } from 'data/indexdb';
 import MyShitStack, { myShitSortDesc } from 'components/MyShitStack';
 import CoinDetail from 'pages/CoinDetail';
 import Modal from 'theme/Modal';
@@ -60,8 +60,9 @@ const Splash = () => {
   const badDay = (percChange < 0);
   let unmounted = false;
 
+
   useEffect( async() => {
-    const isStale = await splashPageIsStale();
+    const isStale = false;
     if (isStale) {
       history.replace(paths.overview);
     } 
