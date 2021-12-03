@@ -8,19 +8,16 @@ const DetailModal = ({closePath, coinId, onModalClose} = {}) => {
   const location = useLocation();
   const history = useHistory();
   const [initialLocation, setInitialLocation] = useState();
-  let calledClose = false;
 
   const handleDetailModalClose = () => {
-    if (!calledClose) {
-      window.history.replaceState(null, 'CoinDetail', closePath || initialLocation);
-      onModalClose();
-      calledClose = true;
-    }
+    window.history.replaceState(null, 'CoinDetail', closePath || initialLocation);
+    onModalClose();
   };
 
   useEffect(() => {
     const newRoute = paths.coindetail.replace(':id', coinId);
-    if (coinId && window.location.pathname !== newRoute) {
+    // && window.location.pathname !== newRoute
+    if (coinId) {
       window.history.pushState(null, 'CoinDetail', newRoute);
     }
   }, [coinId])
