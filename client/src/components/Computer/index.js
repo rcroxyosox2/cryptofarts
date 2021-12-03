@@ -39,7 +39,6 @@ export const ComputerStyle = styled.div.attrs({className: 'ComputerStyle'})`
   }
   @media (max-width: ${ props => props.theme.responsive.largestMobileScreen}) {
     span {
-      border: 1px solid red;
       top: -27%;
       left: -3.3%;
       height: 88px;
